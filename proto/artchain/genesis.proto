@@ -1,0 +1,12 @@
+syntax = "proto3";
+package jack139.artchain.artchain;
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/jack139/artchain/x/artchain/types";
+
+// GenesisState defines the capability module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+}
+

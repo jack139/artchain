@@ -1,0 +1,11 @@
+accounts:
+  - name: user0
+    coins: ["1000token", "100000000stake"]
+  - name: gt
+    coins: ["100token"]
+  - name: faucet
+    coins: ["21000000credit"]
+validator:
+  name: user0
+  staked: "100000000stake"
+
