@@ -1,0 +1,39 @@
+syntax = "proto3";
+package jack139.artchain.person;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+import "person/user.proto";
+
+option go_package = "github.com/jack139/artchain/x/person/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // this line is used by starport scaffolding # 2
+	rpc User(QueryGetUserRequest) returns (QueryGetUserResponse) {
+		option (google.api.http).get = "/jack139/artchain/person/user/{id}";
+	}
+	rpc UserAll(QueryAllUserRequest) returns (QueryAllUserResponse) {
+		option (google.api.http).get = "/jack139/artchain/person/user";
+	}
+
+}
+
+// this line is used by starport scaffolding # 3
+message QueryGetUserRequest {
+	uint64 id = 1;
+}
+
+message QueryGetUserResponse {
+	User User = 1;
+}
+
+message QueryAllUserRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllUserResponse {
+	repeated User User = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

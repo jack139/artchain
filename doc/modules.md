@@ -22,8 +22,8 @@ RegDate   // 注册日期
 
 
 ```shell
-starport module create person
-starport type user recType name userType address phone email bank accountNo status regDate --module person
+GOPATH=$HOME/Codes/go starport module create person
+GOPATH=$HOME/Codes/go starport type user recType name userType address phone email bank accountNo status regDate --module person
 ```
 
 
@@ -60,6 +60,12 @@ Up             // 支持数量
 Down           // 反对数量
 ```
 
+```shell
+GOPATH=$HOME/Codes/go starport module create inventory
+GOPATH=$HOME/Codes/go starport type item recType itemDesc itemDetail itemDate itemType itemSubject itemMedia itemSize itemImage AESKey itemBasePrice currentOwnerId --module inventory
+GOPATH=$HOME/Codes/go starport type review recType itemId reviewerId reviewDetail reviewDate upCount downCount --module inventory
+```
+
 
 
 ## Auction
@@ -69,8 +75,8 @@ Down           // 反对数量
 ID              // 拍卖ID (AuctionID)
 RecType         // AUCREQ
 ItemID          // 物品编号
-AuctionHouseID  // 拍卖行ID
-SellerID        // 卖家ID（须与物品所有者ID一致）
+AuctionHouseID  // 拍卖行 USerID
+SellerID        // 卖家UserID（须与物品所有者ID一致）
 RequestDate     // 请求日期
 ReservePrice    // 底价
 Status          // 拍卖状态：INIT, OPEN, CLOSED  (由拍卖行设置)
@@ -90,11 +96,17 @@ BidPrice   // 出价（须大于前一次出价）
 BidTime    // 出价时间
 ```
 
+```shell
+GOPATH=$HOME/Codes/go starport module create auction
+GOPATH=$HOME/Codes/go starport type request recType itemId auctionHouseId SellerId requestDate reservePrice status openDate closeDate --module auction
+GOPATH=$HOME/Codes/go starport type bid recType auctionId bidNo itemId buyerId bidPrice bidTime --module auction
+```
+
 
 
 ## Trans
 
-### 交易信息
+### 交易信息 transaction
 ```
 ID           // 交易ID
 AuctionID    // 拍卖ID
@@ -108,3 +120,9 @@ HammerPrice  // 成交价格
 Details      // 交易细节记录
 Status       // POST_ACTION, SHIPPING, SUCCESS, WAIT
 ```
+
+```shell
+GOPATH=$HOME/Codes/go starport module create Trans
+GOPATH=$HOME/Codes/go starport type transaction recType auctionId itemId transType userId transDate hammerTime hammerPrice details status --module trans
+```
+

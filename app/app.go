@@ -86,6 +86,18 @@ import (
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
+	"github.com/jack139/artchain/x/Trans"
+	Transkeeper "github.com/jack139/artchain/x/Trans/keeper"
+	Transtypes "github.com/jack139/artchain/x/Trans/types"
+	"github.com/jack139/artchain/x/auction"
+	auctionkeeper "github.com/jack139/artchain/x/auction/keeper"
+	auctiontypes "github.com/jack139/artchain/x/auction/types"
+	"github.com/jack139/artchain/x/inventory"
+	inventorykeeper "github.com/jack139/artchain/x/inventory/keeper"
+	inventorytypes "github.com/jack139/artchain/x/inventory/types"
+	"github.com/jack139/artchain/x/person"
+	personkeeper "github.com/jack139/artchain/x/person/keeper"
+	persontypes "github.com/jack139/artchain/x/person/types"
 )
 
 const Name = "artchain"
@@ -133,6 +145,10 @@ var (
 		vesting.AppModuleBasic{},
 		artchain.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		Trans.AppModuleBasic{},
+		auction.AppModuleBasic{},
+		inventory.AppModuleBasic{},
+		person.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -201,6 +217,14 @@ type App struct {
 	artchainKeeper artchainkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
+	TransKeeper Transkeeper.Keeper
+
+	auctionKeeper auctionkeeper.Keeper
+
+	inventoryKeeper inventorykeeper.Keeper
+
+	personKeeper personkeeper.Keeper
+
 	// the module manager
 	mm *module.Manager
 }
@@ -230,6 +254,10 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		artchaintypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		Transtypes.StoreKey,
+		auctiontypes.StoreKey,
+		inventorytypes.StoreKey,
+		persontypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -325,6 +353,34 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
+	app.TransKeeper = *Transkeeper.NewKeeper(
+		appCodec,
+		keys[Transtypes.StoreKey],
+		keys[Transtypes.MemStoreKey],
+	)
+	TransModule := Trans.NewAppModule(appCodec, app.TransKeeper)
+
+	app.auctionKeeper = *auctionkeeper.NewKeeper(
+		appCodec,
+		keys[auctiontypes.StoreKey],
+		keys[auctiontypes.MemStoreKey],
+	)
+	auctionModule := auction.NewAppModule(appCodec, app.auctionKeeper)
+
+	app.inventoryKeeper = *inventorykeeper.NewKeeper(
+		appCodec,
+		keys[inventorytypes.StoreKey],
+		keys[inventorytypes.MemStoreKey],
+	)
+	inventoryModule := inventory.NewAppModule(appCodec, app.inventoryKeeper)
+
+	app.personKeeper = *personkeeper.NewKeeper(
+		appCodec,
+		keys[persontypes.StoreKey],
+		keys[persontypes.MemStoreKey],
+	)
+	personModule := person.NewAppModule(appCodec, app.personKeeper)
+
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
 		&stakingKeeper, govRouter,
@@ -367,6 +423,10 @@ func New(
 		transferModule,
 		artchain.NewAppModule(appCodec, app.artchainKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
+		TransModule,
+		auctionModule,
+		inventoryModule,
+		personModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -401,6 +461,10 @@ func New(
 		ibctransfertypes.ModuleName,
 		artchaintypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		Transtypes.ModuleName,
+		auctiontypes.ModuleName,
+		inventorytypes.ModuleName,
+		persontypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -583,6 +647,10 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(Transtypes.ModuleName)
+	paramsKeeper.Subspace(auctiontypes.ModuleName)
+	paramsKeeper.Subspace(inventorytypes.ModuleName)
+	paramsKeeper.Subspace(persontypes.ModuleName)
 
 	return paramsKeeper
 }

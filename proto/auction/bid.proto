@@ -1,0 +1,18 @@
+syntax = "proto3";
+package jack139.artchain.auction;
+
+option go_package = "github.com/jack139/artchain/x/auction/types";
+
+import "gogoproto/gogo.proto";
+
+message Bid {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3; 
+  string auctionId = 4; 
+  string bidNo = 5; 
+  string itemId = 6; 
+  string buyerId = 7; 
+  string bidPrice = 8; 
+  string bidTime = 9; 
+}

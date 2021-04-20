@@ -1,0 +1,94 @@
+syntax = "proto3";
+package jack139.artchain.auction;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/jack139/artchain/x/auction/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreateBid(MsgCreateBid) returns (MsgCreateBidResponse);
+  rpc UpdateBid(MsgUpdateBid) returns (MsgUpdateBidResponse);
+  rpc DeleteBid(MsgDeleteBid) returns (MsgDeleteBidResponse);
+  rpc CreateRequest(MsgCreateRequest) returns (MsgCreateRequestResponse);
+  rpc UpdateRequest(MsgUpdateRequest) returns (MsgUpdateRequestResponse);
+  rpc DeleteRequest(MsgDeleteRequest) returns (MsgDeleteRequestResponse);
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+message MsgCreateBid {
+  string creator = 1;
+  string recType = 2;
+  string auctionId = 3;
+  string bidNo = 4;
+  string itemId = 5;
+  string buyerId = 6;
+  string bidPrice = 7;
+  string bidTime = 8;
+}
+
+message MsgCreateBidResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateBid {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3;
+  string auctionId = 4;
+  string bidNo = 5;
+  string itemId = 6;
+  string buyerId = 7;
+  string bidPrice = 8;
+  string bidTime = 9;
+}
+
+message MsgUpdateBidResponse { }
+
+message MsgDeleteBid {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteBidResponse { }
+
+message MsgCreateRequest {
+  string creator = 1;
+  string recType = 2;
+  string itemId = 3;
+  string auctionHouseId = 4;
+  string SellerId = 5;
+  string requestDate = 6;
+  string reservePrice = 7;
+  string status = 8;
+  string openDate = 9;
+  string closeDate = 10;
+}
+
+message MsgCreateRequestResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateRequest {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3;
+  string itemId = 4;
+  string auctionHouseId = 5;
+  string SellerId = 6;
+  string requestDate = 7;
+  string reservePrice = 8;
+  string status = 9;
+  string openDate = 10;
+  string closeDate = 11;
+}
+
+message MsgUpdateRequestResponse { }
+
+message MsgDeleteRequest {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteRequestResponse { }

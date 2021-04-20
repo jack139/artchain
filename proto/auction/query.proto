@@ -1,0 +1,63 @@
+syntax = "proto3";
+package jack139.artchain.auction;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+import "auction/bid.proto";
+import "auction/request.proto";
+
+option go_package = "github.com/jack139/artchain/x/auction/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // this line is used by starport scaffolding # 2
+	rpc Bid(QueryGetBidRequest) returns (QueryGetBidResponse) {
+		option (google.api.http).get = "/jack139/artchain/auction/bid/{id}";
+	}
+	rpc BidAll(QueryAllBidRequest) returns (QueryAllBidResponse) {
+		option (google.api.http).get = "/jack139/artchain/auction/bid";
+	}
+
+	rpc Request(QueryGetRequestRequest) returns (QueryGetRequestResponse) {
+		option (google.api.http).get = "/jack139/artchain/auction/request/{id}";
+	}
+	rpc RequestAll(QueryAllRequestRequest) returns (QueryAllRequestResponse) {
+		option (google.api.http).get = "/jack139/artchain/auction/request";
+	}
+
+}
+
+// this line is used by starport scaffolding # 3
+message QueryGetBidRequest {
+	uint64 id = 1;
+}
+
+message QueryGetBidResponse {
+	Bid Bid = 1;
+}
+
+message QueryAllBidRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBidResponse {
+	repeated Bid Bid = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+message QueryGetRequestRequest {
+	uint64 id = 1;
+}
+
+message QueryGetRequestResponse {
+	Request Request = 1;
+}
+
+message QueryAllRequestRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRequestResponse {
+	repeated Request Request = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

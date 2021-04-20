@@ -1,0 +1,16 @@
+syntax = "proto3";
+package jack139.artchain.inventory;
+
+// this line is used by starport scaffolding # genesis/proto/import
+import "inventory/review.proto";
+import "inventory/item.proto";
+
+option go_package = "github.com/jack139/artchain/x/inventory/types";
+
+// GenesisState defines the inventory module's genesis state.
+message GenesisState {
+    // this line is used by starport scaffolding # genesis/proto/state
+		repeated Review reviewList = 2; // this line is used by starport scaffolding # genesis/proto/stateField
+		repeated Item itemList = 1; // this line is used by starport scaffolding # genesis/proto/stateField
+    // this line is used by starport scaffolding # ibc/genesis/proto
+}

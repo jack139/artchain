@@ -1,0 +1,23 @@
+syntax = "proto3";
+package jack139.artchain.inventory;
+
+option go_package = "github.com/jack139/artchain/x/inventory/types";
+
+import "gogoproto/gogo.proto";
+
+message Item {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3; 
+  string itemDesc = 4; 
+  string itemDetail = 5; 
+  string itemDate = 6; 
+  string itemType = 7; 
+  string itemSubject = 8; 
+  string itemMedia = 9; 
+  string itemSize = 10; 
+  string itemImage = 11; 
+  string AESKey = 12; 
+  string itemBasePrice = 13; 
+  string currentOwnerId = 14; 
+}

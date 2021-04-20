@@ -1,0 +1,21 @@
+syntax = "proto3";
+package jack139.artchain.person;
+
+option go_package = "github.com/jack139/artchain/x/person/types";
+
+import "gogoproto/gogo.proto";
+
+message User {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3; 
+  string name = 4; 
+  string userType = 5; 
+  string address = 6; 
+  string phone = 7; 
+  string email = 8; 
+  string bank = 9; 
+  string accountNo = 10; 
+  string status = 11; 
+  string regDate = 12; 
+}

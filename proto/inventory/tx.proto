@@ -1,0 +1,100 @@
+syntax = "proto3";
+package jack139.artchain.inventory;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/jack139/artchain/x/inventory/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreateReview(MsgCreateReview) returns (MsgCreateReviewResponse);
+  rpc UpdateReview(MsgUpdateReview) returns (MsgUpdateReviewResponse);
+  rpc DeleteReview(MsgDeleteReview) returns (MsgDeleteReviewResponse);
+  rpc CreateItem(MsgCreateItem) returns (MsgCreateItemResponse);
+  rpc UpdateItem(MsgUpdateItem) returns (MsgUpdateItemResponse);
+  rpc DeleteItem(MsgDeleteItem) returns (MsgDeleteItemResponse);
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+message MsgCreateReview {
+  string creator = 1;
+  string recType = 2;
+  string itemId = 3;
+  string reviewerId = 4;
+  string reviewDetail = 5;
+  string reviewDate = 6;
+  string upCount = 7;
+  string downCount = 8;
+}
+
+message MsgCreateReviewResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateReview {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3;
+  string itemId = 4;
+  string reviewerId = 5;
+  string reviewDetail = 6;
+  string reviewDate = 7;
+  string upCount = 8;
+  string downCount = 9;
+}
+
+message MsgUpdateReviewResponse { }
+
+message MsgDeleteReview {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteReviewResponse { }
+
+message MsgCreateItem {
+  string creator = 1;
+  string recType = 2;
+  string itemDesc = 3;
+  string itemDetail = 4;
+  string itemDate = 5;
+  string itemType = 6;
+  string itemSubject = 7;
+  string itemMedia = 8;
+  string itemSize = 9;
+  string itemImage = 10;
+  string AESKey = 11;
+  string itemBasePrice = 12;
+  string currentOwnerId = 13;
+}
+
+message MsgCreateItemResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateItem {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3;
+  string itemDesc = 4;
+  string itemDetail = 5;
+  string itemDate = 6;
+  string itemType = 7;
+  string itemSubject = 8;
+  string itemMedia = 9;
+  string itemSize = 10;
+  string itemImage = 11;
+  string AESKey = 12;
+  string itemBasePrice = 13;
+  string currentOwnerId = 14;
+}
+
+message MsgUpdateItemResponse { }
+
+message MsgDeleteItem {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteItemResponse { }
