@@ -1,10 +1,10 @@
-# 模块划分
+## 模块划分
 
 
 
-## Person
+### Person
 
-### 人员信息 User
+#### 人员信息 User
 ```
 ID        // 用户id (UserID)
 RecType   // Type = USER
@@ -28,9 +28,9 @@ GOPATH=$HOME/Codes/go starport type user recType name userType address phone ema
 
 
 
-## Inventory
+### Inventory
 
-### 物品信息 Item
+#### 物品信息 Item
 ```
 ID             // 物品编号 (ItemID)
 RecType        // ARTINV
@@ -47,7 +47,7 @@ ItemBasePrice  // 最近交易价格
 CurrentOwnerID // 所有人信息 UserID
 ```
 
-### 评价信息 Review
+#### 评价信息 Review
 
 ```
 ID             // 评价编号
@@ -68,9 +68,9 @@ GOPATH=$HOME/Codes/go starport type review recType itemId reviewerId reviewDetai
 
 
 
-## Auction
+### Auction
 
-### 拍卖请求信息 Request
+#### 拍卖请求信息 Request
 ```
 ID              // 拍卖ID (AuctionID)
 RecType         // AUCREQ
@@ -84,7 +84,7 @@ OpenDate        // OPEN的日期 (由拍卖行设置)
 CloseDate       // CLOSE的日期  (由拍卖行设置)
 ```
 
-### 出价信息 Bid
+#### 出价信息 Bid
 ```
 ID         // 出价ID (BidID)
 AuctionID  // 拍卖ID
@@ -104,9 +104,9 @@ GOPATH=$HOME/Codes/go starport type bid recType auctionId bidNo itemId buyerId b
 
 
 
-## Trans
+### Trans
 
-### 交易信息 transaction
+#### 交易信息 transaction
 ```
 ID           // 交易ID
 AuctionID    // 拍卖ID
@@ -125,4 +125,32 @@ Status       // POST_ACTION, SHIPPING, SUCCESS, WAIT
 GOPATH=$HOME/Codes/go starport module create Trans
 GOPATH=$HOME/Codes/go starport type transaction recType auctionId itemId transType userId transDate hammerTime hammerPrice details status --module trans
 ```
+
+
+
+
+
+## 接口功能
+
+
+
+### 人员
+
+
+
+### 物品
+
+
+
+### 拍卖
+
+
+
+### 交易
+
+
+
+### 查询
+
+
 
