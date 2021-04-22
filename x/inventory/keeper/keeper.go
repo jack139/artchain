@@ -9,6 +9,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/jack139/artchain/x/inventory/types"
 	// this line is used by starport scaffolding # ibc/keeper/import
+	"github.com/cosmos/modules/incubator/nft"
 )
 
 type (
@@ -17,6 +18,7 @@ type (
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
 		// this line is used by starport scaffolding # ibc/keeper/attribute
+		NFTKeeper nft.Keeper
 	}
 )
 
@@ -25,12 +27,14 @@ func NewKeeper(
 	storeKey,
 	memKey sdk.StoreKey,
 	// this line is used by starport scaffolding # ibc/keeper/parameter
+	nftKeeper nft.Keeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
 		// this line is used by starport scaffolding # ibc/keeper/return
+		NFTKeeper: nftKeeper,
 	}
 }
 

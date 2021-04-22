@@ -98,6 +98,10 @@ import (
 	"github.com/jack139/artchain/x/person"
 	personkeeper "github.com/jack139/artchain/x/person/keeper"
 	persontypes "github.com/jack139/artchain/x/person/types"
+
+	//"github.com/cosmos/modules/incubator/faucet"
+	//"github.com/cosmos/modules/incubator/nft"
+
 )
 
 const Name = "artchain"
@@ -149,6 +153,8 @@ var (
 		auction.AppModuleBasic{},
 		inventory.AppModuleBasic{},
 		person.AppModuleBasic{},
+		nft.AppModuleBasic{},
+		//faucet.AppModule{},
 	)
 
 	// module account permissions
@@ -225,6 +231,9 @@ type App struct {
 
 	personKeeper personkeeper.Keeper
 
+	NFTKeeper    nft.Keeper
+	//faucetKeeper faucet.Keeper
+
 	// the module manager
 	mm *module.Manager
 }
@@ -258,6 +267,9 @@ func New(
 		auctiontypes.StoreKey,
 		inventorytypes.StoreKey,
 		persontypes.StoreKey,
+
+		nft.StoreKey,
+		//faucet.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -353,6 +365,16 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
+	app.NFTKeeper = nft.NewKeeper(appCodec, keys[nft.StoreKey])
+
+	//app.faucetKeeper = faucet.NewKeeper(
+	//	app.supplyKeeper,
+	//	app.stakingKeeper,
+	//	10*1000000,   // amount for mint
+	//	24*time.Hour, // rate limit by time
+	//	keys[faucet.StoreKey],
+	//	appCodec)
+
 	app.TransKeeper = *Transkeeper.NewKeeper(
 		appCodec,
 		keys[Transtypes.StoreKey],
@@ -371,8 +393,9 @@ func New(
 		appCodec,
 		keys[inventorytypes.StoreKey],
 		keys[inventorytypes.MemStoreKey],
+		app.NFTKeeper,
 	)
-	inventoryModule := inventory.NewAppModule(appCodec, app.inventoryKeeper)
+	inventoryModule := inventory.NewAppModule(appCodec, app.inventoryKeeper, app.NFTKeeper)
 
 	app.personKeeper = *personkeeper.NewKeeper(
 		appCodec,
@@ -427,6 +450,9 @@ func New(
 		auctionModule,
 		inventoryModule,
 		personModule,
+
+		nft.NewAppModule(app.NFTKeeper, app.accountKeeper),
+		//faucet.NewAppModule(app.faucetKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -465,6 +491,8 @@ func New(
 		auctiontypes.ModuleName,
 		inventorytypes.ModuleName,
 		persontypes.ModuleName,
+
+		nft.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
