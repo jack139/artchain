@@ -101,6 +101,9 @@ import (
 
 	//"github.com/cosmos/modules/incubator/faucet"
 	//"github.com/cosmos/modules/incubator/nft"
+	"github.com/irisnet/irismod/modules/nft"
+	nftkeeper "github.com/irisnet/irismod/modules/nft/keeper"
+	nfttypes "github.com/irisnet/irismod/modules/nft/types"
 
 )
 
@@ -231,7 +234,7 @@ type App struct {
 
 	personKeeper personkeeper.Keeper
 
-	NFTKeeper    nft.Keeper
+	NFTKeeper    nftkeeper.Keeper
 	//faucetKeeper faucet.Keeper
 
 	// the module manager
@@ -268,7 +271,7 @@ func New(
 		inventorytypes.StoreKey,
 		persontypes.StoreKey,
 
-		nft.StoreKey,
+		nfttypes.StoreKey,
 		//faucet.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -365,7 +368,7 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.NFTKeeper = nft.NewKeeper(appCodec, keys[nft.StoreKey])
+	app.NFTKeeper = nftkeeper.NewKeeper(appCodec, keys[nfttypes.StoreKey])
 
 	//app.faucetKeeper = faucet.NewKeeper(
 	//	app.supplyKeeper,
@@ -451,7 +454,7 @@ func New(
 		inventoryModule,
 		personModule,
 
-		nft.NewAppModule(app.NFTKeeper, app.accountKeeper),
+		nft.NewAppModule(appCodec, app.NFTKeeper, app.AccountKeeper, app.BankKeeper),
 		//faucet.NewAppModule(app.faucetKeeper),
 	)
 
@@ -492,7 +495,7 @@ func New(
 		inventorytypes.ModuleName,
 		persontypes.ModuleName,
 
-		nft.ModuleName,
+		nfttypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)

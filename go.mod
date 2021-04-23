@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/cosmos/cosmos-sdk v0.42.4
-	github.com/cosmos/modules/incubator/nft v0.0.0-20200715075539-8c1862235a75
+	github.com/irisnet/irismod v1.4.0
 	github.com/gogo/protobuf v1.3.3
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.4 // indirect
@@ -23,5 +23,3 @@ require (
 replace google.golang.org/grpc => google.golang.org/grpc v1.33.2
 
 replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
-
-replace github.com/cosmos/modules/incubator/nft => github.com/shahankhatch/modules/incubator/nft v0.0.0-20200616070437-c67759bd79c5
