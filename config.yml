@@ -1,8 +1,8 @@
 accounts:
   - name: user0
-    coins: ["1000token", "100000000stake"]
+    coins: ["1credit", "100000000stake"]
   - name: gt
-    coins: ["100token"]
+    coins: ["1credit"]
   - name: faucet
     coins: ["21000000credit"]
 validator:

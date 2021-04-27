@@ -35,6 +35,8 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	"github.com/jack139/artchain/app"
 	// this line is used by starport scaffolding # stargate/root/import
+	mytypes "github.com/jack139/artchain/x/artchain/types"
+	myclient "github.com/jack139/artchain/cmd/client"
 )
 
 var ChainID string
@@ -60,6 +62,13 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		Use:   app.Name + "d",
 		Short: "Stargate CosmosHub App",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
+			// 初始化 faucet 的地址
+			faucetAddr, err := myclient.GetAddrStr(cmd, "faucet")
+			if err != nil {
+				return err
+			}
+			mytypes.FaucetAddress = faucetAddr
+
 			if err := client.SetCmdClientContextHandler(initClientCtx, cmd); err != nil {
 				return err
 			}
@@ -87,6 +96,7 @@ func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 		genutilcli.GenTxCmd(app.ModuleBasics, encodingConfig.TxConfig, banktypes.GenesisBalancesIterator{}, app.DefaultNodeHome),
 		genutilcli.ValidateGenesisCmd(app.ModuleBasics),
 		AddGenesisAccountCmd(app.DefaultNodeHome),
+		HttpCliCmd(),
 		tmcli.NewCompletionCmd(rootCmd, true),
 		debug.Cmd(),
 		// this line is used by starport scaffolding # stargate/root/commands
@@ -153,6 +163,7 @@ func txCommand() *cobra.Command {
 		authcmd.GetDecodeCommand(),
 		flags.LineBreak,
 		vestingcli.GetTxCmd(),
+		AddUserCmd(app.DefaultNodeHome),
 	)
 
 	app.ModuleBasics.AddTxCommands(cmd)

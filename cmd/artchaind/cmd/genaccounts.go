@@ -8,9 +8,11 @@ import (
 
 	"github.com/spf13/cobra"
 
+	//bip39 "github.com/cosmos/go-bip39"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
+	//"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -19,6 +21,9 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	//"github.com/cosmos/cosmos-sdk/client/tx"
+
+	cmdclient "github.com/jack139/artchain/cmd/client"
 )
 
 const (
@@ -187,6 +192,27 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 	cmd.Flags().Int64(flagVestingStart, 0, "schedule start time (unix epoch) for vesting accounts")
 	cmd.Flags().Int64(flagVestingEnd, 0, "schedule end time (unix epoch) for vesting accounts")
 	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+
+
+
+// 添加用户： add key and account
+func AddUserCmd(defaultNodeHome string) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "add-user [user_name]",
+		Short: "Add a user to chain",
+		Long: `Add a user to chain. `,
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			_, _, err := cmdclient.AddUserAccount(cmd, args[0], "1credit")
+			return err
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
 }
