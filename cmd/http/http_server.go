@@ -2,18 +2,17 @@ package http
 
 import (
 	"fmt"
+	"github.com/Ferluci/fast-realip"
+	"github.com/fasthttp/router"
+	"github.com/spf13/cobra"
+	"github.com/valyala/fasthttp"
 	"log"
 	"os"
 	"time"
-	"github.com/fasthttp/router"
-	"github.com/valyala/fasthttp"
-	"github.com/Ferluci/fast-realip"
-	"github.com/spf13/cobra"
 )
 
-
 var (
-	output = log.New(os.Stdout, "", 0)
+	output  = log.New(os.Stdout, "", 0)
 	HttpCmd *cobra.Command
 )
 
@@ -24,6 +23,7 @@ func getHttp(ctx *fasthttp.RequestCtx) string {
 	}
 	return "HTTP/1.0"
 }
+
 // Combined format:
 // [<time>] <remote-addr> | <HTTP/http-version> | <method> <url> - <status> - <response-time us> | <user-agent>
 // [2017/05/31 - 13:27:28] 127.0.0.1:54082 | HTTP/1.1 | GET /hello - 200 - 48.279µs | Paw/3.1.1 (Macintosh; OS X/10.12.5) GCDHTTPRequest
@@ -46,9 +46,8 @@ func combined(req fasthttp.RequestHandler) fasthttp.RequestHandler {
 	})
 }
 
-
 /* 入口 */
-func RunServer(port string/*, userPath string*/) {
+func RunServer(port string /*, userPath string*/) {
 
 	/* router */
 	r := router.New()
@@ -61,21 +60,18 @@ func RunServer(port string/*, userPath string*/) {
 	//r.POST("/api/query_balance", queryBalance)
 	r.POST("/api/biz_register", bizRegister)
 
-
 	fmt.Printf("start HTTP server at 0.0.0.0:%s\n", port)
 
 	/* 启动server */
 	s := &fasthttp.Server{
 		Handler: combined(r.Handler),
-		Name: "FastHttpLogger",
+		Name:    "FastHttpLogger",
 	}
-	log.Fatal(s.ListenAndServe(":"+port))
+	log.Fatal(s.ListenAndServe(":" + port))
 }
-
 
 /* 根返回 */
 func index(ctx *fasthttp.RequestCtx) {
 	log.Printf("%v", ctx.RemoteAddr())
 	ctx.WriteString("Hello world.")
 }
-

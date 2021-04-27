@@ -35,8 +35,8 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	"github.com/jack139/artchain/app"
 	// this line is used by starport scaffolding # stargate/root/import
-	mytypes "github.com/jack139/artchain/x/artchain/types"
 	myclient "github.com/jack139/artchain/cmd/client"
+	mytypes "github.com/jack139/artchain/x/artchain/types"
 )
 
 var ChainID string

@@ -2,10 +2,9 @@ package http
 
 import (
 	"fmt"
-	"log"
 	"github.com/valyala/fasthttp"
+	"log"
 )
-
 
 /* 空接口, 只进行签名校验 */
 func doNonthing(ctx *fasthttp.RequestCtx) {
@@ -16,7 +15,7 @@ func doNonthing(ctx *fasthttp.RequestCtx) {
 
 	// 验签
 	data, err := checkSign(content)
-	if err!=nil {
+	if err != nil {
 		respError(ctx, 9000, err.Error())
 		return
 	}

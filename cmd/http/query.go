@@ -6,16 +6,16 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
-	"strings"
-	"log"
 	"bytes"
-	"encoding/json"
 	"context"
-	"strconv"
+	"encoding/json"
 	"github.com/valyala/fasthttp"
+	"log"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -56,38 +56,38 @@ func processData(item0 *map[string]interface{}, user string) (*map[string]interf
 
 	var data map[string]interface{}
 	// 检查query用户是否是相关者
-	if (item["partyA"]!=user) && (item["partyB"]!=user){
+	if (item["partyA"] != user) && (item["partyB"] != user) {
 		// 不相关，不返回data数据
 		data = make(map[string]interface{})
 		data["image"] = ""
 	} else {
-		// 相关，解析 data内容			
+		// 相关，解析 data内容
 		if err := json.Unmarshal([]byte(item["data"].(string)), &data); err != nil {
 			return nil, err
 		}
-		
+
 		// 处理image 字段，从ipfs读取
 		_, ok := data["image"]
-		if ok && len(data["image"].(string))>0 {
+		if ok && len(data["image"].(string)) > 0 {
 			image_data, err := ipfs.Get(data["image"].(string))
-			if err!=nil {
+			if err != nil {
 				return nil, err
 			}
 			data["image"] = string(image_data)
-		}		
+		}
 	}
 
 	// 建立返回的数据
-	new_item := map[string] interface{} {
-		"id": item["id"],
+	new_item := map[string]interface{}{
+		"id":          item["id"],
 		"exchange_id": user,
-		"userkey_a": item["partyA"],
-		"userkey_b": item["partyB"],
-		"assets_id": item["artchainNo"],
-		"action": item["action"],
-		"type": "DEAL",
-		"refer": "",
-		"data": data,
+		"userkey_a":   item["partyA"],
+		"userkey_b":   item["partyB"],
+		"assets_id":   item["artchainNo"],
+		"action":      item["action"],
+		"type":        "DEAL",
+		"refer":       "",
+		"data":        data,
 	}
 
 	return &new_item, nil
@@ -133,7 +133,7 @@ func unmarshalDataList(reqData *map[string]interface{}, user string) (*[]map[str
 		}
 
 		new_item, err := processData(&item, user)
-		if err!=nil {
+		if err != nil {
 			return nil, err
 		}
 
@@ -141,11 +141,6 @@ func unmarshalDataList(reqData *map[string]interface{}, user string) (*[]map[str
 	}
 	return &respData, nil
 }
-
-
-
-
-
 
 /* 获取区块数据 */
 func getBlock(clientCtx client.Context, height *int64) ([]byte, error) {
@@ -175,7 +170,7 @@ func queryRawBlock(ctx *fasthttp.RequestCtx) {
 
 	// 验签
 	reqData, err := checkSign(content)
-	if err!=nil {
+	if err != nil {
 		respError(ctx, 9000, err.Error())
 		return
 	}
@@ -195,7 +190,7 @@ func queryRawBlock(ctx *fasthttp.RequestCtx) {
 	height64, err := strconv.ParseInt(height, 10, 64)
 	if err != nil {
 		respError(ctx, 9007, err.Error())
-		return		
+		return
 	}
 
 	// 获取 ctx 上下文
@@ -223,19 +218,18 @@ func queryRawBlock(ctx *fasthttp.RequestCtx) {
 
 	// 转换成map, 生成返回数据
 	var respData map[string]interface{}
-	if len(respBytes)>0 {
+	if len(respBytes) > 0 {
 		if err := json.Unmarshal(respBytes, &respData); err != nil {
 			respError(ctx, 9004, err.Error())
 			return
 		}
 	}
-	resp := map[string] interface{} {
-		"blcok" : respData,
+	resp := map[string]interface{}{
+		"blcok": respData,
 	}
 
 	respJson(ctx, &resp)
 }
-
 
 /* 查询用户余额 */
 func queryBalance(ctx *fasthttp.RequestCtx) {
@@ -246,7 +240,7 @@ func queryBalance(ctx *fasthttp.RequestCtx) {
 
 	// 验签
 	reqData, err := checkSign(content)
-	if err!=nil {
+	if err != nil {
 		respError(ctx, 9000, err.Error())
 		return
 	}
@@ -304,14 +298,14 @@ func queryBalance(ctx *fasthttp.RequestCtx) {
 
 	// 转换成map, 生成返回数据
 	var respData map[string]interface{}
-	if len(respBytes)>0 {
+	if len(respBytes) > 0 {
 		if err := json.Unmarshal(respBytes, &respData); err != nil {
 			respError(ctx, 9004, err.Error())
 			return
 		}
 	}
-	resp := map[string] interface{} {
-		"blcok" : respData,
+	resp := map[string]interface{}{
+		"blcok": respData,
 	}
 
 	respJson(ctx, &resp)

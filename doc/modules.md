@@ -122,7 +122,7 @@ Status       // POST_ACTION, SHIPPING, SUCCESS, WAIT
 ```
 
 ```shell
-GOPATH=$HOME/Codes/go starport module create Trans
+GOPATH=$HOME/Codes/go starport module create trans
 GOPATH=$HOME/Codes/go starport type transaction recType auctionId itemId transType userId transDate hammerTime hammerPrice details status --module trans
 ```
 

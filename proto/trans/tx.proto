@@ -1,0 +1,57 @@
+syntax = "proto3";
+package jack139.artchain.trans;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/jack139/artchain/x/trans/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreateTransaction(MsgCreateTransaction) returns (MsgCreateTransactionResponse);
+  rpc UpdateTransaction(MsgUpdateTransaction) returns (MsgUpdateTransactionResponse);
+  rpc DeleteTransaction(MsgDeleteTransaction) returns (MsgDeleteTransactionResponse);
+}
+
+// this line is used by starport scaffolding # proto/tx/message
+message MsgCreateTransaction {
+  string creator = 1;
+  string recType = 2;
+  string auctionId = 3;
+  string itemId = 4;
+  string transType = 5;
+  string userId = 6;
+  string transDate = 7;
+  string hammerTime = 8;
+  string hammerPrice = 9;
+  string details = 10;
+  string status = 11;
+}
+
+message MsgCreateTransactionResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateTransaction {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3;
+  string auctionId = 4;
+  string itemId = 5;
+  string transType = 6;
+  string userId = 7;
+  string transDate = 8;
+  string hammerTime = 9;
+  string hammerPrice = 10;
+  string details = 11;
+  string status = 12;
+}
+
+message MsgUpdateTransactionResponse { }
+
+message MsgDeleteTransaction {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteTransactionResponse { }

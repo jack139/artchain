@@ -6,14 +6,14 @@ import (
 
 	"github.com/spf13/cobra"
 
-	bip39 "github.com/cosmos/go-bip39"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/client/tx"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	bip39 "github.com/cosmos/go-bip39"
 
 	"github.com/jack139/artchain/x/artchain/types"
 )
@@ -84,7 +84,7 @@ func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, str
 	}
 
 	// 参考cosmos-sdk/client/keys/show.go 中 getBechKeyOut()
-	ko_new, err := keyring.Bech32KeyOutput(info)  
+	ko_new, err := keyring.Bech32KeyOutput(info)
 	if err != nil {
 		return "", "", err
 	}
@@ -120,7 +120,7 @@ func GetAddrStr(cmd *cobra.Command, keyref string) (string, error) {
 	//addr0 := info0.GetAddress() // AccAddress
 
 	// 参考cosmos-sdk/client/keys/show.go 中 getBechKeyOut()
-	ko, err := keyring.Bech32KeyOutput(info0)  
+	ko, err := keyring.Bech32KeyOutput(info0)
 	if err != nil {
 		return "", err
 	}

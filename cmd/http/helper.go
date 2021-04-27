@@ -3,15 +3,15 @@ package http
 import (
 	//"xchainge/client"
 
+	"crypto/sha256"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"sort"
 	"strconv"
-	"log"
 	"time"
-	"encoding/json"
-	"encoding/base64"
-	"crypto/sha256"
 	//"crypto/md5"
 	//"io/ioutil"
 	"github.com/valyala/fasthttp"
@@ -23,35 +23,34 @@ import (
 var (
 	/* 接口验签使用 appid : appsecret (md5sum : sha1sum|base64) */
 	APPID_SECRET = map[string]string{
-		"bdecaa718f290152925e8d570c71adfe" : "YWQ2YjZjNmE3MTVjZTNlNzhiMjk2YjI2MGYyYzI2ZDllNGUyMjRiNyAgLQo=",
-		"1ff3a3d2c1a8c236423ea3fe7bbdcff6" : "ZDlmZjk2YmNlMTEyNDYzN2E4ZGRlMWJhMTYyZDcxZDIxMjRkYTIwZiAgLQo=",
-		"4fcf3871f4a023712bec9ed44ee4b709" : "MjdjNGQxNGU3NjA1OWI0MGVmODIyN2FkOTEwYTViNDQzYTNjNTIyNSAgLQo=",
+		"bdecaa718f290152925e8d570c71adfe": "YWQ2YjZjNmE3MTVjZTNlNzhiMjk2YjI2MGYyYzI2ZDllNGUyMjRiNyAgLQo=",
+		"1ff3a3d2c1a8c236423ea3fe7bbdcff6": "ZDlmZjk2YmNlMTEyNDYzN2E4ZGRlMWJhMTYyZDcxZDIxMjRkYTIwZiAgLQo=",
+		"4fcf3871f4a023712bec9ed44ee4b709": "MjdjNGQxNGU3NjA1OWI0MGVmODIyN2FkOTEwYTViNDQzYTNjNTIyNSAgLQo=",
 	}
 )
 
-
 /* 返回值的 content-type */
 var (
-	strContentType = []byte("Content-Type")
+	strContentType     = []byte("Content-Type")
 	strApplicationJSON = []byte("application/json")
 )
 
 /* 处理返回值，返回json */
-func respJson(ctx *fasthttp.RequestCtx, data *map[string] interface{}) {
-	respJson := map[string] interface{} {
-		"code" : 0,
-		"msg"  : "success",
-		"data" : *data,
+func respJson(ctx *fasthttp.RequestCtx, data *map[string]interface{}) {
+	respJson := map[string]interface{}{
+		"code": 0,
+		"msg":  "success",
+		"data": *data,
 	}
 	doJSONWrite(ctx, fasthttp.StatusOK, respJson)
 }
 
 func respError(ctx *fasthttp.RequestCtx, code int, msg string) {
 	log.Println("Error: ", code, msg)
-	respJson := map[string] interface{} {
-		"code" : code,
-		"msg"  : msg,
-		"data" : "",
+	respJson := map[string]interface{}{
+		"code": code,
+		"msg":  msg,
+		"data": "",
 	}
 	doJSONWrite(ctx, fasthttp.StatusOK, respJson)
 }
@@ -66,7 +65,6 @@ func doJSONWrite(ctx *fasthttp.RequestCtx, code int, obj interface{}) {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 	}
 }
-
 
 /*
 	接口验签，返回data数据
@@ -85,24 +83,24 @@ func checkSign(content []byte) (*map[string]interface{}, error) {
 	// 检查参数
 	if appId, ok = fields["appid"].(string); !ok {
 		return nil, fmt.Errorf("need appid")
-	}	
+	}
 	if version, ok = fields["version"].(string); !ok {
 		return nil, fmt.Errorf("need version")
-	}	
+	}
 	if signType, ok = fields["sign_type"].(string); !ok {
 		return nil, fmt.Errorf("need sign_type")
-	}	
+	}
 	if signData, ok = fields["sign_data"].(string); !ok {
 		return nil, fmt.Errorf("need sign_data")
-	}	
+	}
 	if _, ok = fields["timestamp"].(float64); !ok {
 		return nil, fmt.Errorf("need timestamp")
 	} else {
-		timestamp = int64(fields["timestamp"].(float64))	// 返回整数
+		timestamp = int64(fields["timestamp"].(float64)) // 返回整数
 	}
 	if data, ok = fields["data"].(map[string]interface{}); !ok {
 		return nil, fmt.Errorf("need data")
-	}	
+	}
 
 	// 获取 secret，用户密钥的签名串
 	secret, ok := APPID_SECRET[appId]
@@ -111,12 +109,12 @@ func checkSign(content []byte) (*map[string]interface{}, error) {
 	}
 
 	// 检查版本
-	if version!="1" {
+	if version != "1" {
 		return nil, fmt.Errorf("wrong version")
 	}
 
 	// 检查签名类型
-	if signType!="SHA256" {
+	if signType != "SHA256" {
 		return nil, fmt.Errorf("unknown signType")
 	}
 
@@ -130,13 +128,13 @@ func checkSign(content []byte) (*map[string]interface{}, error) {
 
 	// 拼接验签串
 	var signString = string("")
-	for _,k:= range *keys {
-		if k=="sign_data" {
+	for _, k := range *keys {
+		if k == "sign_data" {
 			continue
 		}
-		if k=="data" {
+		if k == "data" {
 			signString += k + "=" + string(dataStr) + "&"
-		} else if k=="timestamp" {
+		} else if k == "timestamp" {
 			signString += k + "=" + strconv.FormatInt(timestamp, 10) + "&"
 		} else {
 			signString += k + "=" + fields[k].(string) + "&"
@@ -152,9 +150,9 @@ func checkSign(content []byte) (*map[string]interface{}, error) {
 	signStr := base64.StdEncoding.EncodeToString([]byte(sha256Str))
 	//fmt.Println(sha256Str)
 
-	if signStr!=signData {
+	if signStr != signData {
 		fmt.Println(signStr)
-		fmt.Println(signData)		
+		fmt.Println(signData)
 		return nil, fmt.Errorf("wrong signature")
 	}
 
@@ -169,7 +167,6 @@ func getMapKeys(m map[string]interface{}) *[]string {
 	}
 	return &keys
 }
-
 
 /* 获取key信息 */
 func fetchKey(kb keyring.Keyring, keyref string) (keyring.Info, error) {

@@ -1,17 +1,14 @@
 package ipfs
 
-
 import (
 	"fmt"
-	"strings"
 	"io"
+	"strings"
 
 	shell "github.com/ipfs/go-ipfs-api"
 )
 
-
 const HOST = "localhost:5001"
-
 
 func Add(filedata []byte) (string, error) {
 	// 连接api
@@ -45,7 +42,7 @@ func Get(cid string) ([]byte, error) {
 		sz, err := data.Read(longBuf)
 		if err != nil {
 			if err == io.EOF {
-				if sz>0 { // EOF 此时有可能还读出了数据
+				if sz > 0 { // EOF 此时有可能还读出了数据
 					fmt.Printf("EOF: n = %d\n", sz)
 					dataBuf = append(dataBuf, longBuf[:sz]...)
 				}

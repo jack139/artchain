@@ -2,14 +2,14 @@ package cmd
 
 import (
 	"errors"
-	"github.com/spf13/cobra"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/spf13/cobra"
 
 	httpcli "github.com/jack139/artchain/cmd/http"
 )
 
 func HttpCliCmd() *cobra.Command {
-	cmd := &cobra.Command{	// 启动http服务
+	cmd := &cobra.Command{ // 启动http服务
 		Use:   "http <port>",
 		Short: "start http service",
 		RunE: func(cmd *cobra.Command, args []string) error {

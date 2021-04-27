@@ -86,9 +86,6 @@ import (
 	tmjson "github.com/tendermint/tendermint/libs/json"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
-	"github.com/jack139/artchain/x/Trans"
-	Transkeeper "github.com/jack139/artchain/x/Trans/keeper"
-	Transtypes "github.com/jack139/artchain/x/Trans/types"
 	"github.com/jack139/artchain/x/auction"
 	auctionkeeper "github.com/jack139/artchain/x/auction/keeper"
 	auctiontypes "github.com/jack139/artchain/x/auction/types"
@@ -98,6 +95,9 @@ import (
 	"github.com/jack139/artchain/x/person"
 	personkeeper "github.com/jack139/artchain/x/person/keeper"
 	persontypes "github.com/jack139/artchain/x/person/types"
+	"github.com/jack139/artchain/x/trans"
+	transkeeper "github.com/jack139/artchain/x/trans/keeper"
+	transtypes "github.com/jack139/artchain/x/trans/types"
 )
 
 const Name = "artchain"
@@ -145,7 +145,7 @@ var (
 		vesting.AppModuleBasic{},
 		artchain.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
-		Trans.AppModuleBasic{},
+		trans.AppModuleBasic{},
 		auction.AppModuleBasic{},
 		inventory.AppModuleBasic{},
 		person.AppModuleBasic{},
@@ -217,7 +217,7 @@ type App struct {
 	artchainKeeper artchainkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
-	TransKeeper Transkeeper.Keeper
+	transKeeper transkeeper.Keeper
 
 	auctionKeeper auctionkeeper.Keeper
 
@@ -254,7 +254,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		artchaintypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
-		Transtypes.StoreKey,
+		transtypes.StoreKey,
 		auctiontypes.StoreKey,
 		inventorytypes.StoreKey,
 		persontypes.StoreKey,
@@ -353,12 +353,12 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.TransKeeper = *Transkeeper.NewKeeper(
+	app.transKeeper = *transkeeper.NewKeeper(
 		appCodec,
-		keys[Transtypes.StoreKey],
-		keys[Transtypes.MemStoreKey],
+		keys[transtypes.StoreKey],
+		keys[transtypes.MemStoreKey],
 	)
-	TransModule := Trans.NewAppModule(appCodec, app.TransKeeper)
+	transModule := trans.NewAppModule(appCodec, app.transKeeper)
 
 	app.auctionKeeper = *auctionkeeper.NewKeeper(
 		appCodec,
@@ -423,7 +423,7 @@ func New(
 		transferModule,
 		artchain.NewAppModule(appCodec, app.artchainKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
-		TransModule,
+		transModule,
 		auctionModule,
 		inventoryModule,
 		personModule,
@@ -461,7 +461,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		artchaintypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
-		Transtypes.ModuleName,
+		transtypes.ModuleName,
 		auctiontypes.ModuleName,
 		inventorytypes.ModuleName,
 		persontypes.ModuleName,
@@ -647,7 +647,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
-	paramsKeeper.Subspace(Transtypes.ModuleName)
+	paramsKeeper.Subspace(transtypes.ModuleName)
 	paramsKeeper.Subspace(auctiontypes.ModuleName)
 	paramsKeeper.Subspace(inventorytypes.ModuleName)
 	paramsKeeper.Subspace(persontypes.ModuleName)

@@ -1,0 +1,21 @@
+syntax = "proto3";
+package jack139.artchain.trans;
+
+option go_package = "github.com/jack139/artchain/x/trans/types";
+
+import "gogoproto/gogo.proto";
+
+message Transaction {
+  string creator = 1;
+  uint64 id = 2;
+  string recType = 3; 
+  string auctionId = 4; 
+  string itemId = 5; 
+  string transType = 6; 
+  string userId = 7; 
+  string transDate = 8; 
+  string hammerTime = 9; 
+  string hammerPrice = 10; 
+  string details = 11; 
+  string status = 12; 
+}

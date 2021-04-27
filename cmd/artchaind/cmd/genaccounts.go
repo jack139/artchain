@@ -196,16 +196,13 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 	return cmd
 }
 
-
-
-
 // 添加用户： add key and account
 func AddUserCmd(defaultNodeHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add-user [user_name]",
 		Short: "Add a user to chain",
-		Long: `Add a user to chain. `,
-		Args: cobra.ExactArgs(1),
+		Long:  `Add a user to chain. `,
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			_, _, err := cmdclient.AddUserAccount(cmd, args[0], "1credit")
 			return err

@@ -2,6 +2,7 @@
 	<div>
 		<div class="container">
       	<!-- this line is used by starport scaffolding # 4 -->
+		<SpType modulePath="jack139.artchain.trans" moduleType="Transaction"  />
 		<SpType modulePath="jack139.artchain.auction" moduleType="Bid"  />
 		<SpType modulePath="jack139.artchain.auction" moduleType="Request"  />
 		<SpType modulePath="jack139.artchain.inventory" moduleType="Review"  />

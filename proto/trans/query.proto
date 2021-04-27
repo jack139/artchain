@@ -1,0 +1,39 @@
+syntax = "proto3";
+package jack139.artchain.trans;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+import "trans/transaction.proto";
+
+option go_package = "github.com/jack139/artchain/x/trans/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // this line is used by starport scaffolding # 2
+	rpc Transaction(QueryGetTransactionRequest) returns (QueryGetTransactionResponse) {
+		option (google.api.http).get = "/jack139/artchain/trans/transaction/{id}";
+	}
+	rpc TransactionAll(QueryAllTransactionRequest) returns (QueryAllTransactionResponse) {
+		option (google.api.http).get = "/jack139/artchain/trans/transaction";
+	}
+
+}
+
+// this line is used by starport scaffolding # 3
+message QueryGetTransactionRequest {
+	uint64 id = 1;
+}
+
+message QueryGetTransactionResponse {
+	Transaction Transaction = 1;
+}
+
+message QueryAllTransactionRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTransactionResponse {
+	repeated Transaction Transaction = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

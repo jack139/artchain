@@ -11,17 +11,15 @@ import (
 	//"encoding/json"
 	//"encoding/hex"
 	"github.com/valyala/fasthttp"
-
 	//"github.com/cosmos/cosmos-sdk/client"
 	//"github.com/cosmos/cosmos-sdk/client/tx"
 )
 
 /* 企业链业务处理 */
 
-/* 用户注册 
-	action == 13
+/* 用户注册
+action == 13
 */
-
 
 func bizRegister(ctx *fasthttp.RequestCtx) {
 	log.Println("biz_register")
@@ -31,7 +29,7 @@ func bizRegister(ctx *fasthttp.RequestCtx) {
 
 	// 验签
 	reqData, err := checkSign(content)
-	if err!=nil {
+	if err != nil {
 		respError(ctx, 9000, err.Error())
 		return
 	}
@@ -51,19 +49,17 @@ func bizRegister(ctx *fasthttp.RequestCtx) {
 
 	// 生成新用户密钥
 	address, mnemonic, err := cmdclient.AddUserAccount(HttpCmd, userName, types.RewardRegister)
-	if err != nil{
+	if err != nil {
 		respError(ctx, 9009, err.Error())
-		return		
+		return
 	}
 
 	// 返回区块id
-	resp := map[string] interface{} {
-		"block"   : map[string]interface{}{"id" : ""}, // 为了兼容旧接口，目前无数据返回
-		"userkey" : address,
-		"mnemonic" : mnemonic,
+	resp := map[string]interface{}{
+		"block":    map[string]interface{}{"id": ""}, // 为了兼容旧接口，目前无数据返回
+		"userkey":  address,
+		"mnemonic": mnemonic,
 	}
 
 	respJson(ctx, &resp)
 }
-
-
