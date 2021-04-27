@@ -21,6 +21,8 @@ import (
 	"github.com/jack139/artchain/x/inventory/keeper"
 	"github.com/jack139/artchain/x/inventory/types"
 	// this line is used by starport scaffolding # ibc/module/import
+	//"github.com/cosmos/modules/incubator/nft"
+	nft "github.com/irisnet/irismod/modules/nft/keeper"
 )
 
 var (
@@ -103,12 +105,14 @@ type AppModule struct {
 	AppModuleBasic
 
 	keeper keeper.Keeper
+	NFTKeeper nft.Keeper
 }
 
-func NewAppModule(cdc codec.Marshaler, keeper keeper.Keeper) AppModule {
+func NewAppModule(cdc codec.Marshaler, keeper keeper.Keeper, nftKeeper nft.Keeper) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
+		NFTKeeper: nftKeeper,
 	}
 }
 
