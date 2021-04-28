@@ -145,6 +145,7 @@ var (
 		vesting.AppModuleBasic{},
 		artchain.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		person.AppModuleBasic{},
 		trans.AppModuleBasic{},
 		auction.AppModuleBasic{},
 		inventory.AppModuleBasic{},
@@ -217,6 +218,8 @@ type App struct {
 	artchainKeeper artchainkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
+	personKeeper personkeeper.Keeper
+
 	transKeeper transkeeper.Keeper
 
 	auctionKeeper auctionkeeper.Keeper
@@ -254,6 +257,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		artchaintypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		persontypes.StoreKey,
 		transtypes.StoreKey,
 		auctiontypes.StoreKey,
 		inventorytypes.StoreKey,
@@ -353,6 +357,13 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
+	app.personKeeper = *personkeeper.NewKeeper(
+		appCodec,
+		keys[persontypes.StoreKey],
+		keys[persontypes.MemStoreKey],
+	)
+	personModule := person.NewAppModule(appCodec, app.personKeeper)
+
 	app.transKeeper = *transkeeper.NewKeeper(
 		appCodec,
 		keys[transtypes.StoreKey],
@@ -423,6 +434,7 @@ func New(
 		transferModule,
 		artchain.NewAppModule(appCodec, app.artchainKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
+		personModule,
 		transModule,
 		auctionModule,
 		inventoryModule,
@@ -461,6 +473,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		artchaintypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		persontypes.ModuleName,
 		transtypes.ModuleName,
 		auctiontypes.ModuleName,
 		inventorytypes.ModuleName,
@@ -647,6 +660,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(persontypes.ModuleName)
 	paramsKeeper.Subspace(transtypes.ModuleName)
 	paramsKeeper.Subspace(auctiontypes.ModuleName)
 	paramsKeeper.Subspace(inventorytypes.ModuleName)

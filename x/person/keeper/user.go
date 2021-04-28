@@ -51,6 +51,7 @@ func (k Keeper) AppendUser(
 	accountNo string,
 	status string,
 	regDate string,
+	chainAddr string,
 ) uint64 {
 	// Create the user
 	count := k.GetUserCount(ctx)
@@ -67,6 +68,7 @@ func (k Keeper) AppendUser(
 		AccountNo: accountNo,
 		Status:    status,
 		RegDate:   regDate,
+		ChainAddr: chainAddr,
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))

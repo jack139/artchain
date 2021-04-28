@@ -48,9 +48,9 @@ func (k Keeper) Transaction(c context.Context, req *types.QueryGetTransactionReq
 	var transaction types.Transaction
 	ctx := sdk.UnwrapSDKContext(c)
 
-    if !k.HasTransaction(ctx, req.Id) {
-        return nil, sdkerrors.ErrKeyNotFound
-    }
+	if !k.HasTransaction(ctx, req.Id) {
+		return nil, sdkerrors.ErrKeyNotFound
+	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
 	k.cdc.MustUnmarshalBinaryBare(store.Get(GetTransactionIDBytes(req.Id)), &transaction)

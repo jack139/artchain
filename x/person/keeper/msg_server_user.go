@@ -25,6 +25,7 @@ func (k msgServer) CreateUser(goCtx context.Context, msg *types.MsgCreateUser) (
 		msg.AccountNo,
 		msg.Status,
 		msg.RegDate,
+		msg.ChainAddr,
 	)
 
 	return &types.MsgCreateUserResponse{
@@ -48,6 +49,7 @@ func (k msgServer) UpdateUser(goCtx context.Context, msg *types.MsgUpdateUser) (
 		AccountNo: msg.AccountNo,
 		Status:    msg.Status,
 		RegDate:   msg.RegDate,
+		ChainAddr: msg.ChainAddr,
 	}
 
 	// Checks that the element exists

@@ -12,9 +12,9 @@ import (
 
 func CmdCreateUser() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-user [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate]",
+		Use:   "create-user [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate] [chainAddr]",
 		Short: "Creates a new user",
-		Args:  cobra.ExactArgs(10),
+		Args:  cobra.ExactArgs(11),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsRecType := string(args[0])
 			argsName := string(args[1])
@@ -26,13 +26,14 @@ func CmdCreateUser() *cobra.Command {
 			argsAccountNo := string(args[7])
 			argsStatus := string(args[8])
 			argsRegDate := string(args[9])
+			argsChainAddr := string(args[10])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreateUser(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsName), string(argsUserType), string(argsAddress), string(argsPhone), string(argsEmail), string(argsBank), string(argsAccountNo), string(argsStatus), string(argsRegDate))
+			msg := types.NewMsgCreateUser(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsName), string(argsUserType), string(argsAddress), string(argsPhone), string(argsEmail), string(argsBank), string(argsAccountNo), string(argsStatus), string(argsRegDate), string(argsChainAddr))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -47,9 +48,9 @@ func CmdCreateUser() *cobra.Command {
 
 func CmdUpdateUser() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-user [id] [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate]",
+		Use:   "update-user [id] [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate] [chainAddr]",
 		Short: "Update a user",
-		Args:  cobra.ExactArgs(11),
+		Args:  cobra.ExactArgs(12),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			id, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
@@ -66,13 +67,14 @@ func CmdUpdateUser() *cobra.Command {
 			argsAccountNo := string(args[8])
 			argsStatus := string(args[9])
 			argsRegDate := string(args[10])
+			argsChainAddr := string(args[11])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgUpdateUser(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsName), string(argsUserType), string(argsAddress), string(argsPhone), string(argsEmail), string(argsBank), string(argsAccountNo), string(argsStatus), string(argsRegDate))
+			msg := types.NewMsgUpdateUser(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsName), string(argsUserType), string(argsAddress), string(argsPhone), string(argsEmail), string(argsBank), string(argsAccountNo), string(argsStatus), string(argsRegDate), string(argsChainAddr))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -87,7 +89,7 @@ func CmdUpdateUser() *cobra.Command {
 
 func CmdDeleteUser() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-user [id] [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate]",
+		Use:   "delete-user [id] [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate] [chainAddr]",
 		Short: "Delete a user by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

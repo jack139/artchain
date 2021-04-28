@@ -2,15 +2,15 @@ package keeper
 
 import (
 	"encoding/binary"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/jack139/artchain/x/trans/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	"strconv"
 )
 
 // GetTransactionCount get the total number of transaction
 func (k Keeper) GetTransactionCount(ctx sdk.Context) uint64 {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionCountKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionCountKey))
 	byteKey := types.KeyPrefix(types.TransactionCountKey)
 	bz := store.Get(byteKey)
 
@@ -30,8 +30,8 @@ func (k Keeper) GetTransactionCount(ctx sdk.Context) uint64 {
 }
 
 // SetTransactionCount set the total number of transaction
-func (k Keeper) SetTransactionCount(ctx sdk.Context, count uint64)  {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionCountKey))
+func (k Keeper) SetTransactionCount(ctx sdk.Context, count uint64) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionCountKey))
 	byteKey := types.KeyPrefix(types.TransactionCountKey)
 	bz := []byte(strconv.FormatUint(count, 10))
 	store.Set(byteKey, bz)
@@ -39,49 +39,49 @@ func (k Keeper) SetTransactionCount(ctx sdk.Context, count uint64)  {
 
 // AppendTransaction appends a transaction in the store with a new id and update the count
 func (k Keeper) AppendTransaction(
-    ctx sdk.Context,
-    creator string,
-    recType string,
-    auctionId string,
-    itemId string,
-    transType string,
-    userId string,
-    transDate string,
-    hammerTime string,
-    hammerPrice string,
-    details string,
-    status string,
+	ctx sdk.Context,
+	creator string,
+	recType string,
+	auctionId string,
+	itemId string,
+	transType string,
+	userId string,
+	transDate string,
+	hammerTime string,
+	hammerPrice string,
+	details string,
+	status string,
 ) uint64 {
 	// Create the transaction
-    count := k.GetTransactionCount(ctx)
-    var transaction = types.Transaction{
-        Creator: creator,
-        Id:      count,
-        RecType: recType,
-        AuctionId: auctionId,
-        ItemId: itemId,
-        TransType: transType,
-        UserId: userId,
-        TransDate: transDate,
-        HammerTime: hammerTime,
-        HammerPrice: hammerPrice,
-        Details: details,
-        Status: status,
-    }
+	count := k.GetTransactionCount(ctx)
+	var transaction = types.Transaction{
+		Creator:     creator,
+		Id:          count,
+		RecType:     recType,
+		AuctionId:   auctionId,
+		ItemId:      itemId,
+		TransType:   transType,
+		UserId:      userId,
+		TransDate:   transDate,
+		HammerTime:  hammerTime,
+		HammerPrice: hammerPrice,
+		Details:     details,
+		Status:      status,
+	}
 
-    store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
-    value := k.cdc.MustMarshalBinaryBare(&transaction)
-    store.Set(GetTransactionIDBytes(transaction.Id), value)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
+	value := k.cdc.MustMarshalBinaryBare(&transaction)
+	store.Set(GetTransactionIDBytes(transaction.Id), value)
 
-    // Update transaction count
-    k.SetTransactionCount(ctx, count+1)
+	// Update transaction count
+	k.SetTransactionCount(ctx, count+1)
 
-    return count
+	return count
 }
 
 // SetTransaction set a specific transaction in the store
 func (k Keeper) SetTransaction(ctx sdk.Context, transaction types.Transaction) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
 	b := k.cdc.MustMarshalBinaryBare(&transaction)
 	store.Set(GetTransactionIDBytes(transaction.Id), b)
 }
@@ -96,13 +96,13 @@ func (k Keeper) GetTransaction(ctx sdk.Context, id uint64) types.Transaction {
 
 // HasTransaction checks if the transaction exists in the store
 func (k Keeper) HasTransaction(ctx sdk.Context, id uint64) bool {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
 	return store.Has(GetTransactionIDBytes(id))
 }
 
 // GetTransactionOwner returns the creator of the transaction
 func (k Keeper) GetTransactionOwner(ctx sdk.Context, id uint64) string {
-    return k.GetTransaction(ctx, id).Creator
+	return k.GetTransaction(ctx, id).Creator
 }
 
 // RemoveTransaction removes a transaction from the store
@@ -113,7 +113,7 @@ func (k Keeper) RemoveTransaction(ctx sdk.Context, id uint64) {
 
 // GetAllTransaction returns all transaction
 func (k Keeper) GetAllTransaction(ctx sdk.Context) (list []types.Transaction) {
-    store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -121,10 +121,10 @@ func (k Keeper) GetAllTransaction(ctx sdk.Context) (list []types.Transaction) {
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Transaction
 		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
-        list = append(list, val)
+		list = append(list, val)
 	}
 
-    return
+	return
 }
 
 // GetTransactionIDBytes returns the byte representation of the ID

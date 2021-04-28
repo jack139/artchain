@@ -25,6 +25,7 @@ type createUserRequest struct {
 	AccountNo string       `json:"accountNo"`
 	Status    string       `json:"status"`
 	RegDate   string       `json:"regDate"`
+	ChainAddr string       `json:"chainAddr"`
 }
 
 func createUserHandler(clientCtx client.Context) http.HandlerFunc {
@@ -66,6 +67,8 @@ func createUserHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedRegDate := req.RegDate
 
+		parsedChainAddr := req.ChainAddr
+
 		msg := types.NewMsgCreateUser(
 			req.Creator,
 			parsedRecType,
@@ -78,6 +81,7 @@ func createUserHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedAccountNo,
 			parsedStatus,
 			parsedRegDate,
+			parsedChainAddr,
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
@@ -97,6 +101,7 @@ type updateUserRequest struct {
 	AccountNo string       `json:"accountNo"`
 	Status    string       `json:"status"`
 	RegDate   string       `json:"regDate"`
+	ChainAddr string       `json:"chainAddr"`
 }
 
 func updateUserHandler(clientCtx client.Context) http.HandlerFunc {
@@ -143,6 +148,8 @@ func updateUserHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedRegDate := req.RegDate
 
+		parsedChainAddr := req.ChainAddr
+
 		msg := types.NewMsgUpdateUser(
 			req.Creator,
 			id,
@@ -156,6 +163,7 @@ func updateUserHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedAccountNo,
 			parsedStatus,
 			parsedRegDate,
+			parsedChainAddr,
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)

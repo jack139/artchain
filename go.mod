@@ -13,6 +13,7 @@ require (
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.2.0 // indirect
 	github.com/ipfs/go-ipfs-api v0.2.0
 	github.com/spf13/cast v1.3.1
 	github.com/spf13/cobra v1.1.1

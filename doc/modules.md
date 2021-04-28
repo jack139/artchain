@@ -17,14 +17,14 @@ Bank      // 银行
 AccountNo // 银行账号
 Status    // 用户状态： ACTIVE, CLOSE, FORBID, WAIT
 RegDate   // 注册日期
-AccAddress // 区块链用户地址
+ChainAddr // 区块链用户地址(AccAddress)
 ```
 
 
 
 ```shell
 GOPATH=$HOME/Codes/go starport module create person
-GOPATH=$HOME/Codes/go starport type user recType name userType address phone email bank accountNo status regDate accAddress --module person
+GOPATH=$HOME/Codes/go starport type user recType name userType address phone email bank accountNo status regDate chainAddr --module person
 ```
 
 

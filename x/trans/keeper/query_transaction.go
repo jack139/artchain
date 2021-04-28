@@ -1,10 +1,10 @@
 package keeper
 
 import (
-    "strconv"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"strconv"
 )
 
 func listTransaction(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
@@ -20,13 +20,13 @@ func listTransaction(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.Leg
 
 func getTransaction(ctx sdk.Context, key string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
 	id, err := strconv.ParseUint(key, 10, 64)
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    if !keeper.HasTransaction(ctx, id) {
-        return nil, sdkerrors.ErrKeyNotFound
-    }
+	if !keeper.HasTransaction(ctx, id) {
+		return nil, sdkerrors.ErrKeyNotFound
+	}
 
 	msg := keeper.GetTransaction(ctx, id)
 

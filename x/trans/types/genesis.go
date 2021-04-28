@@ -1,8 +1,8 @@
 package types
 
 import (
-"fmt"
-// this line is used by starport scaffolding # ibc/genesistype/import
+	"fmt"
+	// this line is used by starport scaffolding # ibc/genesistype/import
 )
 
 // DefaultIndex is the default capability global index
@@ -12,8 +12,8 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		// this line is used by starport scaffolding # ibc/genesistype/default
-	    // this line is used by starport scaffolding # genesis/types/default
-TransactionList: []*Transaction{},
+		// this line is used by starport scaffolding # genesis/types/default
+		TransactionList: []*Transaction{},
 	}
 }
 
@@ -22,16 +22,16 @@ TransactionList: []*Transaction{},
 func (gs GenesisState) Validate() error {
 	// this line is used by starport scaffolding # ibc/genesistype/validate
 
-    // this line is used by starport scaffolding # genesis/types/validate
-// Check for duplicated ID in transaction
-transactionIdMap := make(map[uint64]bool)
+	// this line is used by starport scaffolding # genesis/types/validate
+	// Check for duplicated ID in transaction
+	transactionIdMap := make(map[uint64]bool)
 
-for _, elem := range gs.TransactionList {
-	if _, ok := transactionIdMap[elem.Id]; ok {
-		return fmt.Errorf("duplicated id for transaction")
+	for _, elem := range gs.TransactionList {
+		if _, ok := transactionIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for transaction")
+		}
+		transactionIdMap[elem.Id] = true
 	}
-	transactionIdMap[elem.Id] = true
-}
 
 	return nil
 }

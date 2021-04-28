@@ -21,10 +21,10 @@ type (
 )
 
 func NewKeeper(
-    cdc codec.Marshaler,
-    storeKey,
-    memKey sdk.StoreKey,
-    // this line is used by starport scaffolding # ibc/keeper/parameter
+	cdc codec.Marshaler,
+	storeKey,
+	memKey sdk.StoreKey,
+	// this line is used by starport scaffolding # ibc/keeper/parameter
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
