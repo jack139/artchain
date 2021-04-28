@@ -95,9 +95,16 @@ import (
 	"github.com/jack139/artchain/x/person"
 	personkeeper "github.com/jack139/artchain/x/person/keeper"
 	persontypes "github.com/jack139/artchain/x/person/types"
+
 	"github.com/jack139/artchain/x/trans"
 	transkeeper "github.com/jack139/artchain/x/trans/keeper"
 	transtypes "github.com/jack139/artchain/x/trans/types"
+
+	//"github.com/cosmos/modules/incubator/faucet"
+	//"github.com/cosmos/modules/incubator/nft"
+	"github.com/irisnet/irismod/modules/nft"
+	nftkeeper "github.com/irisnet/irismod/modules/nft/keeper"
+	nfttypes "github.com/irisnet/irismod/modules/nft/types"
 )
 
 const Name = "artchain"
@@ -150,6 +157,8 @@ var (
 		auction.AppModuleBasic{},
 		inventory.AppModuleBasic{},
 		person.AppModuleBasic{},
+		nft.AppModuleBasic{},
+		//faucet.AppModule{},
 	)
 
 	// module account permissions
@@ -218,8 +227,6 @@ type App struct {
 	artchainKeeper artchainkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
-	personKeeper personkeeper.Keeper
-
 	transKeeper transkeeper.Keeper
 
 	auctionKeeper auctionkeeper.Keeper
@@ -227,6 +234,9 @@ type App struct {
 	inventoryKeeper inventorykeeper.Keeper
 
 	personKeeper personkeeper.Keeper
+
+	NFTKeeper    nftkeeper.Keeper
+	//faucetKeeper faucet.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -262,6 +272,9 @@ func New(
 		auctiontypes.StoreKey,
 		inventorytypes.StoreKey,
 		persontypes.StoreKey,
+
+		nfttypes.StoreKey,
+		//faucet.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -357,12 +370,16 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.personKeeper = *personkeeper.NewKeeper(
-		appCodec,
-		keys[persontypes.StoreKey],
-		keys[persontypes.MemStoreKey],
-	)
-	personModule := person.NewAppModule(appCodec, app.personKeeper)
+	app.NFTKeeper = nftkeeper.NewKeeper(appCodec, keys[nfttypes.StoreKey])
+
+	//app.faucetKeeper = faucet.NewKeeper(
+	//	app.supplyKeeper,
+	//	app.stakingKeeper,
+	//	10*1000000,   // amount for mint
+	//	24*time.Hour, // rate limit by time
+	//	keys[faucet.StoreKey],
+	//	appCodec)
+
 
 	app.transKeeper = *transkeeper.NewKeeper(
 		appCodec,
@@ -382,8 +399,9 @@ func New(
 		appCodec,
 		keys[inventorytypes.StoreKey],
 		keys[inventorytypes.MemStoreKey],
+		app.NFTKeeper,
 	)
-	inventoryModule := inventory.NewAppModule(appCodec, app.inventoryKeeper)
+	inventoryModule := inventory.NewAppModule(appCodec, app.inventoryKeeper, app.NFTKeeper)
 
 	app.personKeeper = *personkeeper.NewKeeper(
 		appCodec,
@@ -439,6 +457,9 @@ func New(
 		auctionModule,
 		inventoryModule,
 		personModule,
+
+		nft.NewAppModule(appCodec, app.NFTKeeper, app.AccountKeeper, app.BankKeeper),
+		//faucet.NewAppModule(app.faucetKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -478,6 +499,8 @@ func New(
 		auctiontypes.ModuleName,
 		inventorytypes.ModuleName,
 		persontypes.ModuleName,
+
+		nfttypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
