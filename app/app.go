@@ -152,7 +152,6 @@ var (
 		vesting.AppModuleBasic{},
 		artchain.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
-		person.AppModuleBasic{},
 		trans.AppModuleBasic{},
 		auction.AppModuleBasic{},
 		inventory.AppModuleBasic{},
@@ -271,7 +270,6 @@ func New(
 		transtypes.StoreKey,
 		auctiontypes.StoreKey,
 		inventorytypes.StoreKey,
-		persontypes.StoreKey,
 
 		nfttypes.StoreKey,
 		//faucet.StoreKey,
@@ -452,7 +450,6 @@ func New(
 		transferModule,
 		artchain.NewAppModule(appCodec, app.artchainKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
-		personModule,
 		transModule,
 		auctionModule,
 		inventoryModule,
@@ -494,7 +491,6 @@ func New(
 		ibctransfertypes.ModuleName,
 		artchaintypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
-		persontypes.ModuleName,
 		transtypes.ModuleName,
 		auctiontypes.ModuleName,
 		inventorytypes.ModuleName,
@@ -687,7 +683,6 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(transtypes.ModuleName)
 	paramsKeeper.Subspace(auctiontypes.ModuleName)
 	paramsKeeper.Subspace(inventorytypes.ModuleName)
-	paramsKeeper.Subspace(persontypes.ModuleName)
 
 	return paramsKeeper
 }
