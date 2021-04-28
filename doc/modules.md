@@ -8,7 +8,7 @@
 ```
 ID        // 用户id (UserID)
 RecType   // Type = USER
-Name      // 姓名
+Name      // 名称
 UserType  // 用户类型: TRD, BANK, AH, DEL, ART, REV
 Address   // 地址
 Phone     // 电话
@@ -17,13 +17,14 @@ Bank      // 银行
 AccountNo // 银行账号
 Status    // 用户状态： ACTIVE, CLOSE, FORBID, WAIT
 RegDate   // 注册日期
+AccAddress // 区块链用户地址
 ```
 
 
 
 ```shell
 GOPATH=$HOME/Codes/go starport module create person
-GOPATH=$HOME/Codes/go starport type user recType name userType address phone email bank accountNo status regDate --module person
+GOPATH=$HOME/Codes/go starport type user recType name userType address phone email bank accountNo status regDate accAddress --module person
 ```
 
 
@@ -134,23 +135,43 @@ GOPATH=$HOME/Codes/go starport type transaction recType auctionId itemId transTy
 
 
 
-### 人员
+| 功能                 | URI                        |
+| -------------------- | -------------------------- |
+| 注册用户             | /user/register             |
+| 修改用户信息         | /user/modify               |
+| 恢复已注册用户       | /user/restore              |
+| 验证用户身份         | /user/verify               |
+| 新建物品             | /item/newquery             |
+| 修改物品信息         | /item/modify               |
+| 生成物品NFT          | /nft/new                   |
+| 验证物品NFT          | /nft/verify                |
+| 添加物品评价         | /review/new                |
+| 修改物品评价         | /review/modify             |
+| 修改物品评价反馈信息 | /review/feedback           |
+| 发起拍卖             | /auction/new               |
+| 修改拍卖状态         | /auction/change_status     |
+| 出价                 | /auction/bid               |
+| 建立成交交易         | /transaction/new           |
+|                      |                            |
+| 查询用户信息         | /query/user/info           |
+| 查询物品清单         | /query/item/list           |
+| 查询物品信息         | /query/item/info           |
+| 查询物品评价清单     | /query/review/list         |
+| 查询物品评价信息     | /query/review/info         |
+| 查询拍卖行清单       | /query/auction_house/list  |
+| 查询拍卖行信息       | /query/auction_house/info  |
+| 查询拍卖清单         | /query/auction/list        |
+| 查询拍卖信息         | /query/auction/info        |
+| 查询出价信息         | /query/bid/info            |
+| 查询最高出价         | /query/bid/highest         |
+| 查询出价清单         | /query/bid/list            |
+| 查询成交交易         | /query/transaction/list    |
+| 查询成交交易信息     | /query/transaction/info    |
+| 查询用户通证         | /query/user/credit_balance |
+|                      |                            |
+|                      |                            |
 
 
-
-### 物品
-
-
-
-### 拍卖
-
-
-
-### 交易
-
-
-
-### 查询
 
 
 
