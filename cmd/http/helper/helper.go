@@ -1,8 +1,6 @@
-package http
+package helper
 
 import (
-	//"xchainge/client"
-
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
@@ -12,15 +10,22 @@ import (
 	"sort"
 	"strconv"
 	"time"
-	//"crypto/md5"
-	//"io/ioutil"
+	"os"
 	"github.com/valyala/fasthttp"
+	"github.com/Ferluci/fast-realip"
+	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var (
+	/* 保存命令行context */
+	HttpCmd *cobra.Command
+
+	/* 日志输出使用 */
+	output  = log.New(os.Stdout, "", 0)
+
 	/* 接口验签使用 appid : appsecret (md5sum : sha1sum|base64) */
 	APPID_SECRET = map[string]string{
 		"bdecaa718f290152925e8d570c71adfe": "YWQ2YjZjNmE3MTVjZTNlNzhiMjk2YjI2MGYyYzI2ZDllNGUyMjRiNyAgLQo=",
@@ -36,7 +41,7 @@ var (
 )
 
 /* 处理返回值，返回json */
-func respJson(ctx *fasthttp.RequestCtx, data *map[string]interface{}) {
+func RespJson(ctx *fasthttp.RequestCtx, data *map[string]interface{}) {
 	respJson := map[string]interface{}{
 		"code": 0,
 		"msg":  "success",
@@ -45,7 +50,7 @@ func respJson(ctx *fasthttp.RequestCtx, data *map[string]interface{}) {
 	doJSONWrite(ctx, fasthttp.StatusOK, respJson)
 }
 
-func respError(ctx *fasthttp.RequestCtx, code int, msg string) {
+func RespError(ctx *fasthttp.RequestCtx, code int, msg string) {
 	log.Println("Error: ", code, msg)
 	respJson := map[string]interface{}{
 		"code": code,
@@ -69,7 +74,7 @@ func doJSONWrite(ctx *fasthttp.RequestCtx, code int, obj interface{}) {
 /*
 	接口验签，返回data数据
 */
-func checkSign(content []byte) (*map[string]interface{}, error) {
+func CheckSign(content []byte) (*map[string]interface{}, error) {
 	fields := make(map[string]interface{})
 	if err := json.Unmarshal(content, &fields); err != nil {
 		return nil, err
@@ -159,6 +164,40 @@ func checkSign(content []byte) (*map[string]interface{}, error) {
 	return &data, nil
 }
 
+
+// 日志格式处理
+
+// "github.com/AubSs/fasthttplogger"
+func getHttp(ctx *fasthttp.RequestCtx) string {
+	if ctx.Response.Header.IsHTTP11() {
+		return "HTTP/1.1"
+	}
+	return "HTTP/1.0"
+}
+
+// Combined format:
+// [<time>] <remote-addr> | <HTTP/http-version> | <method> <url> - <status> - <response-time us> | <user-agent>
+// [2017/05/31 - 13:27:28] 127.0.0.1:54082 | HTTP/1.1 | GET /hello - 200 - 48.279µs | Paw/3.1.1 (Macintosh; OS X/10.12.5) GCDHTTPRequest
+func Combined(req fasthttp.RequestHandler) fasthttp.RequestHandler {
+	return fasthttp.RequestHandler(func(ctx *fasthttp.RequestCtx) {
+		begin := time.Now()
+		req(ctx)
+		end := time.Now()
+		output.Printf("[%v] %v (%v) | %s | %s %s - %v - %v | %s",
+			end.Format("2006/01/02 - 15:04:05"),
+			ctx.RemoteAddr(),
+			realip.FromRequest(ctx),
+			getHttp(ctx),
+			ctx.Method(),
+			ctx.RequestURI(),
+			ctx.Response.Header.StatusCode(),
+			end.Sub(begin),
+			ctx.UserAgent(),
+		)
+	})
+}
+
+
 // 返回 map 所有 key
 func getMapKeys(m map[string]interface{}) *[]string {
 	var keys []string
@@ -169,7 +208,7 @@ func getMapKeys(m map[string]interface{}) *[]string {
 }
 
 /* 获取key信息 */
-func fetchKey(kb keyring.Keyring, keyref string) (keyring.Info, error) {
+func FetchKey(kb keyring.Keyring, keyref string) (keyring.Info, error) {
 	info, err := kb.Key(keyref)
 	if err != nil {
 		accAddr, err := sdk.AccAddressFromBech32(keyref)

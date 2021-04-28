@@ -1,9 +1,10 @@
 package http
 
 import (
-	"fmt"
 	"github.com/valyala/fasthttp"
 	"log"
+
+	"github.com/jack139/artchain/cmd/http/helper"
 )
 
 /* 空接口, 只进行签名校验 */
@@ -14,12 +15,12 @@ func doNonthing(ctx *fasthttp.RequestCtx) {
 	content := ctx.PostBody()
 
 	// 验签
-	data, err := checkSign(content)
+	data, err := helper.CheckSign(content)
 	if err != nil {
-		respError(ctx, 9000, err.Error())
+		helper.RespError(ctx, 9000, err.Error())
 		return
 	}
-	fmt.Printf("%v\n", *data)
+	log.Printf("%v\n", *data)
 
-	respJson(ctx, data)
+	helper.RespJson(ctx, data)
 }

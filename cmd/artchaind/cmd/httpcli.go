@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	httpcli "github.com/jack139/artchain/cmd/http"
+	httphelper "github.com/jack139/artchain/cmd/http/helper"
 )
 
 func HttpCliCmd() *cobra.Command {
@@ -18,7 +19,7 @@ func HttpCliCmd() *cobra.Command {
 			}
 
 			// 保存 cmd
-			httpcli.HttpCmd = cmd
+			httphelper.HttpCmd = cmd
 
 			httpcli.RunServer(args[0])
 			// 不会返回

@@ -30,19 +30,19 @@
 
 | 接口功能                 | URI                        |
 | -------------------- | -------------------------- |
-| 注册用户             | /tx/user/register             |
-| 修改用户信息          | /tx/user/modify               |
-| 恢复已注册用户        | /tx/user/restore              |
-| 新建物品             | /tx/item/newquery             |
-| 修改物品信息          | /tx/item/modify               |
-| 生成物品NFT          | /tx/nft/new                   |
-| 添加物品评价          | /tx/review/new                |
-| 修改物品评价          | /tx/review/modify             |
-| 修改物品评价反馈信息   | /tx/review/feedback           |
-| 发起拍卖             | /tx/auction/new               |
-| 修改拍卖状态         | /tx/auction/change_status     |
-| 出价                 | /tx/auction/bid               |
-| 建立成交交易         | /tx/transaction/new           |
+| 注册用户             | /biz/user/register             |
+| 修改用户信息          | /biz/user/modify               |
+| 恢复已注册用户        | /biz/user/restore              |
+| 新建物品             | /biz/item/newquery             |
+| 修改物品信息          | /biz/item/modify               |
+| 生成物品NFT          | /biz/nft/new                   |
+| 添加物品评价          | /biz/review/new                |
+| 修改物品评价          | /biz/review/modify             |
+| 修改物品评价反馈信息   | /biz/review/feedback           |
+| 发起拍卖             | /biz/auction/new               |
+| 修改拍卖状态         | /biz/auction/change_status     |
+| 出价                 | /biz/auction/bid               |
+| 建立成交交易         | /biz/transaction/new           |
 | 查询用户信息         | /query/user/info           |
 | 验证用户身份          | /query/user/verify               |
 | 查询物品清单         | /query/item/list           |
@@ -156,7 +156,7 @@ base64后结果：
 
 请求URL
 
-> http://<host>:<port>/api/<version>/tx/user/register
+> http://<host>:<port>/api/<version>/biz/user/register
 
 请求方式
 

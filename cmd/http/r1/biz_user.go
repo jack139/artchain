@@ -1,18 +1,12 @@
-package http
+package r1
 
 import (
-	//"github.com/jack139/artchain/cmd/ipfs"
 	cmdclient "github.com/jack139/artchain/cmd/client"
 	"github.com/jack139/artchain/x/artchain/types"
+	"github.com/jack139/artchain/cmd/http/helper"
 
 	"log"
-	//"bytes"
-	//"strings"
-	//"encoding/json"
-	//"encoding/hex"
 	"github.com/valyala/fasthttp"
-	//"github.com/cosmos/cosmos-sdk/client"
-	//"github.com/cosmos/cosmos-sdk/client/tx"
 )
 
 /* 企业链业务处理 */
@@ -21,23 +15,23 @@ import (
 action == 13
 */
 
-func bizRegister(ctx *fasthttp.RequestCtx) {
+func BizRegister(ctx *fasthttp.RequestCtx) {
 	log.Println("biz_register")
 
 	// POST 的数据
 	content := ctx.PostBody()
 
 	// 验签
-	reqData, err := checkSign(content)
+	reqData, err := helper.CheckSign(content)
 	if err != nil {
-		respError(ctx, 9000, err.Error())
+		helper.RespError(ctx, 9000, err.Error())
 		return
 	}
 
 	// 检查参数
 	userName, ok := (*reqData)["user_name"].(string)
 	if !ok {
-		respError(ctx, 9001, "need user_name")
+		helper.RespError(ctx, 9001, "need user_name")
 		return
 	}
 	//userType, ok := (*reqData)["user_type"].(string)
@@ -48,9 +42,9 @@ func bizRegister(ctx *fasthttp.RequestCtx) {
 	//referrer, _ := (*reqData)["referrer"].(string)
 
 	// 生成新用户密钥
-	address, mnemonic, err := cmdclient.AddUserAccount(HttpCmd, userName, types.RewardRegister)
+	address, mnemonic, err := cmdclient.AddUserAccount(helper.HttpCmd, userName, types.RewardRegister)
 	if err != nil {
-		respError(ctx, 9009, err.Error())
+		helper.RespError(ctx, 9009, err.Error())
 		return
 	}
 
@@ -61,5 +55,5 @@ func bizRegister(ctx *fasthttp.RequestCtx) {
 		"mnemonic": mnemonic,
 	}
 
-	respJson(ctx, &resp)
+	helper.RespJson(ctx, &resp)
 }
