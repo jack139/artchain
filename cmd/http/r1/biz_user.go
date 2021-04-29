@@ -119,9 +119,9 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"block":    map[string]interface{}{"id": ""}, // 为了兼容旧接口，目前无数据返回
-		"userkey":  address,
-		"mnemonic": mnemonic,
+		"height" : respData["height"].(string),  // 区块高度
+		"address" : address,  // 用户地址
+		"mystery" : mnemonic, // 机密串
 	}
 
 	helper.RespJson(ctx, &resp)

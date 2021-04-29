@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	AccountAddressPrefix = "artchain"
+	AccountAddressPrefix = "bid1art"
 )
 
 var (
