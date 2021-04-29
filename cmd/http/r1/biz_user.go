@@ -7,6 +7,7 @@ import (
 	persontypes "github.com/jack139/artchain/x/person/types"
 
 	"log"
+	"time"
 	"bytes"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
@@ -34,9 +35,9 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
-	userName, ok := (*reqData)["user_name"].(string)
+	userName, ok := (*reqData)["login_name"].(string)
 	if !ok {
-		helper.RespError(ctx, 9001, "need user_name")
+		helper.RespError(ctx, 9001, "need login_name")
 		return
 	}
 	userType, ok := (*reqData)["user_type"].(string)
@@ -44,9 +45,46 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9002, "need user_type")
 		return
 	}
-	//referrer, _ := (*reqData)["referrer"].(string)
+	bank_acc_name, _ := (*reqData)["bank_acc_name"].(string)
+	bank_name, _ := (*reqData)["bank_name"].(string)
+	bank_acc_no, _ := (*reqData)["bank_acc_no"].(string)
+	contact_address, _ := (*reqData)["address"].(string)
+	phone, _ := (*reqData)["phone"].(string)
+	email, _ := (*reqData)["email"].(string)
+	referrer, _ := (*reqData)["referrer"].(string)
+
+	// 构建userInfo
+	userInfoMap := map[string]interface{}{
+		"bank_acc_name": bank_acc_name,
+		"bank_name":  bank_name,
+		"bank_acc_no": bank_acc_no,
+		"contact_address": contact_address,
+		"phone": phone,
+		"email": email,
+		"referrer": referrer,
+	}
+
+	userInfo, err := json.Marshal(userInfoMap)
+	if err != nil {
+		helper.RespError(ctx, 9003, err.Error())
+		return
+	}
+
+	// 初始化用户状态
+	userStatus := "WAIT"
+	if userType=="TRD" {
+		userStatus = "ACTIVE"
+	}
 
 	// TODO: 检查 userName是否已经存在！
+
+
+	// 生成新用户密钥
+	address, mnemonic, err := cmdclient.AddUserAccount(helper.HttpCmd, userName, types.RewardRegister)
+	if err != nil {
+		helper.RespError(ctx, 9009, err.Error())
+		return
+	}
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -58,24 +96,15 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 	// 创建者地址，如果在生成新用户后，会变成faucet的地址
 	creatorAddr := clientCtx.GetFromAddress().String()
 
-
-	// 生成新用户密钥
-	address, mnemonic, err := cmdclient.AddUserAccount(helper.HttpCmd, userName, types.RewardRegister)
-	if err != nil {
-		helper.RespError(ctx, 9009, err.Error())
-		return
-	}
-
-
 	// 数据上链
 	msg := persontypes.NewMsgCreateUser(
 		creatorAddr, // creator string, 
 		"USER", // recType string, 
 		userName, // name string, 
 		userType, // userType string, 
-		"", // userInfo string, 
-		"ACTIVE", // status string, 
-		"", // regDate string, 
+		string(userInfo), // userInfo string, 
+		userStatus, // status string, 
+		time.Now().Format("2006-01-02 15:04:05") , // regDate string, 
 		address, // chainAddr string,
 	)
 	if err := msg.ValidateBasic(); err != nil {

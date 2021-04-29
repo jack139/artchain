@@ -33,8 +33,10 @@ if __name__ == '__main__':
         'data'     : {
             #'userkey'   : 'contract1rsnyvzy9rdtwj807jnmxp2qlf9zg65kzk2fayu', # test1
             #'userkey'   : 'contract1d2cq2a2f604mahf20hdv7453tqedh7mzhmz97c', # test2
-            'user_name' : 'test1',
+            'login_name' : 'test1',
             'user_type' : 'TRD',
+            'email' : '111111@qq.com',
+            'referrer': 'bid1art111111111'
             #'block_id'  : '21', # id 
             #'height' : '210274'
         }
