@@ -30,7 +30,7 @@
 
 | 接口功能                 | URI                        |
 | -------------------- | -------------------------- |
-| 注册用户             | /biz/user/register             |
+| 注册用户             | **/biz/user/register**         |
 | 修改用户信息          | /biz/user/modify               |
 | 恢复已注册用户        | /biz/user/restore              |
 | 新建物品             | /biz/item/newquery             |
@@ -59,10 +59,8 @@
 | 查询出价清单         | /query/bid/list            |
 | 查询成交交易         | /query/transaction/list    |
 | 查询成交交易信息     | /query/transaction/info    |
-| 查询指定区块原始数据 | /query/block/rawdata |
-| 查询用户通证 | /query/user/credit_balance |
-
-
+| 查询指定区块原始数据 | **/query/block/rawdata** |
+| 查询用户通证 | **/query/user/credit_balance** |
 
 
 
