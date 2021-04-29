@@ -18,11 +18,7 @@ type createUserRequest struct {
 	RecType   string       `json:"recType"`
 	Name      string       `json:"name"`
 	UserType  string       `json:"userType"`
-	Address   string       `json:"address"`
-	Phone     string       `json:"phone"`
-	Email     string       `json:"email"`
-	Bank      string       `json:"bank"`
-	AccountNo string       `json:"accountNo"`
+	UserInfo  string       `json:"userInfo"`
 	Status    string       `json:"status"`
 	RegDate   string       `json:"regDate"`
 	ChainAddr string       `json:"chainAddr"`
@@ -53,15 +49,7 @@ func createUserHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedUserType := req.UserType
 
-		parsedAddress := req.Address
-
-		parsedPhone := req.Phone
-
-		parsedEmail := req.Email
-
-		parsedBank := req.Bank
-
-		parsedAccountNo := req.AccountNo
+		parsedUserInfo := req.UserInfo
 
 		parsedStatus := req.Status
 
@@ -74,11 +62,7 @@ func createUserHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedRecType,
 			parsedName,
 			parsedUserType,
-			parsedAddress,
-			parsedPhone,
-			parsedEmail,
-			parsedBank,
-			parsedAccountNo,
+			parsedUserInfo,
 			parsedStatus,
 			parsedRegDate,
 			parsedChainAddr,
@@ -94,11 +78,7 @@ type updateUserRequest struct {
 	RecType   string       `json:"recType"`
 	Name      string       `json:"name"`
 	UserType  string       `json:"userType"`
-	Address   string       `json:"address"`
-	Phone     string       `json:"phone"`
-	Email     string       `json:"email"`
-	Bank      string       `json:"bank"`
-	AccountNo string       `json:"accountNo"`
+	UserInfo  string       `json:"userInfo"`
 	Status    string       `json:"status"`
 	RegDate   string       `json:"regDate"`
 	ChainAddr string       `json:"chainAddr"`
@@ -134,15 +114,7 @@ func updateUserHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedUserType := req.UserType
 
-		parsedAddress := req.Address
-
-		parsedPhone := req.Phone
-
-		parsedEmail := req.Email
-
-		parsedBank := req.Bank
-
-		parsedAccountNo := req.AccountNo
+		parsedUserInfo := req.UserInfo
 
 		parsedStatus := req.Status
 
@@ -156,11 +128,7 @@ func updateUserHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedRecType,
 			parsedName,
 			parsedUserType,
-			parsedAddress,
-			parsedPhone,
-			parsedEmail,
-			parsedBank,
-			parsedAccountNo,
+			parsedUserInfo,
 			parsedStatus,
 			parsedRegDate,
 			parsedChainAddr,

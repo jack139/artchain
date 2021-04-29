@@ -12,28 +12,26 @@ import (
 
 func CmdCreateUser() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-user [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate] [chainAddr]",
+		Use:   "create-user [recType] [name] [userType] [userInfo] [status] [regDate] [chainAddr]",
 		Short: "Creates a new user",
-		Args:  cobra.ExactArgs(11),
+		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsRecType := string(args[0])
 			argsName := string(args[1])
 			argsUserType := string(args[2])
-			argsAddress := string(args[3])
-			argsPhone := string(args[4])
-			argsEmail := string(args[5])
-			argsBank := string(args[6])
-			argsAccountNo := string(args[7])
-			argsStatus := string(args[8])
-			argsRegDate := string(args[9])
-			argsChainAddr := string(args[10])
+			argsUserInfo := string(args[3])
+			argsStatus := string(args[4])
+			argsRegDate := string(args[5])
+			argsChainAddr := string(args[6])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreateUser(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsName), string(argsUserType), string(argsAddress), string(argsPhone), string(argsEmail), string(argsBank), string(argsAccountNo), string(argsStatus), string(argsRegDate), string(argsChainAddr))
+			msg := types.NewMsgCreateUser(clientCtx.GetFromAddress().String(), string(argsRecType), 
+				string(argsName), string(argsUserType), string(argsUserInfo), string(argsStatus), 
+				string(argsRegDate), string(argsChainAddr))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -48,9 +46,9 @@ func CmdCreateUser() *cobra.Command {
 
 func CmdUpdateUser() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-user [id] [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate] [chainAddr]",
+		Use:   "update-user [id] [recType] [name] [userType] [userInfo] [status] [regDate] [chainAddr]",
 		Short: "Update a user",
-		Args:  cobra.ExactArgs(12),
+		Args:  cobra.ExactArgs(8),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			id, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
@@ -60,21 +58,19 @@ func CmdUpdateUser() *cobra.Command {
 			argsRecType := string(args[1])
 			argsName := string(args[2])
 			argsUserType := string(args[3])
-			argsAddress := string(args[4])
-			argsPhone := string(args[5])
-			argsEmail := string(args[6])
-			argsBank := string(args[7])
-			argsAccountNo := string(args[8])
-			argsStatus := string(args[9])
-			argsRegDate := string(args[10])
-			argsChainAddr := string(args[11])
+			argsUserInfo := string(args[4])
+			argsStatus := string(args[5])
+			argsRegDate := string(args[6])
+			argsChainAddr := string(args[7])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgUpdateUser(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsName), string(argsUserType), string(argsAddress), string(argsPhone), string(argsEmail), string(argsBank), string(argsAccountNo), string(argsStatus), string(argsRegDate), string(argsChainAddr))
+			msg := types.NewMsgUpdateUser(clientCtx.GetFromAddress().String(), id, string(argsRecType), 
+				string(argsName), string(argsUserType), string(argsUserInfo), string(argsStatus), 
+				string(argsRegDate), string(argsChainAddr))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

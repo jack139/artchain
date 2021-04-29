@@ -164,13 +164,31 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数      | 类型   | 说明                       |
-| --------- | ------ | -------------------------- |
-| user_name | string | 用户名称                   |
-| user_type | string | 注册用户类型               |
-| referrer  | string | 推荐人的用户公钥（可为空） |
+| 参数          | 类型   | 必填 | 说明               |
+| ------------- | ------ | ---- | ------------------ |
+| login_name    | string | Y    | 登录名             |
+| user_type     | string | Y    | 注册用户类型       |
+| bank_acc_name | string |      | 银行开户姓名       |
+| bank_name     | string |      | 银行名称           |
+| bank_acc_no   | string |      | 银行账号           |
+| address       | string |      | 联系地址           |
+| phone         | string |      | 联系电话           |
+| email         | string |      | 电子邮件           |
+| referrer      | string |      | 推荐人的chain_addr |
 
-> user_type 取值："office" 事务所；"supplier" 供应商；"buyer" 企业用户。
+> user_type 取值：
+>
+> TRD 交易人
+>
+> AH 拍卖行（需审核）
+>
+> DEL 经销商（需审核）
+>
+> ART 艺术家（需审核）
+>
+> REV 评论家（需审核）
+
+
 
 返回结果
 
@@ -202,9 +220,10 @@ base64后结果：
 {
     'code': 0, 
     'data': {
-        'block': {'id': ''}, 
-        'mnemonic': 'path basic oblige aware sort prefer logic program differ badge reveal effort evoke fork clown before autumn frozen unusual lottery dawn swim exercise bread', 
-        'userkey': 'contract1eq3ppq7n7ukty6gm6v7pyfz2mls63x7n9q5v6r'}, 
+        'chain_addr': 'bid1art16207z4zw2ksmq6rjyxyvuugqlwcr8p8fw6lnv4', 
+        'height': '406', 
+        'mystery': 'mixture crew embark owner carpet topic dinosaur code rescue section gravity upset love ritual clog fat essence orient pride moral never illness access nasty'
+    }, 
     'msg': 'success'
 }
 ```

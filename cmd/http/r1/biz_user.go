@@ -73,11 +73,7 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		"USER", // recType string, 
 		userName, // name string, 
 		userType, // userType string, 
-		"", // address string, 
-		"", // phone string, 
-		"", // email string, 
-		"", // bank string, 
-		"", // accountNo string, 
+		"", // userInfo string, 
 		"ACTIVE", // status string, 
 		"", // regDate string, 
 		address, // chainAddr string,
@@ -120,7 +116,7 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 	// 返回区块id
 	resp := map[string]interface{}{
 		"height" : respData["height"].(string),  // 区块高度
-		"address" : address,  // 用户地址
+		"chain_addr" : address,  // 用户地址
 		"mystery" : mnemonic, // 机密串
 	}
 

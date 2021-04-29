@@ -11,12 +11,8 @@ message User {
   string recType = 3; 
   string name = 4; 
   string userType = 5; 
-  string address = 6; 
-  string phone = 7; 
-  string email = 8; 
-  string bank = 9; 
-  string accountNo = 10; 
-  string status = 11; 
-  string regDate = 12; 
-  string chainAddr = 13; 
+  string userInfo = 6; 
+  string status = 7; 
+  string regDate = 8; 
+  string chainAddr = 9; 
 }
