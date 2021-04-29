@@ -85,7 +85,7 @@ func CmdUpdateRequest() *cobra.Command {
 
 func CmdDeleteRequest() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-request [id] [recType] [itemId] [auctionHouseId] [SellerId] [requestDate] [reservePrice] [status] [openDate] [closeDate]",
+		Use:   "delete-request [id]",
 		Short: "Delete a request by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

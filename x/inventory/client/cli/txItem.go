@@ -91,7 +91,7 @@ func CmdUpdateItem() *cobra.Command {
 
 func CmdDeleteItem() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-item [id] [recType] [itemDesc] [itemDetail] [itemDate] [itemType] [itemSubject] [itemMedia] [itemSize] [itemImage] [AESKey] [itemBasePrice] [currentOwnerId]",
+		Use:   "delete-item [id]",
 		Short: "Delete a item by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -85,7 +85,7 @@ func CmdUpdateUser() *cobra.Command {
 
 func CmdDeleteUser() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-user [id] [recType] [name] [userType] [address] [phone] [email] [bank] [accountNo] [status] [regDate] [chainAddr]",
+		Use:   "delete-user [id]",
 		Short: "Delete a user by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -81,7 +81,7 @@ func CmdUpdateReview() *cobra.Command {
 
 func CmdDeleteReview() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-review [id] [recType] [itemId] [reviewerId] [reviewDetail] [reviewDate] [upCount] [downCount]",
+		Use:   "delete-review [id]",
 		Short: "Delete a review by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

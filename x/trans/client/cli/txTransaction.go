@@ -87,7 +87,7 @@ func CmdUpdateTransaction() *cobra.Command {
 
 func CmdDeleteTransaction() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-transaction [id] [recType] [auctionId] [itemId] [transType] [userId] [transDate] [hammerTime] [hammerPrice] [details] [status]",
+		Use:   "delete-transaction [id]",
 		Short: "Delete a transaction by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -81,7 +81,7 @@ func CmdUpdateBid() *cobra.Command {
 
 func CmdDeleteBid() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-bid [id] [recType] [auctionId] [bidNo] [itemId] [buyerId] [bidPrice] [bidTime]",
+		Use:   "delete-bid [id]",
 		Short: "Delete a bid by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
