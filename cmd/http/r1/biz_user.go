@@ -76,9 +76,6 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		userStatus = "ACTIVE"
 	}
 
-	// TODO: 检查 userName是否已经存在！
-
-
 	// 生成新用户密钥
 	address, mnemonic, err := cmdclient.AddUserAccount(helper.HttpCmd, userName, types.RewardRegister)
 	if err != nil {

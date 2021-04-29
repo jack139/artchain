@@ -30,9 +30,9 @@ func QueryBalance(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
-	pubkey, ok := (*reqData)["userkey"].(string)
+	pubkey, ok := (*reqData)["chain_addr"].(string)
 	if !ok {
-		helper.RespError(ctx, 9009, "need userkey")
+		helper.RespError(ctx, 9009, "need chain_addr")
 		return
 	}
 
@@ -46,7 +46,7 @@ func QueryBalance(ctx *fasthttp.RequestCtx) {
 	// 检查 用户地址 是否存在
 	_, err = helper.FetchKey(clientCtx.Keyring, pubkey)
 	if err != nil {
-		helper.RespError(ctx, 9001, "invalid userkey")
+		helper.RespError(ctx, 9001, "invalid chain_addr")
 		return
 	}
 

@@ -31,12 +31,11 @@ if __name__ == '__main__':
         'version'  : '1',
         'sign_type' : 'SHA256', 
         'data'     : {
-            #'userkey'   : 'contract1rsnyvzy9rdtwj807jnmxp2qlf9zg65kzk2fayu', # test1
-            #'userkey'   : 'contract1d2cq2a2f604mahf20hdv7453tqedh7mzhmz97c', # test2
-            'login_name' : 'test1',
-            'user_type' : 'TRD',
-            'email' : '111111@qq.com',
-            'referrer': 'bid1art111111111'
+            'chain_addr'   : 'bid1art1lxe2r042r4wmrrdc2vm3pkm9jqupyrmfjc98mh', # test1
+            #'login_name' : 'test1',
+            #'user_type' : 'TRD',
+            #'email' : '111111@qq.com',
+            #'referrer': 'bid1art111111111'
             #'block_id'  : '21', # id 
             #'height' : '210274'
         }
@@ -70,10 +69,10 @@ if __name__ == '__main__':
     pool = urllib3.PoolManager(num_pools=2, timeout=180, retries=False)
 
     host = 'http://%s:%s'%(hostname, port)
-    url = host+'/api/r1/biz/user/register'
-    #url = host+'/api/query_raw_block'
-    #url = host+'/api/query_balance'
     #url = host+'/api/test'
+    #url = host+'/api/r1/biz/user/register'
+    #url = host+'/api/query_raw_block'
+    url = host+'/api/r1/query/user/credit_balance'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)

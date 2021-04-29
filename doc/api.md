@@ -196,7 +196,7 @@ base64后结果：
 | ---- | ------ | --------------------------------------- |
 | code | int    | 状态代码，0 表示成功，非0 表示出错      |
 | msg  | string | 成功时返回success；出错时，返回出错信息 |
-| data | json   | 用户公钥、密码字符串                    |
+| data | json   | 用户链地址、密码字符串                  |
 
 请求示例
 
@@ -205,12 +205,14 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
-        "user_name": "test1", 
-        "user_type": "buyer"
+        "login_name": "test1", 
+        "user_type": "TRD", 
+        "email": "111111@qq.com", 
+        "referrer": "bid1art111111111"
     }, 
-    "timestamp": 1610692800, 
+    "timestamp": 1619679437, 
     "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
-    "sign_data": "MTZlODRlNGYyMWNiNTk1MzAxYWUyNjI0ODIzOWQxYWI1MjZmZmQzMDc3ZDU5ZmZiMGEzMWU2Y2QwOGE1NTdhOQ=="
+    "sign_data": "MmRkNDBjYmJiN2E0ZDI0OTRjNzE2NzMxYWUxODE3ZTlhMDM1YWMxZDhiZTgzM2E4NGU4YzJlMWI1YWJmMzA1MQ=="
 }
 ```
 
@@ -363,9 +365,9 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数    | 类型   | 说明     |
-| ------- | ------ | -------- |
-| userkey | string | 用户公钥 |
+| 参数    | 类型   | 说明       |
+| ------- | ------ | ---------- |
+| userkey | string | 用户链地址 |
 
 返回结果
 
@@ -382,7 +384,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
-        "userkey": "contract1lanrvzxd99xy00zjgxfjm5pdqhs5jv6h5z9mex"
+        "chain_addr": "contract1lanrvzxd99xy00zjgxfjm5pdqhs5jv6h5z9mex"
     }, 
     "timestamp": 1618295472, 
     "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
