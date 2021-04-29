@@ -17,6 +17,9 @@ service Query {
 	rpc UserAll(QueryAllUserRequest) returns (QueryAllUserResponse) {
 		option (google.api.http).get = "/jack139/artchain/person/user";
 	}
+	rpc UserByChainAddr(QueryGetUserByChainAddrRequest) returns (QueryGetUserByChainAddrResponse) {
+		option (google.api.http).get = "/jack139/artchain/person/user/{chainAddr}";
+	}
 
 }
 
@@ -36,4 +39,12 @@ message QueryAllUserRequest {
 message QueryAllUserResponse {
 	repeated User User = 1;
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetUserByChainAddrRequest {
+	string chainAddr = 1;
+}
+
+message QueryGetUserByChainAddrResponse {
+	repeated User User = 1;
 }

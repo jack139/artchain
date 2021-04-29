@@ -214,43 +214,137 @@ func (m *QueryAllUserResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
+type QueryGetUserByChainAddrRequest struct {
+	ChainAddr string `protobuf:"bytes,1,opt,name=chainAddr,proto3" json:"chainAddr,omitempty"`
+}
+
+func (m *QueryGetUserByChainAddrRequest) Reset()         { *m = QueryGetUserByChainAddrRequest{} }
+func (m *QueryGetUserByChainAddrRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetUserByChainAddrRequest) ProtoMessage()    {}
+func (*QueryGetUserByChainAddrRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_17fe3e7075bdc928, []int{4}
+}
+func (m *QueryGetUserByChainAddrRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetUserByChainAddrRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetUserByChainAddrRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetUserByChainAddrRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetUserByChainAddrRequest.Merge(m, src)
+}
+func (m *QueryGetUserByChainAddrRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetUserByChainAddrRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetUserByChainAddrRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetUserByChainAddrRequest proto.InternalMessageInfo
+
+func (m *QueryGetUserByChainAddrRequest) GetChainAddr() string {
+	if m != nil {
+		return m.ChainAddr
+	}
+	return ""
+}
+
+type QueryGetUserByChainAddrResponse struct {
+	User []*User `protobuf:"bytes,1,rep,name=User,json=user,proto3" json:"User,omitempty"`
+}
+
+func (m *QueryGetUserByChainAddrResponse) Reset()         { *m = QueryGetUserByChainAddrResponse{} }
+func (m *QueryGetUserByChainAddrResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetUserByChainAddrResponse) ProtoMessage()    {}
+func (*QueryGetUserByChainAddrResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_17fe3e7075bdc928, []int{5}
+}
+func (m *QueryGetUserByChainAddrResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetUserByChainAddrResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetUserByChainAddrResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetUserByChainAddrResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetUserByChainAddrResponse.Merge(m, src)
+}
+func (m *QueryGetUserByChainAddrResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetUserByChainAddrResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetUserByChainAddrResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetUserByChainAddrResponse proto.InternalMessageInfo
+
+func (m *QueryGetUserByChainAddrResponse) GetUser() []*User {
+	if m != nil {
+		return m.User
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryGetUserRequest)(nil), "jack139.artchain.person.QueryGetUserRequest")
 	proto.RegisterType((*QueryGetUserResponse)(nil), "jack139.artchain.person.QueryGetUserResponse")
 	proto.RegisterType((*QueryAllUserRequest)(nil), "jack139.artchain.person.QueryAllUserRequest")
 	proto.RegisterType((*QueryAllUserResponse)(nil), "jack139.artchain.person.QueryAllUserResponse")
+	proto.RegisterType((*QueryGetUserByChainAddrRequest)(nil), "jack139.artchain.person.QueryGetUserByChainAddrRequest")
+	proto.RegisterType((*QueryGetUserByChainAddrResponse)(nil), "jack139.artchain.person.QueryGetUserByChainAddrResponse")
 }
 
 func init() { proto.RegisterFile("person/query.proto", fileDescriptor_17fe3e7075bdc928) }
 
 var fileDescriptor_17fe3e7075bdc928 = []byte{
-	// 405 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0x4d, 0x6b, 0xdb, 0x30,
-	0x18, 0xc7, 0x23, 0x2f, 0xdb, 0x40, 0x83, 0xc1, 0xb4, 0xc1, 0x46, 0x58, 0xbc, 0x61, 0x96, 0x6d,
-	0x84, 0x4d, 0xc2, 0xc9, 0x69, 0xc7, 0x8c, 0xb1, 0xd0, 0x5b, 0x1b, 0xe8, 0xa5, 0xd0, 0x83, 0xec,
-	0x08, 0x47, 0xad, 0x63, 0x39, 0x96, 0x5c, 0x1a, 0x4a, 0x2f, 0xbd, 0x97, 0x96, 0xf6, 0x53, 0xf4,
-	0x9b, 0xf4, 0x18, 0xe8, 0xa5, 0xc7, 0x92, 0xf4, 0x83, 0x14, 0x5b, 0x4a, 0xeb, 0x34, 0x4d, 0x93,
-	0xa3, 0xcd, 0xff, 0xe5, 0xf7, 0xe8, 0x79, 0x20, 0x8a, 0x59, 0x22, 0x45, 0x44, 0x06, 0x29, 0x4b,
-	0x86, 0x38, 0x4e, 0x84, 0x12, 0xe8, 0xe3, 0x0e, 0xf5, 0x77, 0xdd, 0xe6, 0x1f, 0x4c, 0x13, 0xe5,
-	0xf7, 0x28, 0x8f, 0xb0, 0x16, 0x55, 0x3e, 0x07, 0x42, 0x04, 0x21, 0x23, 0x34, 0xe6, 0x84, 0x46,
-	0x91, 0x50, 0x54, 0x71, 0x11, 0x49, 0x6d, 0xab, 0xd4, 0x7d, 0x21, 0xfb, 0x42, 0x12, 0x8f, 0x4a,
-	0xa6, 0xf3, 0xc8, 0x9e, 0xeb, 0x31, 0x45, 0x5d, 0x12, 0xd3, 0x80, 0x47, 0xb9, 0xd8, 0x68, 0xdf,
-	0x99, 0xda, 0x54, 0xb2, 0x44, 0xff, 0x72, 0x6a, 0xf0, 0xfd, 0x46, 0x66, 0x6a, 0x33, 0xb5, 0x29,
-	0x59, 0xd2, 0x61, 0x83, 0x94, 0x49, 0x85, 0xde, 0x42, 0x8b, 0x77, 0x3f, 0x81, 0xaf, 0xe0, 0x67,
-	0xb9, 0x63, 0xf1, 0xae, 0xb3, 0x06, 0x3f, 0xcc, 0xca, 0x64, 0x2c, 0x22, 0xc9, 0x90, 0x0b, 0xcb,
-	0xd9, 0x77, 0xae, 0x7c, 0xd3, 0xa8, 0xe2, 0x05, 0x33, 0xe0, 0xdc, 0x54, 0xce, 0x7a, 0x9d, 0x6d,
-	0xd3, 0xd8, 0x0a, 0xc3, 0x62, 0xe3, 0x7f, 0x08, 0x1f, 0x78, 0x4d, 0xde, 0x77, 0xac, 0x87, 0xc3,
-	0xd9, 0x70, 0x58, 0x3f, 0x96, 0x19, 0x0e, 0xaf, 0xd3, 0x80, 0x19, 0x6f, 0xa7, 0xe0, 0x74, 0xce,
-	0x80, 0x41, 0xbd, 0xcf, 0x9f, 0x43, 0x7d, 0xb1, 0x22, 0x2a, 0x6a, 0xcf, 0x30, 0x59, 0x39, 0xd3,
-	0x8f, 0xa5, 0x4c, 0xba, 0xaf, 0x08, 0xd5, 0xb8, 0xb0, 0xe0, 0xcb, 0x1c, 0x0a, 0x9d, 0x00, 0x8d,
-	0x81, 0x7e, 0x2d, 0x04, 0x78, 0x62, 0x1f, 0x95, 0xdf, 0x2b, 0xaa, 0x75, 0xb7, 0x53, 0x3f, 0xba,
-	0xba, 0x3d, 0xb7, 0xbe, 0x21, 0x87, 0x18, 0x1b, 0x99, 0xda, 0x48, 0xe1, 0x04, 0xc8, 0x01, 0xef,
-	0x1e, 0xa2, 0x63, 0x00, 0x5f, 0x67, 0xe6, 0x56, 0x18, 0x2e, 0x83, 0x9a, 0x5d, 0xd9, 0x32, 0xa8,
-	0x47, 0x0b, 0x70, 0x6a, 0x39, 0xd4, 0x17, 0x54, 0x7d, 0x16, 0xea, 0xef, 0xbf, 0xcb, 0xb1, 0x0d,
-	0x46, 0x63, 0x1b, 0xdc, 0x8c, 0x6d, 0x70, 0x3a, 0xb1, 0x4b, 0xa3, 0x89, 0x5d, 0xba, 0x9e, 0xd8,
-	0xa5, 0xad, 0x7a, 0xc0, 0x55, 0x2f, 0xf5, 0xb0, 0x2f, 0xfa, 0xf3, 0x11, 0xfb, 0xd3, 0x10, 0x35,
-	0x8c, 0x99, 0xf4, 0x5e, 0xe5, 0xe7, 0xdd, 0xbc, 0x0b, 0x00, 0x00, 0xff, 0xff, 0x43, 0xca, 0xf1,
-	0x54, 0x6a, 0x03, 0x00, 0x00,
+	// 473 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xcf, 0x6f, 0xd3, 0x30,
+	0x14, 0xc7, 0xeb, 0xae, 0x80, 0x66, 0x24, 0x10, 0x06, 0x09, 0x54, 0x6d, 0x19, 0xb2, 0x18, 0x3f,
+	0x0a, 0xd8, 0xca, 0x76, 0x00, 0x2e, 0x48, 0x1d, 0x88, 0x89, 0x1b, 0x54, 0x70, 0x41, 0xe2, 0xe0,
+	0x26, 0x56, 0x66, 0xc8, 0xe2, 0x2c, 0x76, 0x10, 0x15, 0xda, 0x85, 0x3b, 0x02, 0xc1, 0x1f, 0xc3,
+	0xbf, 0xc0, 0x71, 0x12, 0x17, 0x8e, 0xa8, 0xe1, 0x0f, 0x41, 0xb1, 0xdd, 0x2e, 0x69, 0x29, 0x29,
+	0x1c, 0x6b, 0xbd, 0xcf, 0x7b, 0x9f, 0xef, 0xeb, 0x53, 0x20, 0x4a, 0x79, 0xa6, 0x64, 0x42, 0x0f,
+	0x72, 0x9e, 0x8d, 0x48, 0x9a, 0x49, 0x2d, 0xd1, 0xc5, 0x57, 0x2c, 0x78, 0xed, 0x6f, 0xdf, 0x23,
+	0x2c, 0xd3, 0xc1, 0x1e, 0x13, 0x09, 0xb1, 0x45, 0xdd, 0xb5, 0x48, 0xca, 0x28, 0xe6, 0x94, 0xa5,
+	0x82, 0xb2, 0x24, 0x91, 0x9a, 0x69, 0x21, 0x13, 0x65, 0xb1, 0x6e, 0x2f, 0x90, 0x6a, 0x5f, 0x2a,
+	0x3a, 0x64, 0x8a, 0xdb, 0x7e, 0xf4, 0x8d, 0x3f, 0xe4, 0x9a, 0xf9, 0x34, 0x65, 0x91, 0x48, 0x4c,
+	0xb1, 0xab, 0x3d, 0xe7, 0xc6, 0xe6, 0x8a, 0x67, 0xf6, 0x09, 0x6f, 0xc2, 0xf3, 0x4f, 0x4b, 0x68,
+	0x97, 0xeb, 0xe7, 0x8a, 0x67, 0x03, 0x7e, 0x90, 0x73, 0xa5, 0xd1, 0x19, 0xd8, 0x16, 0xe1, 0x25,
+	0x70, 0x19, 0x5c, 0xef, 0x0c, 0xda, 0x22, 0xc4, 0x8f, 0xe1, 0x85, 0x7a, 0x99, 0x4a, 0x65, 0xa2,
+	0x38, 0xf2, 0x61, 0xa7, 0xfc, 0x6d, 0x2a, 0x4f, 0x6f, 0xad, 0x93, 0x05, 0x19, 0x88, 0x81, 0x3a,
+	0xe5, 0x5c, 0xfc, 0xd2, 0x4d, 0xec, 0xc7, 0x71, 0x75, 0xe2, 0x23, 0x08, 0x8f, 0x7d, 0x5d, 0xbf,
+	0xab, 0xc4, 0x86, 0x23, 0x65, 0x38, 0x62, 0x97, 0xe5, 0xc2, 0x91, 0x27, 0x2c, 0xe2, 0x8e, 0x1d,
+	0x54, 0x48, 0xfc, 0x19, 0x38, 0xd5, 0x69, 0xff, 0x39, 0xd5, 0x95, 0x25, 0x55, 0xd1, 0x6e, 0xcd,
+	0xa9, 0x6d, 0x9c, 0xae, 0x35, 0x3a, 0xd9, 0x79, 0x35, 0xa9, 0xfb, 0xd0, 0xab, 0xae, 0x6f, 0x67,
+	0xf4, 0xa0, 0x9c, 0xd8, 0x0f, 0xc3, 0x69, 0xfc, 0x35, 0xb8, 0x1a, 0x4c, 0xde, 0x4c, 0xfa, 0xd5,
+	0xc1, 0xf1, 0x03, 0x7e, 0x06, 0x37, 0x16, 0xf2, 0xff, 0x1d, 0x6f, 0xab, 0x58, 0x81, 0x27, 0x4c,
+	0x5b, 0xf4, 0x11, 0x58, 0x1a, 0xdd, 0x5a, 0xc8, 0xfd, 0xe1, 0x4a, 0xba, 0xb7, 0x97, 0xac, 0xb6,
+	0x8a, 0xb8, 0xf7, 0xfe, 0xfb, 0xaf, 0x2f, 0xed, 0x2b, 0x08, 0x53, 0x87, 0xd1, 0x09, 0x46, 0x2b,
+	0x87, 0x49, 0xdf, 0x89, 0xf0, 0x10, 0x7d, 0x00, 0xf0, 0x54, 0x09, 0xf7, 0xe3, 0xb8, 0x49, 0xaa,
+	0x7e, 0x48, 0x4d, 0x52, 0x33, 0x67, 0x81, 0x37, 0x8d, 0xd4, 0x06, 0x5a, 0xff, 0xab, 0x14, 0xfa,
+	0x0a, 0xe0, 0xd9, 0x99, 0xd5, 0xa3, 0x3b, 0x4b, 0xc5, 0x9f, 0xff, 0xb3, 0xbb, 0x77, 0xff, 0x1d,
+	0x74, 0xb6, 0xbe, 0xb1, 0xbd, 0x89, 0x6e, 0x34, 0xac, 0x70, 0x7a, 0x3a, 0x87, 0x3b, 0x0f, 0xbf,
+	0x8d, 0x3d, 0x70, 0x34, 0xf6, 0xc0, 0xcf, 0xb1, 0x07, 0x3e, 0x15, 0x5e, 0xeb, 0xa8, 0xf0, 0x5a,
+	0x3f, 0x0a, 0xaf, 0xf5, 0xa2, 0x17, 0x09, 0xbd, 0x97, 0x0f, 0x49, 0x20, 0xf7, 0xe7, 0xdb, 0xbd,
+	0x9d, 0x34, 0xd4, 0xa3, 0x94, 0xab, 0xe1, 0x49, 0xf3, 0xb9, 0xd8, 0xfe, 0x1d, 0x00, 0x00, 0xff,
+	0xff, 0x12, 0xae, 0x85, 0xb2, 0xba, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -268,6 +362,7 @@ type QueryClient interface {
 	// this line is used by starport scaffolding # 2
 	User(ctx context.Context, in *QueryGetUserRequest, opts ...grpc.CallOption) (*QueryGetUserResponse, error)
 	UserAll(ctx context.Context, in *QueryAllUserRequest, opts ...grpc.CallOption) (*QueryAllUserResponse, error)
+	UserByChainAddr(ctx context.Context, in *QueryGetUserByChainAddrRequest, opts ...grpc.CallOption) (*QueryGetUserByChainAddrResponse, error)
 }
 
 type queryClient struct {
@@ -296,11 +391,21 @@ func (c *queryClient) UserAll(ctx context.Context, in *QueryAllUserRequest, opts
 	return out, nil
 }
 
+func (c *queryClient) UserByChainAddr(ctx context.Context, in *QueryGetUserByChainAddrRequest, opts ...grpc.CallOption) (*QueryGetUserByChainAddrResponse, error) {
+	out := new(QueryGetUserByChainAddrResponse)
+	err := c.cc.Invoke(ctx, "/jack139.artchain.person.Query/UserByChainAddr", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// this line is used by starport scaffolding # 2
 	User(context.Context, *QueryGetUserRequest) (*QueryGetUserResponse, error)
 	UserAll(context.Context, *QueryAllUserRequest) (*QueryAllUserResponse, error)
+	UserByChainAddr(context.Context, *QueryGetUserByChainAddrRequest) (*QueryGetUserByChainAddrResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -312,6 +417,9 @@ func (*UnimplementedQueryServer) User(ctx context.Context, req *QueryGetUserRequ
 }
 func (*UnimplementedQueryServer) UserAll(ctx context.Context, req *QueryAllUserRequest) (*QueryAllUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserAll not implemented")
+}
+func (*UnimplementedQueryServer) UserByChainAddr(ctx context.Context, req *QueryGetUserByChainAddrRequest) (*QueryGetUserByChainAddrResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserByChainAddr not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -354,6 +462,24 @@ func _Query_UserAll_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_UserByChainAddr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetUserByChainAddrRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).UserByChainAddr(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/jack139.artchain.person.Query/UserByChainAddr",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).UserByChainAddr(ctx, req.(*QueryGetUserByChainAddrRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "jack139.artchain.person.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -365,6 +491,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserAll",
 			Handler:    _Query_UserAll_Handler,
+		},
+		{
+			MethodName: "UserByChainAddr",
+			Handler:    _Query_UserByChainAddr_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -518,6 +648,73 @@ func (m *QueryAllUserResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetUserByChainAddrRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetUserByChainAddrRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetUserByChainAddrRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.ChainAddr) > 0 {
+		i -= len(m.ChainAddr)
+		copy(dAtA[i:], m.ChainAddr)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.ChainAddr)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetUserByChainAddrResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetUserByChainAddrResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetUserByChainAddrResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.User) > 0 {
+		for iNdEx := len(m.User) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.User[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -582,6 +779,34 @@ func (m *QueryAllUserResponse) Size() (n int) {
 	if m.Pagination != nil {
 		l = m.Pagination.Size()
 		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetUserByChainAddrRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ChainAddr)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetUserByChainAddrResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.User) > 0 {
+		for _, e := range m.User {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
 	}
 	return n
 }
@@ -929,6 +1154,172 @@ func (m *QueryAllUserResponse) Unmarshal(dAtA []byte) error {
 				m.Pagination = &query.PageResponse{}
 			}
 			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetUserByChainAddrRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetUserByChainAddrRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetUserByChainAddrRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainAddr", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ChainAddr = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetUserByChainAddrResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetUserByChainAddrResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetUserByChainAddrResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field User", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.User = append(m.User, &User{})
+			if err := m.User[len(m.User)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

@@ -132,3 +132,21 @@ func GetUserIDBytes(id uint64) []byte {
 func GetUserIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
+
+// GetUserByChainAddr returns all user with spicific chain_addr
+func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) (msgs []types.User) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
+	iterator := sdk.KVStorePrefixIterator(store, types.KeyPrefix(types.UserKey))
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var msg types.User
+		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &msg)
+		if msg.ChainAddr==chainAddr {
+			msgs = append(msgs, msg)
+		} 
+	}
+
+	return
+}

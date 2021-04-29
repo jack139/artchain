@@ -237,6 +237,55 @@ base64后结果：
 
 
 
+##### 3.1 查询用户信息
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/user/info
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数       | 类型   | 必填 | 说明       |
+| ---------- | ------ | ---- | ---------- |
+| chain_addr | string | Y    | 用户链地址 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 用户信息数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "chain_addr": "contract1lanrvzxd99xy00zjgxfjm5pdqhs5jv6h5z9mex"
+    }, 
+    "timestamp": 1618295472, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "MzI1YzE5ZWFkM2NmNTMzNjFiMWVmYTMwM2ZhZmU2MDQwMWU0NzJkM2QzMDA1OWM1YWI0ZjY5NjUwODQwMzg0ZA=="
+}
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+
+
 ##### 3.4 查询指定区块原始数据
 
 请求URL
@@ -249,10 +298,10 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数       | 类型   | 说明     |
-| ---------- | ------ | -------- |
-| chain_addr | string | 用户公钥 |
-| height     | string | 区块高度 |
+| 参数       | 类型   | 必填 | 说明     |
+| ---------- | ------ | ---- | -------- |
+| chain_addr | string | Y    | 用户公钥 |
+| height     | string | Y    | 区块高度 |
 
 返回结果
 
@@ -363,9 +412,9 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数    | 类型   | 说明       |
-| ------- | ------ | ---------- |
-| userkey | string | 用户链地址 |
+| 参数       | 类型   | 必填 | 说明       |
+| ---------- | ------ | ---- | ---------- |
+| chain_addr | string | Y    | 用户链地址 |
 
 返回结果
 

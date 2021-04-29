@@ -57,3 +57,20 @@ func (k Keeper) User(c context.Context, req *types.QueryGetUserRequest) (*types.
 
 	return &types.QueryGetUserResponse{User: &user}, nil
 }
+
+
+func (k Keeper) UserByChainAddr(c context.Context, req *types.QueryGetUserByChainAddrRequest) (*types.QueryGetUserByChainAddrResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var users []*types.User
+	ctx := sdk.UnwrapSDKContext(c)
+
+	r := k.GetUserByChainAddr(ctx, req.ChainAddr)
+	for i, _ := range r{
+		users = append(users, &r[i])
+	}
+
+	return &types.QueryGetUserByChainAddrResponse{User: users}, nil
+}

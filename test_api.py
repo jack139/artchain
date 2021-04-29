@@ -71,8 +71,9 @@ if __name__ == '__main__':
     host = 'http://%s:%s'%(hostname, port)
     #url = host+'/api/test'
     #url = host+'/api/r1/biz/user/register'
-    url = host+'/api/r1/query/block/rawdata'
+    #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
+    url = host+'/api/r1/query/user/info'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)
