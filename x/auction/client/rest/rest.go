@@ -34,12 +34,12 @@ func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 
 func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 4
-	r.HandleFunc("/auction/bids", createBidHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/auction/bids/{id}", updateBidHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/auction/bids/{id}", deleteBidHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/auction/bids", createBidHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/auction/bids/{id}", updateBidHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/auction/bids/{id}", deleteBidHandler(clientCtx)).Methods("POST")
 
-	r.HandleFunc("/auction/requests", createRequestHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/auction/requests/{id}", updateRequestHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/auction/requests/{id}", deleteRequestHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/auction/requests", createRequestHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/auction/requests/{id}", updateRequestHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/auction/requests/{id}", deleteRequestHandler(clientCtx)).Methods("POST")
 
 }

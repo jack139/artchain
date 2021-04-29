@@ -28,8 +28,8 @@ func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 
 func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 4
-	r.HandleFunc("/person/users", createUserHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/person/users/{id}", updateUserHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/person/users/{id}", deleteUserHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/person/users", createUserHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/person/users/{id}", updateUserHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/person/users/{id}", deleteUserHandler(clientCtx)).Methods("POST")
 
 }

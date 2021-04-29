@@ -34,12 +34,12 @@ func registerQueryRoutes(clientCtx client.Context, r *mux.Router) {
 
 func registerTxHandlers(clientCtx client.Context, r *mux.Router) {
 	// this line is used by starport scaffolding # 4
-	r.HandleFunc("/inventory/reviews", createReviewHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/inventory/reviews/{id}", updateReviewHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/inventory/reviews/{id}", deleteReviewHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/inventory/reviews", createReviewHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/inventory/reviews/{id}", updateReviewHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/inventory/reviews/{id}", deleteReviewHandler(clientCtx)).Methods("POST")
 
-	r.HandleFunc("/inventory/items", createItemHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/inventory/items/{id}", updateItemHandler(clientCtx)).Methods("POST")
-	r.HandleFunc("/inventory/items/{id}", deleteItemHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/inventory/items", createItemHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/inventory/items/{id}", updateItemHandler(clientCtx)).Methods("POST")
+	//r.HandleFunc("/inventory/items/{id}", deleteItemHandler(clientCtx)).Methods("POST")
 
 }
