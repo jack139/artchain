@@ -35,7 +35,7 @@ func getBlock(clientCtx client.Context, height *int64) ([]byte, error) {
 
 /* 指定区块查询交易 */
 func QueryRawBlock(ctx *fasthttp.RequestCtx) {
-	log.Println("query_raw_block")
+	log.Println("query_block_rawdata")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -48,9 +48,9 @@ func QueryRawBlock(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
-	pubkey, ok := (*reqData)["userkey"].(string)
+	pubkey, ok := (*reqData)["chain_addr"].(string)
 	if !ok {
-		helper.RespError(ctx, 9009, "need userkey")
+		helper.RespError(ctx, 9009, "need chain_addr")
 		return
 	}
 	height, ok := (*reqData)["height"].(string)

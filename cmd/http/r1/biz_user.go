@@ -22,7 +22,7 @@ action == 13
 */
 
 func BizRegister(ctx *fasthttp.RequestCtx) {
-	log.Println("biz_register")
+	log.Println("biz_user_register")
 
 	// POST 的数据
 	content := ctx.PostBody()

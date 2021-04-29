@@ -37,7 +37,7 @@ if __name__ == '__main__':
             #'email' : '111111@qq.com',
             #'referrer': 'bid1art111111111'
             #'block_id'  : '21', # id 
-            #'height' : '210274'
+            'height' : '6356'
         }
     }
 
@@ -71,8 +71,8 @@ if __name__ == '__main__':
     host = 'http://%s:%s'%(hostname, port)
     #url = host+'/api/test'
     #url = host+'/api/r1/biz/user/register'
-    #url = host+'/api/query_raw_block'
-    url = host+'/api/r1/query/user/credit_balance'
+    url = host+'/api/r1/query/block/rawdata'
+    #url = host+'/api/r1/query/user/credit_balance'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)

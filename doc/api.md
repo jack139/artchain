@@ -59,8 +59,8 @@
 | 查询出价清单         | /query/bid/list            |
 | 查询成交交易         | /query/transaction/list    |
 | 查询成交交易信息     | /query/transaction/info    |
-| 查询用户通证         | /query/user/credit_balance |
 | 查询指定区块原始数据 | /query/block/rawdata |
+| 查询用户通证 | /query/user/credit_balance |
 
 
 
@@ -251,10 +251,10 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数    | 类型   | 说明     |
-| ------- | ------ | -------- |
-| userkey | string | 用户公钥 |
-| height  | string | 区块高度 |
+| 参数       | 类型   | 说明     |
+| ---------- | ------ | -------- |
+| chain_addr | string | 用户公钥 |
+| height     | string | 区块高度 |
 
 返回结果
 
@@ -275,7 +275,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
-        "userkey": "contract1ghfcl0hm5pxu0q0jgnl2nw3hhmrkklgyh3lgvx", 
+        "chain_addr": "contract1ghfcl0hm5pxu0q0jgnl2nw3hhmrkklgyh3lgvx", 
         "height": '210274'
     }, 
     "timestamp": 1618284344, 
