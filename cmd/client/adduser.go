@@ -21,7 +21,18 @@ import (
 // 建新用户 user， 建key，建account
 // 返回： address, mnemonic
 func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, string, error) {
-	cmd.Flags().Set(flags.FlagFrom, types.FaucetAddress) // 设置 faucet 地址，用于转账
+	// 保存 --from 设置
+	originFlagFrom, err := cmd.Flags().GetString(flags.FlagFrom)
+	if err != nil {
+		return "", "", err
+	}
+	log.Println("FlagFrom:", originFlagFrom)
+
+	// 设置 faucet 地址，用于转账
+	cmd.Flags().Set(flags.FlagFrom, types.FaucetAddress) 
+	// 结束时恢复 --from 设置
+	defer cmd.Flags().Set(flags.FlagFrom, originFlagFrom) 
+
 	clientCtx, err := client.GetClientTxContext(cmd)
 	if err != nil {
 		return "", "", err
