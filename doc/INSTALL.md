@@ -17,7 +17,7 @@ artchaind start --log_level warn
 
 ### 启动http服务
 ```bash
-artchaind http 8888 --chain-id contract --from user0
+artchaind http 8888 --chain-id artchain --from user0
 ```
 
 ### 安装ipfs

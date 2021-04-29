@@ -33,12 +33,8 @@ if __name__ == '__main__':
         'data'     : {
             #'userkey'   : 'contract1rsnyvzy9rdtwj807jnmxp2qlf9zg65kzk2fayu', # test1
             #'userkey'   : 'contract1d2cq2a2f604mahf20hdv7453tqedh7mzhmz97c', # test2
-            'userkey_a' : 'contract1rsnyvzy9rdtwj807jnmxp2qlf9zg65kzk2fayu',
-            'userkey_b' : 'contract1d2cq2a2f604mahf20hdv7453tqedh7mzhmz97c',
-            'assets_id' : '12345678',
-            'data'      : 'abcdefghijklmn',
-            'user_name' : 'test16',
-            'user_type' : 'buyer',
+            'user_name' : 'test1',
+            'user_type' : 'TRD',
             #'block_id'  : '21', # id 
             #'height' : '210274'
         }
