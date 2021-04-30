@@ -47,6 +47,12 @@
 | 14       | 修改拍卖状态         | /biz/auction/change_status     |
 | 15               | 出价                 | /biz/auction/bid               |
 | 16       | 建立成交交易         | /biz/transaction/new           |
+| 17 | 审核用户 | /biz/audit/user |
+| 18 | 审核物品 | /biz/audit/item |
+| 19 | 审核照片 | /biz/audit/image |
+| 20 | 审核评价 | /biz/audit/review |
+| 21 | 审核拍卖请求 | /biz/audit/auction |
+| 22 | 审核成交交易 | /biz/audit/transaction |
 
 
 
@@ -196,6 +202,8 @@ base64后结果：
 > ART 艺术家（需审核）
 >
 > REV 评论家（需审核）
+
+
 
 返回结果
 
