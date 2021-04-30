@@ -24,43 +24,54 @@
 
 ​		链用户是具有提交区块链交易权限的用户，线下可定义为交易所。每个链用户通过一对密钥识别，同时使用此密钥进行数据的加密解密操作，因此链用户的密钥需要妥善保管。
 
-
 ### 三、 API提供的功能
 
+#### 业务处理接口
 
-| 接口功能                 | URI                        |
-| -------------------- | -------------------------- |
-| 注册用户             | **/biz/user/register**         |
-| 修改用户信息          | **/biz/user/modify**           |
-| 恢复已注册用户        | /biz/user/restore              |
-| 新建物品             | /biz/item/newquery             |
-| 修改物品信息          | /biz/item/modify               |
-| 生成物品NFT          | /biz/nft/new                   |
-| 添加物品评价          | /biz/review/new                |
-| 修改物品评价          | /biz/review/modify             |
-| 修改物品评价反馈信息   | /biz/review/feedback           |
-| 发起拍卖             | /biz/auction/new               |
-| 修改拍卖状态         | /biz/auction/change_status     |
-| 出价                 | /biz/auction/bid               |
-| 建立成交交易         | /biz/transaction/new           |
-| 查询用户信息         | **/query/user/info**       |
-| 验证用户身份          | /query/user/verify               |
-| 查询物品清单         | /query/item/list           |
-| 查询物品信息         | /query/item/info           |
-| 验证物品NFT          | /query/nft/verify                |
-| 查询物品评价清单     | /query/review/list         |
-| 查询物品评价信息     | /query/review/info         |
-| 查询拍卖行清单       | /query/auction_house/list  |
-| 查询拍卖行信息       | /query/auction_house/info  |
-| 查询拍卖清单         | /query/auction/list        |
-| 查询拍卖信息         | /query/auction/info        |
-| 查询出价信息         | /query/bid/info            |
-| 查询最高出价         | /query/bid/highest         |
-| 查询出价清单         | /query/bid/list            |
-| 查询成交交易         | /query/transaction/list    |
-| 查询成交交易信息     | /query/transaction/info    |
-| 查询指定区块原始数据 | **/query/block/rawdata** |
-| 查询用户通证 | **/query/user/credit_balance** |
+
+| 序号               | 接口功能                 | URI                        |
+| :------------------: | -------------------------- | -------------------------- |
+| 1            | 注册用户             | **/biz/user/register**         |
+| 2         | 修改用户信息          | **/biz/user/modify**           |
+| 3       | 恢复已注册用户        | /biz/user/restore              |
+| 4            | 新建物品             | /biz/item/new             |
+| 5         | 修改物品信息          | /biz/item/modify               |
+| 6 | 添加物品照片 | /biz/item/new_image |
+| 7 | 删除物品照片 | /biz/item/remove_image |
+| 8 | 修改物品所有人 | /biz/item/change_owner |
+| 9         | 生成物品NFT          | /biz/nft/new      |
+| 10        | 添加物品评价          | /biz/review/new                |
+| 11        | 修改物品评价          | /biz/review/modify             |
+| 12 | 修改物品评价反馈信息   | /biz/review/feedback           |
+| 13           | 发起拍卖             | /biz/auction/new               |
+| 14       | 修改拍卖状态         | /biz/auction/change_status     |
+| 15               | 出价                 | /biz/auction/bid               |
+| 16       | 建立成交交易         | /biz/transaction/new           |
+
+
+
+#### 查询接口
+
+| 序号               | 接口功能                 | URI                        |
+| :------------------: | -------------------------- | -------------------------- |
+| 1 | 查询用户信息         | **/query/user/info**       |
+| 2 | 验证用户身份          | /query/user/verify               |
+| 3 | 查询物品清单         | /query/item/list           |
+| 4 | 查询物品信息         | /query/item/info           |
+| 5 | 验证物品NFT          | /query/nft/verify                |
+| 6 | 查询物品评价清单     | /query/review/list         |
+| 7 | 查询物品评价信息     | /query/review/info         |
+| 8 | 查询拍卖行清单       | /query/auction_house/list  |
+| 9 | 查询拍卖行信息       | /query/auction_house/info  |
+| 10 | 查询拍卖清单         | /query/auction/list        |
+| 11 | 查询拍卖信息         | /query/auction/info        |
+| 12 | 查询出价信息         | /query/bid/info            |
+| 13 | 查询最高出价         | /query/bid/highest         |
+| 14 | 查询出价清单         | /query/bid/list            |
+| 15 | 查询成交交易         | /query/transaction/list    |
+| 16 | 查询成交交易信息     | /query/transaction/info    |
+| 17 | 查询指定区块原始数据 | **/query/block/rawdata** |
+| 18 | 查询用户通证 | **/query/user/credit_balance** |
 
 
 
@@ -290,6 +301,98 @@ base64后结果：
 
 
 
+##### 2.4 新建物品
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/item/new
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数       | 类型   | 必填 | 说明                                   |
+| ---------- | ------ | ---- | -------------------------------------- |
+| name       | string | Y    | 物品名称                               |
+| detail     | string |      | 物品描述                               |
+| date       | string | Y    | 出现年代                               |
+| bank_name  | string |      | 类型：原作、复制品                     |
+| subject    | string |      | 主题：古代、现代、风景、雕塑、人像，等 |
+| media      | string |      | 材质：石头、金属、瓷器、油画、素描、等 |
+| size       | string |      | 尺寸描述                               |
+| base_price | string | Y    | 最近交易价格                           |
+| owner_addr | string | Y    | 所有者的链地址                         |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 物品id                                  |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+##### 2.5 修改物品信息
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/item/modify
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数       | 类型   | 必填 | 说明                                   |
+| ---------- | ------ | ---- | -------------------------------------- |
+| id         | string | Y    | 物品id                                 |
+| name       | string |      | 物品名称                               |
+| detail     | string |      | 物品描述                               |
+| date       | string |      | 出现年代                               |
+| bank_name  | string |      | 类型：原作、复制品                     |
+| subject    | string |      | 主题：古代、现代、风景、雕塑、人像，等 |
+| media      | string |      | 材质：石头、金属、瓷器、油画、素描、等 |
+| size       | string |      | 尺寸描述                               |
+| base_price | string |      | 最近交易价格                           |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
 
 
 #### 3. 查询接口
@@ -363,7 +466,7 @@ base64后结果：
 
 
 
-##### 3.4 查询指定区块原始数据
+##### 3.17 查询指定区块原始数据
 
 请求URL
 
@@ -481,7 +584,7 @@ base64后结果：
 
 
 
-##### 3.5 查询用户通证
+##### 3.18 查询用户通证
 
 请求URL
 
