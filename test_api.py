@@ -10,12 +10,12 @@ urllib3.disable_warnings()
 #    img_data = f.read()
 #img_data = base64.b64encode(img_data).decode('utf-8')
 
-# 生成参数字符串, TODO: 空格也被过滤掉了，需完善！！！
+# 生成参数字符串
 def gen_param_str(param1):
     param = param1.copy()
     name_list = sorted(param.keys())
     if 'data' in name_list: # data 按 key 排序, 中文不进行性转义，与go保持一致
-        param['data'] = json.dumps(param['data'], sort_keys=True, ensure_ascii=False).replace(' ','')
+        param['data'] = json.dumps(param['data'], sort_keys=True, ensure_ascii=False, separators=(',', ':'))
     return '&'.join(['%s=%s'%(str(i), str(param[i])) for i in name_list if str(param[i])!=''])
 
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
             'login_name' : 'test3',
             #'user_type' : 'TRD',
             #'email' : '111112@qq.com',
-            'bank_acc_name' : '1testbank',
+            'bank_acc_name' : '1test bank',
             #'referrer': 'bid1art111111111'
             'height' : '985'
         }
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         #signature_str = sm2.SM2withSM3_sign_base64(sign_str)
         pass
 
-    #print(sign_str.encode('utf-8'))
+    print(sign_str.encode('utf-8'))
     #print(sha256)
     #print(signature_str)
 

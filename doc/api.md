@@ -31,7 +31,7 @@
 | 接口功能                 | URI                        |
 | -------------------- | -------------------------- |
 | 注册用户             | **/biz/user/register**         |
-| 修改用户信息          | /biz/user/modify               |
+| 修改用户信息          | **/biz/user/modify**           |
 | 恢复已注册用户        | /biz/user/restore              |
 | 新建物品             | /biz/item/newquery             |
 | 修改物品信息          | /biz/item/modify               |
