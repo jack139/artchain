@@ -218,13 +218,13 @@ base64后结果：
 
 ```json
 {
-    'code': 0, 
-    'data': {
-        'chain_addr': 'bid1art16207z4zw2ksmq6rjyxyvuugqlwcr8p8fw6lnv4', 
-        'height': '406', 
-        'mystery': 'mixture crew embark owner carpet topic dinosaur code rescue section gravity upset love ritual clog fat essence orient pride moral never illness access nasty'
-    }, 
-    'msg': 'success'
+    "code":0,
+    "data":{
+        "chain_addr":"bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s",
+        "height":"1259",
+        "mystery":"quantum erupt grit prefer decline rather horror patch cricket muffin method wet will mistake glance scene yard damage tag bundle owner method case paddle"
+    },
+    "msg":"success"
 }
 ```
 
@@ -268,7 +268,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
-        "chain_addr": "contract1lanrvzxd99xy00zjgxfjm5pdqhs5jv6h5z9mex"
+        "chain_addr": "bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s"
     }, 
     "timestamp": 1618295472, 
     "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
@@ -279,7 +279,24 @@ base64后结果：
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "user":{
+            "address":"",
+            "bank_acc_name":"",
+            "bank_acc_no":"",
+            "bank_name":"",
+            "chain_addr":"bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s",
+            "email":"111111@qq.com",
+            "login_name":"test1",
+            "phone":"",
+            "referrer":"bid1art111111111",
+            "reg_date":"2021-04-30 10:42:16"
+        }
+    },
+    "msg":"success"
+}
 ```
 
 
@@ -322,7 +339,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
-        "chain_addr": "contract1ghfcl0hm5pxu0q0jgnl2nw3hhmrkklgyh3lgvx", 
+        "chain_addr": "bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s", 
         "height": '210274'
     }, 
     "timestamp": 1618284344, 
@@ -335,66 +352,70 @@ base64后结果：
 
 ```json
 {
-    'code': 0, 
-    'data': {
-        'blcok': {
-            'block': {
-                'data': {
-                    'txs': ['Co0CCooCCiwvamFjazEzOS5jb250cmFjdC5jb250cmFjdC5Nc2dDcmVhdGVDb250cmFjdBLZAQovY29udHJhY3QxOHpmZHNqem44dDUwMHF1NDNjcHhocjlzenMyMjZyODh1OGhseTkSBDEyMzQaL2NvbnRyYWN0MWxhbnJ2enhkOTl4eTAwempneGZqbTVwZHFoczVqdjZoNXo5bWV4Ii9jb250cmFjdDFnaGZjbDBobTVweHUwcTBqZ25sMm53M2hobXJra2xneWgzbGd2eCoCMTIyOnsiaW1hZ2UiOiJRbVFXdVg3bXdFNUxEdGpja2M3M3ZpV1o3TEJpVTRnRW5YcXRKdkMyN1JSUnlZIn0SWApQCkYKHy9jb3Ntb3MuY3J5cHRvLnNlY3AyNTZrMS5QdWJLZXkSIwohA/6+qwsJW0bHd0OaCqa2Mfxr1lRQGE9NtS/+66lG9EO7EgQKAggBGAMSBBDAmgwaQAbZAl1RUh8EdAAWDWqx+MKKPrZ9JRW0PxgdTAdVWKT1OE8xw3Cq3wuUiuTCAajsEmCKjKeqcvz3UJC5eL1O93U=']
-                }, 
-                'evidence': {'evidence': None}, 
-                'header': {
-                    'app_hash': '767B1E1A1F42FB08187284E3831E4065AE42F2EA04C55B7EE84C8856E95BECD0', 
-                    'chain_id': 'contract', 
-                    'consensus_hash': '048091BC7DDC283F77BFBF91D73C44DA58C3DF8A9CBC867405D8B7F3DAADA22F', 
-                    'data_hash': '71FC654A49D737F32092B64E32DE7569A072EAAEEB0DC0E4C2C16331D0672414', 
-                    'evidence_hash': 'E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855', 
-                    'height': '210274', 
-                    'last_block_id': {
-                        'hash': '4BB4962E7A1462DC665A888652652D652C21E24DF994E9260578093C8F7794A5', 
-                        'parts': {
-                            'hash': '35C561892C4B3F789D0AA714F8B62EBA1AE97B1A2106523C20F91111021CB3D0', 
-                            'total': 1
+    "code":0,
+    "data":{
+        "blcok":{
+            "block":{
+                "data":{
+                    "txs":[
+                        "CqwCCqkCCiYvamFjazEzOS5hcnRjaGFpbi5wZXJzb24uTXNnQ3JlYXRlVXNlchL+AQouYmlkMWFydDEzZTlqdjU4enNtZnh3dWRobjdtczR3amwycWhmY2pzODZmcHIzaxIEVVNFUhoFdGVzdDIiA1RSRCpteyJiYW5rX2FjY19uYW1lIjoiIiwiYmFua19hY2Nfbm8iOiIiLCJiYW5rX25hbWUiOiIiLCJjb250YWN0X2FkZHJlc3MiOiIiLCJlbWFpbCI6IiIsInBob25lIjoiIiwicmVmZXJyZXIiOiIifTIGQUNUSVZFOhMyMDIxLTA0LTMwIDExOjAzOjQ4Qi5iaWQxYXJ0MWdhcHFnMzdjZDd5ZWNrcWhkc2o3Z2pkc21wYWZkajQwNGhqcGUwElgKUApGCh8vY29zbW9zLmNyeXB0by5zZWNwMjU2azEuUHViS2V5EiMKIQLdwByqNVe+df4QZR/Yq8t2UoXYFaWxQ0munbSo1mkdoBIECgIIARgCEgQQwJoMGkCnfSDF4ZLtXXGP1F+tMGThtkboS3iCIhc0oaOTYjg77RL76b4WurfAObKDZbR+QsUqFGoVt7OyO0s3tLQbK9di"
+                    ]
+                },
+                "evidence":{
+                    "evidence":null
+                },
+                "header":{
+                    "app_hash":"AF4548DF024EE021AC7A6E35648976E6552488509F701E06265CBD3E4081FEDA",
+                    "chain_id":"artchain",
+                    "consensus_hash":"048091BC7DDC283F77BFBF91D73C44DA58C3DF8A9CBC867405D8B7F3DAADA22F",
+                    "data_hash":"07978E0B458CFB2C5F062FA919C2CD0F92C098AB54AF521B47EBE549F372DA07",
+                    "evidence_hash":"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                    "height":"1259",
+                    "last_block_id":{
+                        "hash":"FC84079FA9CC64F429CF06FBABF415F110970FC91DCCCE86B4F2ABCAFF253AAE",
+                        "parts":{
+                            "hash":"7009EA8E692ECAB0B348B895E04E8D210C7304B5E76BE5A8A1D276C355652894",
+                            "total":1
                         }
-                    }, 
-                    'last_commit_hash': '3654C6C1A7BB84C44FFDCE14ACD2F3983FA4BE6678E13B99ED890845C1709E66', 
-                    'last_results_hash': 'E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855', 
-                    'next_validators_hash': '98B670043EDB03D07C4096C7DE5BC389EA11DB382A7E501F4635F7B73482C078', 
-                    'proposer_address': '627C9E0096F61C1A40A980781B38B3CFC7B32E93', 
-                    'time': '2021-04-09T09:03:37.86117745Z', 
-                    'validators_hash': '98B670043EDB03D07C4096C7DE5BC389EA11DB382A7E501F4635F7B73482C078', 
-                    'version': {'block': '11'}
-                }, 
-                'last_commit': {
-                    'block_id': {
-                        'hash': '4BB4962E7A1462DC665A888652652D652C21E24DF994E9260578093C8F7794A5', 
-                        'parts': {
-                            'hash': '35C561892C4B3F789D0AA714F8B62EBA1AE97B1A2106523C20F91111021CB3D0', 
-                            'total': 1
+                    },
+                    "last_commit_hash":"4AF3B0FDAEFED4A1EAD4356495696A4EE9A055452642CAD7E1CAE0BDD14BFEFA",
+                    "last_results_hash":"14D9AFD75C7C2F0341E2EBB0E77B75F5A6B5919EB008DB544DB3D38AAC067A89",
+                    "next_validators_hash":"B908A599F87E13F27706AFD4E3FC1121EF6DF4DC4DBFD9C49A579091413A0A7D",
+                    "proposer_address":"698C00E52A944F1C7A198ECAA9AA3FD9326CADAB",
+                    "time":"2021-04-30T03:03:48.446392688Z",
+                    "validators_hash":"B908A599F87E13F27706AFD4E3FC1121EF6DF4DC4DBFD9C49A579091413A0A7D",
+                    "version":{"block":"11"}
+                },
+                "last_commit":{
+                    "block_id":{
+                        "hash":"FC84079FA9CC64F429CF06FBABF415F110970FC91DCCCE86B4F2ABCAFF253AAE",
+                        "parts":{
+                            "hash":"7009EA8E692ECAB0B348B895E04E8D210C7304B5E76BE5A8A1D276C355652894",
+                            "total":1
                         }
-                    }, 
-                    'height': '210273', 
-                    'round': 0, 
-                    'signatures': [
+                    },
+                    "height":"1258",
+                    "round":0,
+                    "signatures":[
                         {
-                            'block_id_flag': 2, 
-                            'signature': 'SwbBqVdczrfxTrvwCCUykvl2ZBM48MYyaGsYFirj4MksyWLI9hZSOMoHjKQqB7BxeDXaPbjqpyUBSsxHTWfbBw==', 
-                            'timestamp': '2021-04-09T09:03:37.86117745Z', 
-                            'validator_address': '627C9E0096F61C1A40A980781B38B3CFC7B32E93'
+                            "block_id_flag":2,
+                            "signature":"c+7wxW2QLxzwKdWshsZBQ3bko5pl2hqLRy9/gpXwKZDwrp5lVjJx+ltfTiwpUuvmw3K2P+QMgQlG9tAOSb7HDQ==",
+                            "timestamp":"2021-04-30T03:03:48.446392688Z",
+                            "validator_address":"698C00E52A944F1C7A198ECAA9AA3FD9326CADAB"
                         }
                     ]
                 }
-            }, 
-            'block_id': {
-                'hash': '3691B91FC6B22CB271AC0B20135200112716605F57F8C85C609FE4C2908011B1', 
-                'parts': {
-                    'hash': 'E2B3B49B97634892FD230C05F2D6116055070BF1043DE57C8C32C19647E19194', 
-                    'total': 1
+            },
+            "block_id":{
+                "hash":"E7835037816A9FF2835C0DAFFF794216B397478254D067FC7B4C04EB3AE9E583",
+                "parts":{
+                    "hash":"7E139A4B6A98100E0938C99CCB1889A9E5FE93DB6429EB6ACFD39BD4C14F9C06",
+                    "total":1
                 }
             }
         }
-    }, 
-    'msg': 'success'
+    },
+    "msg":"success"
 }
 ```
 
@@ -431,7 +452,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
-        "chain_addr": "contract1lanrvzxd99xy00zjgxfjm5pdqhs5jv6h5z9mex"
+        "chain_addr": "bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s"
     }, 
     "timestamp": 1618295472, 
     "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
@@ -443,14 +464,14 @@ base64后结果：
 
 ```json
 {
-    'code': 0, 
-    'data': {
-        'blcok': {
-            'amount': '20',   /* 用户通证数量 */
-            'denom': 'credit' /* 通证单位 */
+    "code":0,
+    "data":{
+        "blcok":{
+            "amount":"1",
+            "denom":"credit"
         }
-    }, 
-    'msg': 'success'
+    },
+    "msg":"success"
 }
 ```
 

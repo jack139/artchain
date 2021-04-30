@@ -32,11 +32,11 @@ if __name__ == '__main__':
         'sign_type' : 'SHA256', 
         'data'     : {
             'chain_addr'   : 'bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s', # test1
-            #'login_name' : 'test1',
+            #'login_name' : 'test2',
             #'user_type' : 'TRD',
             #'email' : '111111@qq.com',
             #'referrer': 'bid1art111111111'
-            #'height' : '51'
+            'height' : '1259'
         }
     }
 
@@ -71,8 +71,8 @@ if __name__ == '__main__':
     #url = host+'/api/test'
     #url = host+'/api/r1/biz/user/register'
     #url = host+'/api/r1/query/block/rawdata'
-    #url = host+'/api/r1/query/user/credit_balance'
-    url = host+'/api/r1/query/user/info'
+    url = host+'/api/r1/query/user/credit_balance'
+    #url = host+'/api/r1/query/user/info'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)
@@ -80,6 +80,7 @@ if __name__ == '__main__':
 
     print(r.status)
     if r.status==200:
-        print(json.loads(r.data.decode('utf-8')))
+        #print(json.loads(r.data.decode('utf-8')))
+        print(r.data.decode('utf-8'))
     else:
         print(r.data)

@@ -125,13 +125,14 @@ func unmarshalUser(reqData *map[string]interface{}, user string) (*map[string]in
 	respData = map[string] interface{} {
 		"chain_addr": item["chainAddr"],
 		"login_name": item["name"],
-		"back_acc_name": (item["userInfo"].(map[string]interface{}))["back_acc_name"],
-		"bank_name": (item["userInfo"].(map[string]interface{}))["back_name"],
-		"bank_acc_no": (item["userInfo"].(map[string]interface{}))["back_acc_no"],
-		"address": (item["userInfo"].(map[string]interface{}))["address"],
+		"bank_acc_name": (item["userInfo"].(map[string]interface{}))["bank_acc_name"],
+		"bank_name": (item["userInfo"].(map[string]interface{}))["bank_name"],
+		"bank_acc_no": (item["userInfo"].(map[string]interface{}))["bank_acc_no"],
+		"address": (item["userInfo"].(map[string]interface{}))["contact_address"],
 		"phone": (item["userInfo"].(map[string]interface{}))["phone"],
 		"email": (item["userInfo"].(map[string]interface{}))["email"],
 		"referrer": (item["userInfo"].(map[string]interface{}))["referrer"],
+		"reg_date": item["regDate"],
 	}
 
 	return &respData, nil
