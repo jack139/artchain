@@ -57,9 +57,9 @@ if __name__ == '__main__':
         #signature_str = sm2.SM2withSM3_sign_base64(sign_str)
         pass
 
-    print(sign_str.encode('utf-8'))
-    print(sha256)
-    print(signature_str)
+    #print(sign_str.encode('utf-8'))
+    #print(sha256)
+    #print(signature_str)
 
     body['sign_data'] = signature_str
 

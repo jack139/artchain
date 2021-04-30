@@ -256,17 +256,36 @@ base64后结果：
 | ---- | ------ | --------------------------------------- |
 | code | int    | 状态代码，0 表示成功，非0 表示出错      |
 | msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块的高度                          |
 
 请求示例
 
 ```json
-
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "chain_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "login_name": "test3", 
+        "bank_acc_name": "1testbank", 
+        "height": "985"
+    }, 
+    "timestamp": 1619767850, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "M2MyMDU1ZmIzZTE5YjY1ZDc3YjBhYWVkZjczNTVjYTIxYWRiZDdmN2VlNjQxODUyYmJlNTQxNzIyMWY4NzlmNA=="
+}
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "height":"1010"
+    },
+    "msg":"success"
+}
 ```
 
 
