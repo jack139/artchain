@@ -86,7 +86,7 @@ func processData(item0 *map[string]interface{}, user string) (*map[string]interf
 func unmarshalData(reqData *map[string]interface{}, user string) (*map[string]interface{}, error) {
 	var respData map[string]interface{}
 
-	data := (*reqData)["Contract"].(map[string]interface{})
+	data := (*reqData)["User"].(map[string]interface{})
 
 	// 检查 data 字段是否正常
 	_, ok := data["data"]
@@ -98,36 +98,5 @@ func unmarshalData(reqData *map[string]interface{}, user string) (*map[string]in
 	}
 
 	return processData(&data, user)
-}
-
-/* data字段是已序列化的json串，反序列化一下，针对数据列表 */
-func unmarshalDataList(reqData *map[string]interface{}, user string) (*[]map[string]interface{}, error) {
-	var respData []map[string]interface{}
-
-	//log.Printf("id: %v\n", ((*reqData)["Contract"].([]interface{})[0]).(map[string]interface{})["id"])
-
-	dataList := (*reqData)["Contract"].([]interface{})
-
-	// 处理data字段
-	for _, item0 := range dataList {
-		item := item0.(map[string]interface{})
-
-		// 检查 data 字段是否正常
-		_, ok := item["data"]
-		if !ok {
-			continue
-		}
-		if !strings.HasPrefix(item["data"].(string), "{") {
-			continue
-		}
-
-		new_item, err := processData(&item, user)
-		if err != nil {
-			return nil, err
-		}
-
-		respData = append(respData, *new_item)
-	}
-	return &respData, nil
 }
 

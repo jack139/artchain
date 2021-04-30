@@ -67,6 +67,9 @@ func (k Keeper) AppendUser(
 	value := k.cdc.MustMarshalBinaryBare(&user)
 	store.Set(GetUserIDBytes(user.Id), value)
 
+	// 添加chainAddr到id的索引
+	store.Set([]byte(chainAddr), GetUserIDBytes(user.Id))
+
 	// Update user count
 	k.SetUserCount(ctx, count+1)
 
@@ -133,20 +136,32 @@ func GetUserIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
 
-// GetUserByChainAddr returns all user with spicific chain_addr
-func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) (msgs []types.User) {
+
+// 使用chainAddr取得用户，使用索引 ChainAddr --> Id
+func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) types.User {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
-	iterator := sdk.KVStorePrefixIterator(store, types.KeyPrefix(types.UserKey))
+	var user types.User
+	idBytes := store.Get([]byte(chainAddr))
+	k.cdc.MustUnmarshalBinaryBare(store.Get(idBytes), &user)
+	return user	
+}
+
+/*
+// 使用chainAddr取得用户，不使用索引，全表遍历的版本
+func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) (list []types.User) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var msg types.User
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &msg)
-		if msg.ChainAddr==chainAddr {
-			msgs = append(msgs, msg)
+		var val types.User
+		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		if val.ChainAddr==chainAddr {
+			list = append(list, val)
 		} 
 	}
 
 	return
 }
+*/

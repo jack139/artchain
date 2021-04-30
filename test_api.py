@@ -31,13 +31,12 @@ if __name__ == '__main__':
         'version'  : '1',
         'sign_type' : 'SHA256', 
         'data'     : {
-            'chain_addr'   : 'bid1art1lxe2r042r4wmrrdc2vm3pkm9jqupyrmfjc98mh', # test1
+            'chain_addr'   : 'bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s', # test1
             #'login_name' : 'test1',
             #'user_type' : 'TRD',
             #'email' : '111111@qq.com',
             #'referrer': 'bid1art111111111'
-            #'block_id'  : '21', # id 
-            'height' : '6356'
+            #'height' : '51'
         }
     }
 

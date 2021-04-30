@@ -2,11 +2,12 @@ package r1
 
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
-	"github.com/jack139/artchain/x/person/types"
+	persontypes "github.com/jack139/artchain/x/person/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 
 	"bytes"
+	"strings"
 	"context"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
@@ -47,9 +48,9 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 准备查询
-	queryClient := types.NewQueryClient(clientCtx)
+	queryClient := persontypes.NewQueryClient(clientCtx)
 
-	params := &types.QueryGetUserByChainAddrRequest{
+	params := &persontypes.QueryGetUserByChainAddrRequest{
 		ChainAddr: chainAddr,
 	}
 
@@ -84,15 +85,55 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 处理data字段
-	respData2, err := unmarshalDataList(&respData, chainAddr)
+	respData2, err := unmarshalUser(&respData, chainAddr)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
 	}
 
 	resp := map[string] interface{} {
-		"deals" : *respData2,
+		"user" : *respData2,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
+
+
+/* userInfo字段是已序列化的json串，反序列化一下，针对数据列表 */
+func unmarshalUser(reqData *map[string]interface{}, user string) (*map[string]interface{}, error) {
+	var respData map[string]interface{}
+
+	item := (*reqData)["User"].(map[string]interface{})
+
+	// 检查 userInfo 字段是否正常
+	_, ok := item["userInfo"]
+	if !ok {
+		return &respData, nil
+	}
+	if !strings.HasPrefix(item["userInfo"].(string), "{") {
+		return &respData, nil
+	}
+
+	// 反序列化
+	var data map[string]interface{}
+	if err := json.Unmarshal([]byte(item["userInfo"].(string)), &data); err != nil {
+		return nil, err
+	}
+	item["userInfo"] = data
+
+	// 返回的数据结构
+	respData = map[string] interface{} {
+		"chain_addr": item["chainAddr"],
+		"login_name": item["name"],
+		"back_acc_name": (item["userInfo"].(map[string]interface{}))["back_acc_name"],
+		"bank_name": (item["userInfo"].(map[string]interface{}))["back_name"],
+		"bank_acc_no": (item["userInfo"].(map[string]interface{}))["back_acc_no"],
+		"address": (item["userInfo"].(map[string]interface{}))["address"],
+		"phone": (item["userInfo"].(map[string]interface{}))["phone"],
+		"email": (item["userInfo"].(map[string]interface{}))["email"],
+		"referrer": (item["userInfo"].(map[string]interface{}))["referrer"],
+	}
+
+	return &respData, nil
+}
+

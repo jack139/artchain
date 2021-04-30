@@ -7,17 +7,17 @@ GOPATH=$HOME/Codes/go starport build
 
 ### 第一次启动
 ```bash
-GOPATH=$HOME/Codes/go starport serve
+GOPATH=$HOME/Codes/go starport serve --home n1
 ```
 
 ### 后续启动
 ```bash
-artchaind start --log_level warn
+artchaind start --log_level warn --home n1
 ```
 
 ### 启动http服务
 ```bash
-artchaind http 8888 --chain-id artchain --from user0
+artchaind http 8888 --chain-id artchain --home n1 --from user0
 ```
 
 ### 安装ipfs
