@@ -28,4 +28,5 @@ func KeyPrefix(p string) []byte {
 const (
 	UserKey      = "User-value-"
 	UserCountKey = "User-count-"
+	AddrIndexKey = "User-addr-"
 )

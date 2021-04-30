@@ -38,61 +38,6 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	/*
-	// 获取 ctx 上下文
-	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
-
-	// 检查 用户地址 是否存在
-	_, err = helper.FetchKey(clientCtx.Keyring, chainAddr)
-	if err != nil {
-		helper.RespError(ctx, 9001, "invalid chain_addr")
-		return
-	}
-
-	// 准备查询
-	queryClient := persontypes.NewQueryClient(clientCtx)
-
-	params := &persontypes.QueryGetUserByChainAddrRequest{
-		ChainAddr: chainAddr,
-	}
-
-	res, err := queryClient.UserByChainAddr(context.Background(), params)
-	if err != nil {
-		helper.RespError(ctx, 9007, err.Error())
-		return
-	}
-
-	log.Printf("%t\n", res)
-
-	// 设置 接收输出
-	buf := new(bytes.Buffer)
-	clientCtx.Output = buf
-
-	// 转换输出
-	clientCtx.PrintProto(res)
-
-	// 输出的字节流
-	respBytes := []byte(buf.String())
-
-	log.Println("output: ", buf.String())
-
-	//log.Printf("%v\n", string(respBytes))
-
-	// 转换成map, 生成返回数据
-	var respData map[string]interface{}
-
-	if err := json.Unmarshal(respBytes, &respData); err != nil {
-		helper.RespError(ctx, 9004, err.Error())
-		return
-	}
-
-	// 处理data字段
-	respData2, err := unmarshalUser(&respData, chainAddr)
-	if err!=nil{
-		helper.RespError(ctx, 9014, err.Error())
-		return
-	}
-	*/
 
 	// 查询链上数据
 	respData2, err := queryUserInfoByChainAddr(ctx, chainAddr)
@@ -102,18 +47,19 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 	}	
 
 	userMap := *respData2
+	userInfo := userMap["userInfo"].(map[string]interface{})
 
 	// 构建返回结构
 	respData := map[string] interface{} {
 		"chain_addr": userMap["chainAddr"],
 		"login_name": userMap["name"],
-		"bank_acc_name": (userMap["userInfo"].(map[string]interface{}))["bank_acc_name"],
-		"bank_name": (userMap["userInfo"].(map[string]interface{}))["bank_name"],
-		"bank_acc_no": (userMap["userInfo"].(map[string]interface{}))["bank_acc_no"],
-		"address": (userMap["userInfo"].(map[string]interface{}))["contact_address"],
-		"phone": (userMap["userInfo"].(map[string]interface{}))["phone"],
-		"email": (userMap["userInfo"].(map[string]interface{}))["email"],
-		"referrer": (userMap["userInfo"].(map[string]interface{}))["referrer"],
+		"bank_acc_name": userInfo["bank_acc_name"],
+		"bank_name": userInfo["bank_name"],
+		"bank_acc_no": userInfo["bank_acc_no"],
+		"address": userInfo["contact_address"],
+		"phone": userInfo["phone"],
+		"email": userInfo["email"],
+		"referrer": userInfo["referrer"],
 		"reg_date": userMap["regDate"],
 	}
 
@@ -203,21 +149,6 @@ func unmarshalUser(reqData *map[string]interface{}, user string) (*map[string]in
 	}
 	item["userInfo"] = data
 
-	/*
-	// 返回的数据结构
-	respData = map[string] interface{} {
-		"chain_addr": item["chainAddr"],
-		"login_name": item["name"],
-		"bank_acc_name": (item["userInfo"].(map[string]interface{}))["bank_acc_name"],
-		"bank_name": (item["userInfo"].(map[string]interface{}))["bank_name"],
-		"bank_acc_no": (item["userInfo"].(map[string]interface{}))["bank_acc_no"],
-		"address": (item["userInfo"].(map[string]interface{}))["contact_address"],
-		"phone": (item["userInfo"].(map[string]interface{}))["phone"],
-		"email": (item["userInfo"].(map[string]interface{}))["email"],
-		"referrer": (item["userInfo"].(map[string]interface{}))["referrer"],
-		"reg_date": item["regDate"],
-	}
-	*/
 	return &item, nil
 }
 

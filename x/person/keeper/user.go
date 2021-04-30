@@ -68,7 +68,8 @@ func (k Keeper) AppendUser(
 	store.Set(GetUserIDBytes(user.Id), value)
 
 	// 添加chainAddr到id的索引
-	store.Set([]byte(chainAddr), GetUserIDBytes(user.Id))
+	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AddrIndexKey))
+	store2.Set([]byte(chainAddr), GetUserIDBytes(user.Id))
 
 	// Update user count
 	k.SetUserCount(ctx, count+1)
@@ -140,10 +141,11 @@ func GetUserIDFromBytes(bz []byte) uint64 {
 // 使用chainAddr取得用户，使用索引 ChainAddr --> Id
 func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) types.User {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
+	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AddrIndexKey))
 	var user types.User
-	idBytes := store.Get([]byte(chainAddr))
+	idBytes := store2.Get([]byte(chainAddr))
 	k.cdc.MustUnmarshalBinaryBare(store.Get(idBytes), &user)
-	return user	
+	return user
 }
 
 /*

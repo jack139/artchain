@@ -10,7 +10,7 @@ urllib3.disable_warnings()
 #    img_data = f.read()
 #img_data = base64.b64encode(img_data).decode('utf-8')
 
-# 生成参数字符串
+# 生成参数字符串, TODO: 空格也被过滤掉了，需完善！！！
 def gen_param_str(param1):
     param = param1.copy()
     name_list = sorted(param.keys())
@@ -31,12 +31,13 @@ if __name__ == '__main__':
         'version'  : '1',
         'sign_type' : 'SHA256', 
         'data'     : {
-            'chain_addr'   : 'bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s', # test1
-            #'login_name' : 'test2',
+            'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
+            'login_name' : 'test3',
             #'user_type' : 'TRD',
-            #'email' : '111111@qq.com',
+            #'email' : '111112@qq.com',
+            'bank_acc_name' : '1testbank',
             #'referrer': 'bid1art111111111'
-            'height' : '1259'
+            'height' : '985'
         }
     }
 
@@ -56,9 +57,9 @@ if __name__ == '__main__':
         #signature_str = sm2.SM2withSM3_sign_base64(sign_str)
         pass
 
-    #print(sign_str.encode('utf-8'))
-    #print(sha256)
-    #print(signature_str)
+    print(sign_str.encode('utf-8'))
+    print(sha256)
+    print(signature_str)
 
     body['sign_data'] = signature_str
 
@@ -70,11 +71,11 @@ if __name__ == '__main__':
     host = 'http://%s:%s'%(hostname, port)
     #url = host+'/api/test'
     #url = host+'/api/r1/biz/user/register'
-    url = host+'/api/r1/biz/user/modify'
+    #url = host+'/api/r1/biz/user/modify'
 
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
-    #url = host+'/api/r1/query/user/info'
+    url = host+'/api/r1/query/user/info'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)
