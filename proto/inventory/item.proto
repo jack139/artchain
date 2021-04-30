@@ -21,4 +21,5 @@ message Item {
   string itemBasePrice = 13; 
   string currentOwnerId = 14; 
   string status = 15;
+  string lastDate = 16;
 }

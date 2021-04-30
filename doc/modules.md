@@ -18,6 +18,7 @@ AccountNo // 银行账号
 RegDate   // 注册日期
 ChainAddr // 区块链用户地址(AccAddress)
 Status    // 用户状态： ACTIVE, CLOSE, FORBID, WAIT
+lastDate  // 最后修改日期
 ```
 
 
@@ -47,6 +48,7 @@ AESKey         // 物品密钥
 ItemBasePrice  // 最近交易价格
 CurrentOwnerID // 所有人信息 UserID
 Status         // 状态: WAIT, OPEN, CLOSE, IN-BID 
+lastDate       // 最后修改日期
 ```
 
 #### 评价信息 Review
@@ -61,6 +63,7 @@ ReviewDate     // 评论时间
 Up             // 支持数量
 Down           // 反对数量
 Status         // 状态: WAIT, OPEN, CLOSE
+lastDate       // 最后修改日期
 ```
 
 ```shell
@@ -85,6 +88,7 @@ ReservePrice    // 底价
 Status          // 拍卖状态：INIT, OPEN, CLOSED  (由拍卖行设置)
 OpenDate        // OPEN的日期 (由拍卖行设置)
 CloseDate       // CLOSE的日期  (由拍卖行设置)
+lastDate        // 最后修改日期
 ```
 
 #### 出价信息 Bid
@@ -98,6 +102,7 @@ BuyerID    // 买家UserID（须与物品所有者UserID不同）
 BidPrice   // 出价（须大于前一次出价）
 BidTime    // 出价时间
 Status     // 状态： ACCEPT, DENY
+lastDate   // 最后修改日期
 ```
 
 ```shell
@@ -123,6 +128,7 @@ HammerTime   // 买家出价时间（成交价格出价）
 HammerPrice  // 成交价格
 Details      // 交易细节记录
 Status       // POST_ACTION, SHIPPING, SUCCESS, WAIT
+lastDate     // 最后修改日期
 ```
 
 ```shell

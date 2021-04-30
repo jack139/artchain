@@ -16,4 +16,5 @@ message Bid {
   string bidPrice = 8; 
   string bidTime = 9; 
   string status = 10;
+  string lastDate = 11;
 }

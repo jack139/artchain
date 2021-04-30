@@ -351,7 +351,8 @@ base64后结果：
             "login_name":"test1",
             "phone":"",
             "referrer":"bid1art111111111",
-            "reg_date":"2021-04-30 10:42:16"
+            "reg_date":"2021-04-30 10:42:16",
+            "last_date":"2021-04-30 15:57:03"
         }
     },
     "msg":"success"

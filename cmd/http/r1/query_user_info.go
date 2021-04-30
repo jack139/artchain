@@ -61,6 +61,7 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 		"email": userInfo["email"],
 		"referrer": userInfo["referrer"],
 		"reg_date": userMap["regDate"],
+		"last_date": userMap["lastDate"],
 	}
 
 	resp := map[string] interface{} {

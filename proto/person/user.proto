@@ -15,4 +15,5 @@ message User {
   string status = 7; 
   string regDate = 8; 
   string chainAddr = 9; 
+  string lastDate = 10;
 }

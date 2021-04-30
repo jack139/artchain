@@ -18,4 +18,5 @@ message Transaction {
   string hammerPrice = 10; 
   string details = 11; 
   string status = 12; 
+  string lastDate = 13;
 }
