@@ -26,6 +26,7 @@ message MsgCreateReview {
   string reviewDate = 6;
   string upCount = 7;
   string downCount = 8;
+  string status = 9;
 }
 
 message MsgCreateReviewResponse {
@@ -42,6 +43,7 @@ message MsgUpdateReview {
   string reviewDate = 7;
   string upCount = 8;
   string downCount = 9;
+  string status = 10;
 }
 
 message MsgUpdateReviewResponse { }
@@ -67,6 +69,7 @@ message MsgCreateItem {
   string AESKey = 11;
   string itemBasePrice = 12;
   string currentOwnerId = 13;
+  string status = 14;
 }
 
 message MsgCreateItemResponse {
@@ -88,6 +91,7 @@ message MsgUpdateItem {
   string AESKey = 12;
   string itemBasePrice = 13;
   string currentOwnerId = 14;
+  string status = 15;
 }
 
 message MsgUpdateItemResponse { }

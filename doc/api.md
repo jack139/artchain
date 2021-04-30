@@ -323,10 +323,10 @@ base64后结果：
 
 | 参数       | 类型   | 必填 | 说明                                   |
 | ---------- | ------ | ---- | -------------------------------------- |
-| name       | string | Y    | 物品名称                               |
+| desc       | string | Y    | 物品名称                               |
 | detail     | string |      | 物品描述                               |
 | date       | string | Y    | 出现年代                               |
-| bank_name  | string |      | 类型：原作、复制品                     |
+| type       | string |      | 类型：原作、复制品                     |
 | subject    | string |      | 主题：古代、现代、风景、雕塑、人像，等 |
 | media      | string |      | 材质：石头、金属、瓷器、油画、素描、等 |
 | size       | string |      | 尺寸描述                               |

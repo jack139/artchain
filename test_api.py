@@ -31,13 +31,20 @@ if __name__ == '__main__':
         'version'  : '1',
         'sign_type' : 'SHA256', 
         'data'     : {
-            'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
-            'login_name' : 'test3',
+            #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
+
+            #'login_name' : 'test3',
             #'user_type' : 'TRD',
             #'email' : '111112@qq.com',
-            'bank_acc_name' : '1test bank',
+            #'bank_acc_name' : '1test bank',
             #'referrer': 'bid1art111111111'
-            'height' : '985'
+
+            #'height' : '985'
+
+            'desc' : '测试物品',
+            'date' : '1900s',
+            'base_price' : '$100',
+            'owner_addr' : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004',
         }
     }
 
@@ -72,10 +79,11 @@ if __name__ == '__main__':
     #url = host+'/api/test'
     #url = host+'/api/r1/biz/user/register'
     #url = host+'/api/r1/biz/user/modify'
+    url = host+'/api/r1/biz/item/new'
 
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
-    url = host+'/api/r1/query/user/info'
+    #url = host+'/api/r1/query/user/info'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)

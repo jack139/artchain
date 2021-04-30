@@ -27,6 +27,7 @@ type createItemRequest struct {
 	AESKey         string       `json:"AESKey"`
 	ItemBasePrice  string       `json:"itemBasePrice"`
 	CurrentOwnerId string       `json:"currentOwnerId"`
+	Status         string       `json:"status"`
 }
 
 func createItemHandler(clientCtx client.Context) http.HandlerFunc {
@@ -72,6 +73,8 @@ func createItemHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedCurrentOwnerId := req.CurrentOwnerId
 
+		parsedStatus := req.Status
+
 		msg := types.NewMsgCreateItem(
 			req.Creator,
 			parsedRecType,
@@ -86,6 +89,7 @@ func createItemHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedAESKey,
 			parsedItemBasePrice,
 			parsedCurrentOwnerId,
+			parsedStatus,
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)

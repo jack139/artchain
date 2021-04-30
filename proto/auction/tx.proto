@@ -26,6 +26,7 @@ message MsgCreateBid {
   string buyerId = 6;
   string bidPrice = 7;
   string bidTime = 8;
+  string status = 9;
 }
 
 message MsgCreateBidResponse {
@@ -42,6 +43,7 @@ message MsgUpdateBid {
   string buyerId = 7;
   string bidPrice = 8;
   string bidTime = 9;
+  string status = 10;
 }
 
 message MsgUpdateBidResponse { }

@@ -7,7 +7,9 @@ import (
 
 var _ sdk.Msg = &MsgCreateItem{}
 
-func NewMsgCreateItem(creator string, recType string, itemDesc string, itemDetail string, itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string, itemImage string, AESKey string, itemBasePrice string, currentOwnerId string) *MsgCreateItem {
+func NewMsgCreateItem(creator string, recType string, itemDesc string, itemDetail string, 
+	itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string, 
+	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string) *MsgCreateItem {
 	return &MsgCreateItem{
 		Creator:        creator,
 		RecType:        recType,
@@ -22,6 +24,7 @@ func NewMsgCreateItem(creator string, recType string, itemDesc string, itemDetai
 		AESKey:         AESKey,
 		ItemBasePrice:  itemBasePrice,
 		CurrentOwnerId: currentOwnerId,
+		Status:         status,
 	}
 }
 

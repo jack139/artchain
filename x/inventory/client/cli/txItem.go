@@ -14,7 +14,7 @@ func CmdCreateItem() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-item [recType] [itemDesc] [itemDetail] [itemDate] [itemType] [itemSubject] [itemMedia] [itemSize] [itemImage] [AESKey] [itemBasePrice] [currentOwnerId]",
 		Short: "Creates a new item",
-		Args:  cobra.ExactArgs(12),
+		Args:  cobra.ExactArgs(13),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsRecType := string(args[0])
 			argsItemDesc := string(args[1])
@@ -28,13 +28,14 @@ func CmdCreateItem() *cobra.Command {
 			argsAESKey := string(args[9])
 			argsItemBasePrice := string(args[10])
 			argsCurrentOwnerId := string(args[11])
+			argsStatus := string(args[12])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreateItem(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsItemDesc), string(argsItemDetail), string(argsItemDate), string(argsItemType), string(argsItemSubject), string(argsItemMedia), string(argsItemSize), string(argsItemImage), string(argsAESKey), string(argsItemBasePrice), string(argsCurrentOwnerId))
+			msg := types.NewMsgCreateItem(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsItemDesc), string(argsItemDetail), string(argsItemDate), string(argsItemType), string(argsItemSubject), string(argsItemMedia), string(argsItemSize), string(argsItemImage), string(argsAESKey), string(argsItemBasePrice), string(argsCurrentOwnerId), string(argsStatus))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
