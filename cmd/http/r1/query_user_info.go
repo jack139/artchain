@@ -6,6 +6,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
+	"fmt"
 	"bytes"
 	"strings"
 	"context"
@@ -37,6 +38,7 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	/*
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
@@ -90,12 +92,92 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9014, err.Error())
 		return
 	}
+	*/
+
+	// 查询链上数据
+	respData2, err := queryUserInfoByChainAddr(ctx, chainAddr)
+	if err!=nil{
+		helper.RespError(ctx, 9014, err.Error())
+		return
+	}	
+
+	userMap := *respData2
+
+	// 构建返回结构
+	respData := map[string] interface{} {
+		"chain_addr": userMap["chainAddr"],
+		"login_name": userMap["name"],
+		"bank_acc_name": (userMap["userInfo"].(map[string]interface{}))["bank_acc_name"],
+		"bank_name": (userMap["userInfo"].(map[string]interface{}))["bank_name"],
+		"bank_acc_no": (userMap["userInfo"].(map[string]interface{}))["bank_acc_no"],
+		"address": (userMap["userInfo"].(map[string]interface{}))["contact_address"],
+		"phone": (userMap["userInfo"].(map[string]interface{}))["phone"],
+		"email": (userMap["userInfo"].(map[string]interface{}))["email"],
+		"referrer": (userMap["userInfo"].(map[string]interface{}))["referrer"],
+		"reg_date": userMap["regDate"],
+	}
 
 	resp := map[string] interface{} {
-		"user" : *respData2,
+		"user" : respData,
 	}
 
 	helper.RespJson(ctx, &resp)
+}
+
+
+// 查询链上数据, 返回 User map
+func queryUserInfoByChainAddr(ctx *fasthttp.RequestCtx, chainAddr string) (*map[string]interface{}, error) {
+	// 获取 ctx 上下文
+	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
+
+	// 检查 用户地址 是否存在
+	_, err := helper.FetchKey(clientCtx.Keyring, chainAddr)
+	if err != nil {
+		return nil, fmt.Errorf("invalid chain_addr")
+	}
+
+	// 准备查询
+	queryClient := persontypes.NewQueryClient(clientCtx)
+
+	params := &persontypes.QueryGetUserByChainAddrRequest{
+		ChainAddr: chainAddr,
+	}
+
+	res, err := queryClient.UserByChainAddr(context.Background(), params)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Printf("%t\n", res)
+
+	// 设置 接收输出
+	buf := new(bytes.Buffer)
+	clientCtx.Output = buf
+
+	// 转换输出
+	clientCtx.PrintProto(res)
+
+	// 输出的字节流
+	respBytes := []byte(buf.String())
+
+	log.Println("output: ", buf.String())
+
+	//log.Printf("%v\n", string(respBytes))
+
+	// 转换成map, 生成返回数据
+	var respData map[string]interface{}
+
+	if err := json.Unmarshal(respBytes, &respData); err != nil {
+		return nil, err
+	}
+
+	// 处理data字段
+	respData2, err := unmarshalUser(&respData, chainAddr)
+	if err!=nil{
+		return nil, err
+	}
+
+	return respData2, nil
 }
 
 
@@ -121,6 +203,7 @@ func unmarshalUser(reqData *map[string]interface{}, user string) (*map[string]in
 	}
 	item["userInfo"] = data
 
+	/*
 	// 返回的数据结构
 	respData = map[string] interface{} {
 		"chain_addr": item["chainAddr"],
@@ -134,7 +217,7 @@ func unmarshalUser(reqData *map[string]interface{}, user string) (*map[string]in
 		"referrer": (item["userInfo"].(map[string]interface{}))["referrer"],
 		"reg_date": item["regDate"],
 	}
-
-	return &respData, nil
+	*/
+	return &item, nil
 }
 

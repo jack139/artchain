@@ -43,7 +43,7 @@
 | 修改拍卖状态         | /biz/auction/change_status     |
 | 出价                 | /biz/auction/bid               |
 | 建立成交交易         | /biz/transaction/new           |
-| 查询用户信息         | /query/user/info           |
+| 查询用户信息         | **/query/user/info**       |
 | 验证用户身份          | /query/user/verify               |
 | 查询物品清单         | /query/item/list           |
 | 查询物品信息         | /query/item/info           |
@@ -186,8 +186,6 @@ base64后结果：
 >
 > REV 评论家（需审核）
 
-
-
 返回结果
 
 | 参数 | 类型   | 说明                                    |
@@ -228,6 +226,48 @@ base64后结果：
 }
 ```
 
+
+
+##### 2.2 修改用户信息
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/user/modify
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数          | 类型   | 必填 | 说明         |
+| ------------- | ------ | ---- | ------------ |
+| chain_addr    | string | Y    | 用户链地址   |
+| bank_acc_name | string |      | 银行开户姓名 |
+| bank_name     | string |      | 银行名称     |
+| bank_acc_no   | string |      | 银行账号     |
+| address       | string |      | 联系地址     |
+| phone         | string |      | 联系电话     |
+| email         | string |      | 电子邮件     |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
 
 
 

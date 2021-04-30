@@ -1,13 +1,14 @@
 package r1
 
 import (
-	cmdclient "github.com/jack139/artchain/cmd/client"
-	"github.com/jack139/artchain/x/artchain/types"
+	//cmdclient "github.com/jack139/artchain/cmd/client"
+	//"github.com/jack139/artchain/x/artchain/types"
 	"github.com/jack139/artchain/cmd/http/helper"
 	persontypes "github.com/jack139/artchain/x/person/types"
 
 	"log"
-	"time"
+	//"time"
+	"strconv"
 	"bytes"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
@@ -15,10 +16,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 )
 
-/* 用户注册 */
+/* 修改用户信息 */
 
-func BizRegister(ctx *fasthttp.RequestCtx) {
-	log.Println("biz_user_register")
+func BizUserModify(ctx *fasthttp.RequestCtx) {
+	log.Println("biz_user_modify")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -31,14 +32,9 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
-	userName, ok := (*reqData)["login_name"].(string)
+	chainAddr, ok := (*reqData)["chain_addr"].(string)
 	if !ok {
-		helper.RespError(ctx, 9001, "need login_name")
-		return
-	}
-	userType, ok := (*reqData)["user_type"].(string)
-	if !ok {
-		helper.RespError(ctx, 9002, "need user_type")
+		helper.RespError(ctx, 9001, "need chain_addr")
 		return
 	}
 	bank_acc_name, _ := (*reqData)["bank_acc_name"].(string)
@@ -47,17 +43,45 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 	contact_address, _ := (*reqData)["address"].(string)
 	phone, _ := (*reqData)["phone"].(string)
 	email, _ := (*reqData)["email"].(string)
-	referrer, _ := (*reqData)["referrer"].(string)
+
+	// 获取当前链上数据
+	userMap, err := queryUserInfoByChainAddr(ctx, chainAddr)
+	if err!=nil {
+		helper.RespError(ctx, 9002, err.Error())
+		return		
+	}
+
+	userInfoOld := (*userMap)["userInfo"].(map[string]interface{})
 
 	// 构建userInfo
 	userInfoMap := map[string]interface{}{
-		"bank_acc_name": bank_acc_name,
-		"bank_name":  bank_name,
-		"bank_acc_no": bank_acc_no,
-		"contact_address": contact_address,
-		"phone": phone,
-		"email": email,
-		"referrer": referrer,
+		"bank_acc_name": userInfoOld["bank_acc_name"],
+		"bank_name":  userInfoOld["bank_name"],
+		"bank_acc_no": userInfoOld["bank_acc_no"],
+		"contact_address": userInfoOld["contact_address"],
+		"phone": userInfoOld["phone"],
+		"email": userInfoOld["email"],
+		"referrer": userInfoOld["referrer"],
+	}
+
+	// 是否要修改？
+	if len(bank_acc_name)>0 {
+		userInfoMap["bank_acc_name"] = bank_acc_name
+	}
+	if len(bank_name)>0 {
+		userInfoMap["bank_name"] = bank_name
+	}
+	if len(bank_acc_no)>0 {
+		userInfoMap["bank_acc_no"] = bank_acc_no
+	}
+	if len(contact_address)>0 {
+		userInfoMap["contact_address"] = contact_address
+	}
+	if len(phone)>0 {
+		userInfoMap["phone"] = phone
+	}
+	if len(email)>0 {
+		userInfoMap["email"] = email
 	}
 
 	userInfo, err := json.Marshal(userInfoMap)
@@ -66,18 +90,6 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// 初始化用户状态
-	userStatus := "WAIT"
-	if userType=="TRD" {
-		userStatus = "ACTIVE"
-	}
-
-	// 生成新用户密钥
-	address, mnemonic, err := cmdclient.AddUserAccount(helper.HttpCmd, userName, types.RewardRegister)
-	if err != nil {
-		helper.RespError(ctx, 9009, err.Error())
-		return
-	}
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -86,19 +98,19 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// 创建者地址，如果在生成新用户后，会变成faucet的地址
-	creatorAddr := clientCtx.GetFromAddress().String()
+	userId, _ := strconv.ParseUint((*userMap)["id"].(string), 10, 64)
 
 	// 数据上链
-	msg := persontypes.NewMsgCreateUser(
-		creatorAddr, // creator string, 
-		"USER", // recType string, 
-		userName, // name string, 
-		userType, // userType string, 
-		string(userInfo), // userInfo string, 
-		userStatus, // status string, 
-		time.Now().Format("2006-01-02 15:04:05") , // regDate string, 
-		address, // chainAddr string,
+	msg := persontypes.NewMsgUpdateUser(
+		(*userMap)["creator"].(string), 
+		userId, 
+		(*userMap)["recType"].(string), 
+		(*userMap)["name"].(string), 
+		(*userMap)["userType"].(string), 
+		string(userInfo), 
+		(*userMap)["status"].(string), 
+		(*userMap)["regDate"].(string), 
+		chainAddr,
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -134,12 +146,9 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-
 	// 返回区块id
 	resp := map[string]interface{}{
 		"height" : respData["height"].(string),  // 区块高度
-		"chain_addr" : address,  // 用户地址
-		"mystery" : mnemonic, // 机密串
 	}
 
 	helper.RespJson(ctx, &resp)
