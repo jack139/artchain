@@ -49,6 +49,8 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	itemBasePrice, _ := (*reqData)["base_price"].(string)
 	itemOwnerAddr, _ := (*reqData)["owner_addr"].(string)
 
+	// TODO： 检查 itemOwnerAddr 合法性
+
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
 	if err != nil {

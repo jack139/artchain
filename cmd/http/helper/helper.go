@@ -208,6 +208,7 @@ func getMapKeys(m map[string]interface{}) *[]string {
 }
 
 /* 获取key信息 */
+// TODO: 这个函数只能检查本地存储的 keyring，如果验证用户地址需要是用 链上user数据
 func FetchKey(kb keyring.Keyring, keyref string) (keyring.Info, error) {
 	info, err := kb.Key(keyref)
 	if err != nil {

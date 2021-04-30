@@ -49,6 +49,8 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 	email, _ := (*reqData)["email"].(string)
 	referrer, _ := (*reqData)["referrer"].(string)
 
+	// TODO： 检查 referrer 地址合法性
+
 	// 构建userInfo
 	userInfoMap := map[string]interface{}{
 		"bank_acc_name": bank_acc_name,
