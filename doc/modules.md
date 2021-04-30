@@ -23,13 +23,6 @@ lastDate  // 最后修改日期
 
 
 
-```shell
-GOPATH=$HOME/Codes/go starport module create person
-GOPATH=$HOME/Codes/go starport type user recType name userType address phone email bank accountNo status regDate chainAddr --module person
-```
-
-
-
 ### Inventory
 
 #### 物品信息 Item
@@ -66,12 +59,6 @@ Status         // 状态: WAIT, OPEN, CLOSE
 lastDate       // 最后修改日期
 ```
 
-```shell
-GOPATH=$HOME/Codes/go starport module create inventory
-GOPATH=$HOME/Codes/go starport type item recType itemDesc itemDetail itemDate itemType itemSubject itemMedia itemSize itemImage AESKey itemBasePrice currentOwnerId --module inventory
-GOPATH=$HOME/Codes/go starport type review recType itemId reviewerId reviewDetail reviewDate upCount downCount --module inventory
-```
-
 
 
 ### Auction
@@ -105,11 +92,7 @@ Status     // 状态： ACCEPT, DENY
 lastDate   // 最后修改日期
 ```
 
-```shell
-GOPATH=$HOME/Codes/go starport module create auction
-GOPATH=$HOME/Codes/go starport type request recType itemId auctionHouseId SellerId requestDate reservePrice status openDate closeDate --module auction
-GOPATH=$HOME/Codes/go starport type bid recType auctionId bidNo itemId buyerId bidPrice bidTime --module auction
-```
+
 
 
 
@@ -131,10 +114,7 @@ Status       // POST_ACTION, SHIPPING, SUCCESS, WAIT
 lastDate     // 最后修改日期
 ```
 
-```shell
-GOPATH=$HOME/Codes/go starport module create trans
-GOPATH=$HOME/Codes/go starport type transaction recType auctionId itemId transType userId transDate hammerTime hammerPrice details status --module trans
-```
+
 
 
 
@@ -144,43 +124,58 @@ GOPATH=$HOME/Codes/go starport type transaction recType auctionId itemId transTy
 
 
 
-| 功能                 | URI                        |
-| -------------------- | -------------------------- |
-| 注册用户             | /user/register             |
-| 修改用户信息         | /user/modify               |
-| 恢复已注册用户       | /user/restore              |
-| 验证用户身份         | /user/verify               |
-| 新建物品             | /item/newquery             |
-| 修改物品信息         | /item/modify               |
-| 生成物品NFT          | /nft/new                   |
-| 验证物品NFT          | /nft/verify                |
-| 添加物品评价         | /review/new                |
-| 修改物品评价         | /review/modify             |
-| 修改物品评价反馈信息 | /review/feedback           |
-| 发起拍卖             | /auction/new               |
-| 修改拍卖状态         | /auction/change_status     |
-| 出价                 | /auction/bid               |
-| 建立成交交易         | /transaction/new           |
-|                      |                            |
-| 查询用户信息         | /query/user/info           |
-| 查询物品清单         | /query/item/list           |
-| 查询物品信息         | /query/item/info           |
-| 查询物品评价清单     | /query/review/list         |
-| 查询物品评价信息     | /query/review/info         |
-| 查询拍卖行清单       | /query/auction_house/list  |
-| 查询拍卖行信息       | /query/auction_house/info  |
-| 查询拍卖清单         | /query/auction/list        |
-| 查询拍卖信息         | /query/auction/info        |
-| 查询出价信息         | /query/bid/info            |
-| 查询最高出价         | /query/bid/highest         |
-| 查询出价清单         | /query/bid/list            |
-| 查询成交交易         | /query/transaction/list    |
-| 查询成交交易信息     | /query/transaction/info    |
-| 查询用户通证         | /query/user/credit_balance |
-|                      |                            |
-|                      |                            |
+#### 业务处理接口
 
 
+| 序号 | 接口功能             | URI                        |
+| :--: | -------------------- | -------------------------- |
+|  1   | 注册用户             | /biz/user/register         |
+|  2   | 修改用户信息         | /biz/user/modify           |
+|  3   | 恢复已注册用户       | /biz/user/restore          |
+|  4   | 新建物品             | /biz/item/new              |
+|  5   | 修改物品信息         | /biz/item/modify           |
+|  6   | 添加物品照片         | /biz/item/new_image        |
+|  7   | 删除物品照片         | /biz/item/remove_image     |
+|  8   | 修改物品所有人       | /biz/item/change_owner     |
+|  9   | 生成物品NFT          | /biz/nft/new               |
+|  10  | 添加物品评价         | /biz/review/new            |
+|  11  | 修改物品评价         | /biz/review/modify         |
+|  12  | 修改物品评价反馈信息 | /biz/review/feedback       |
+|  13  | 发起拍卖             | /biz/auction/new           |
+|  14  | 修改拍卖状态         | /biz/auction/change_status |
+|  15  | 出价                 | /biz/auction/bid           |
+|  16  | 建立成交交易         | /biz/transaction/new       |
+|  17  | 审核用户             | /biz/audit/user            |
+|  18  | 审核物品             | /biz/audit/item            |
+|  19  | 审核照片             | /biz/audit/image           |
+|  20  | 审核评价             | /biz/audit/review          |
+|  21  | 审核拍卖请求         | /biz/audit/auction         |
+|  22  | 审核成交交易         | /biz/audit/transaction     |
+
+
+
+#### 查询接口
+
+| 序号 | 接口功能             | URI                        |
+| :--: | -------------------- | -------------------------- |
+|  1   | 查询用户信息         | /query/user/info           |
+|  2   | 验证用户身份         | /query/user/verify         |
+|  3   | 查询物品清单         | /query/item/list           |
+|  4   | 查询物品信息         | /query/item/info           |
+|  5   | 验证物品NFT          | /query/nft/verify          |
+|  6   | 查询物品评价清单     | /query/review/list         |
+|  7   | 查询物品评价信息     | /query/review/info         |
+|  8   | 查询拍卖行清单       | /query/auction_house/list  |
+|  9   | 查询拍卖行信息       | /query/auction_house/info  |
+|  10  | 查询拍卖清单         | /query/auction/list        |
+|  11  | 查询拍卖信息         | /query/auction/info        |
+|  12  | 查询出价信息         | /query/bid/info            |
+|  13  | 查询最高出价         | /query/bid/highest         |
+|  14  | 查询出价清单         | /query/bid/list            |
+|  15  | 查询成交交易         | /query/transaction/list    |
+|  16  | 查询成交交易信息     | /query/transaction/info    |
+|  17  | 查询指定区块原始数据 | /query/block/rawdata       |
+|  18  | 查询用户通证         | /query/user/credit_balance |
 
 
 
