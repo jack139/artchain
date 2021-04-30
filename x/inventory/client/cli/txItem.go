@@ -52,7 +52,7 @@ func CmdUpdateItem() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update-item [id] [recType] [itemDesc] [itemDetail] [itemDate] [itemType] [itemSubject] [itemMedia] [itemSize] [itemImage] [AESKey] [itemBasePrice] [currentOwnerId]",
 		Short: "Update a item",
-		Args:  cobra.ExactArgs(13),
+		Args:  cobra.ExactArgs(14),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			id, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
@@ -71,13 +71,14 @@ func CmdUpdateItem() *cobra.Command {
 			argsAESKey := string(args[10])
 			argsItemBasePrice := string(args[11])
 			argsCurrentOwnerId := string(args[12])
+			argsStatus := string(args[13])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgUpdateItem(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsItemDesc), string(argsItemDetail), string(argsItemDate), string(argsItemType), string(argsItemSubject), string(argsItemMedia), string(argsItemSize), string(argsItemImage), string(argsAESKey), string(argsItemBasePrice), string(argsCurrentOwnerId))
+			msg := types.NewMsgUpdateItem(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsItemDesc), string(argsItemDetail), string(argsItemDate), string(argsItemType), string(argsItemSubject), string(argsItemMedia), string(argsItemSize), string(argsItemImage), string(argsAESKey), string(argsItemBasePrice), string(argsCurrentOwnerId), string(argsStatus))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

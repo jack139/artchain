@@ -59,7 +59,9 @@ func (msg *MsgCreateItem) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateItem{}
 
-func NewMsgUpdateItem(creator string, id uint64, recType string, itemDesc string, itemDetail string, itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string, itemImage string, AESKey string, itemBasePrice string, currentOwnerId string) *MsgUpdateItem {
+func NewMsgUpdateItem(creator string, id uint64, recType string, itemDesc string, itemDetail string, 
+	itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string, 
+	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string) *MsgUpdateItem {
 	return &MsgUpdateItem{
 		Id:             id,
 		Creator:        creator,
@@ -75,6 +77,7 @@ func NewMsgUpdateItem(creator string, id uint64, recType string, itemDesc string
 		AESKey:         AESKey,
 		ItemBasePrice:  itemBasePrice,
 		CurrentOwnerId: currentOwnerId,
+		Status:         status,
 	}
 }
 

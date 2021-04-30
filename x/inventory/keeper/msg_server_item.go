@@ -53,6 +53,7 @@ func (k msgServer) UpdateItem(goCtx context.Context, msg *types.MsgUpdateItem) (
 		AESKey:         msg.AESKey,
 		ItemBasePrice:  msg.ItemBasePrice,
 		CurrentOwnerId: msg.CurrentOwnerId,
+		Status:         msg.Status,
 		LastDate:  time.Now().Format("2006-01-02 15:04:05"),
 	}
 

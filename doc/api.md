@@ -34,7 +34,7 @@
 | 1            | 注册用户             | **/biz/user/register**         |
 | 2         | 修改用户信息          | **/biz/user/modify**           |
 | 3       | 恢复已注册用户        | /biz/user/restore              |
-| 4            | 新建物品             | /biz/item/new             |
+| 4            | 新建物品             | **/biz/item/new**         |
 | 5         | 修改物品信息          | /biz/item/modify               |
 | 6 | 添加物品照片 | /biz/item/new_image |
 | 7 | 删除物品照片 | /biz/item/remove_image |
@@ -370,10 +370,10 @@ base64后结果：
 | 参数       | 类型   | 必填 | 说明                                   |
 | ---------- | ------ | ---- | -------------------------------------- |
 | id         | string | Y    | 物品id                                 |
-| name       | string |      | 物品名称                               |
+| desc       | string |      | 物品名称                               |
 | detail     | string |      | 物品描述                               |
 | date       | string |      | 出现年代                               |
-| bank_name  | string |      | 类型：原作、复制品                     |
+| type       | string |      | 类型：原作、复制品                     |
 | subject    | string |      | 主题：古代、现代、风景、雕塑、人像，等 |
 | media      | string |      | 材质：石头、金属、瓷器、油画、素描、等 |
 | size       | string |      | 尺寸描述                               |
