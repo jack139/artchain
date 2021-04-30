@@ -15,9 +15,9 @@ Phone     // 电话
 Email     // 邮件
 Bank      // 银行
 AccountNo // 银行账号
-Status    // 用户状态： ACTIVE, CLOSE, FORBID, WAIT
 RegDate   // 注册日期
 ChainAddr // 区块链用户地址(AccAddress)
+Status    // 用户状态： ACTIVE, CLOSE, FORBID, WAIT
 ```
 
 
@@ -46,6 +46,7 @@ ItemImage      // 数字照片信息（存储在IPFS）
 AESKey         // 物品密钥
 ItemBasePrice  // 最近交易价格
 CurrentOwnerID // 所有人信息 UserID
+Status         // 状态: WAIT, OPEN, CLOSE, IN-BID 
 ```
 
 #### 评价信息 Review
@@ -59,6 +60,7 @@ ReviewDetail   // 评价内容
 ReviewDate     // 评论时间
 Up             // 支持数量
 Down           // 反对数量
+Status         // 状态: WAIT, OPEN, CLOSE
 ```
 
 ```shell
@@ -95,6 +97,7 @@ ItemID     // 物品编号
 BuyerID    // 买家UserID（须与物品所有者UserID不同）
 BidPrice   // 出价（须大于前一次出价）
 BidTime    // 出价时间
+Status     // 状态： ACCEPT, DENY
 ```
 
 ```shell

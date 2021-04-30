@@ -15,4 +15,5 @@ message Bid {
   string buyerId = 7; 
   string bidPrice = 8; 
   string bidTime = 9; 
+  string status = 10;
 }

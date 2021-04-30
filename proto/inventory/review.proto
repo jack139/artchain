@@ -15,4 +15,5 @@ message Review {
   string reviewDate = 7; 
   string upCount = 8; 
   string downCount = 9; 
+  string status = 10;
 }

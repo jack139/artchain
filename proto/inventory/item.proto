@@ -20,4 +20,5 @@ message Item {
   string AESKey = 12; 
   string itemBasePrice = 13; 
   string currentOwnerId = 14; 
+  string status = 15;
 }
