@@ -95,7 +95,7 @@ func queryUserInfoByChainAddr(ctx *fasthttp.RequestCtx, chainAddr string) (*map[
 		return nil, err
 	}
 
-	log.Printf("%t\n", res)
+	//log.Printf("%t\n", res)
 
 	// 设置 接收输出
 	buf := new(bytes.Buffer)

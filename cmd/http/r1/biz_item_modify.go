@@ -2,7 +2,7 @@ package r1
 
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
-	persontypes "github.com/jack139/artchain/x/person/types"
+	invtypes "github.com/jack139/artchain/x/inventory/types"
 
 	"log"
 	//"time"
@@ -35,6 +35,11 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9001, "need id")
 		return
 	}
+	itemOwnerAddr, ok := (*reqData)["owner_addr"].(string)
+	if !ok {
+		helper.RespError(ctx, 9002, "need owner_addr")
+		return
+	}
 
 	itemDesc, ok := (*reqData)["desc"].(string)
 	itemDate, ok := (*reqData)["date"].(string)
@@ -48,36 +53,42 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	itemId, _ := strconv.ParseUint(itemIdStr, 10, 64)
 
 	// 获取当前链上数据
-	itemMap, err := queryItemInfo(ctx, itemId)
+	itemMap, err := queryItemInfoById(ctx, itemId)
 	if err!=nil {
 		helper.RespError(ctx, 9002, err.Error())
 		return		
 	}
 
+	// 检查所有人addr是否一致
+	if itemOwnerAddr!=(*itemMap)["currentOwnerId"].(string) {
+		helper.RespError(ctx, 9003, "wrong owner_addr")
+		return				
+	}
+
 	// 是否要修改？
 	if len(itemDesc)==0 {
-		itemDesc = (*itemMap)["itemDesc"]
+		itemDesc = (*itemMap)["itemDesc"].(string)
 	}
 	if len(itemDate)==0 {
-		itemDate = (*itemMap)["itemDate"]
+		itemDate = (*itemMap)["itemDate"].(string)
 	}
 	if len(itemDetail)==0 {
-		itemDetail = (*itemMap)["itemDetail"]
+		itemDetail = (*itemMap)["itemDetail"].(string)
 	}
 	if len(itemType)==0 {
-		itemType = (*itemMap)["itemType"]
+		itemType = (*itemMap)["itemType"].(string)
 	}
 	if len(itemSubject)==0 {
-		itemSubject = (*itemMap)["itemSubject"]
+		itemSubject = (*itemMap)["itemSubject"].(string)
 	}
 	if len(itemMedia)==0 {
-		itemMedia = (*itemMap)["itemMedia"]
+		itemMedia = (*itemMap)["itemMedia"].(string)
 	}
 	if len(itemSize)==0 {
-		itemSize = (*itemMap)["itemSize"]
+		itemSize = (*itemMap)["itemSize"].(string)
 	}
 	if len(itemBasePrice)==0 {
-		itemBasePrice = (*itemMap)["itemBasePrice"]
+		itemBasePrice = (*itemMap)["itemBasePrice"].(string)
 	}
 
 
@@ -89,7 +100,7 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 数据上链
-	msg := persontypes.NewMsgUpdateItem(
+	msg := invtypes.NewMsgUpdateItem(
 		(*itemMap)["creator"].(string), //creator string, 
 		itemId, //id uint64, 
 		(*itemMap)["recType"].(string), //recType string, 

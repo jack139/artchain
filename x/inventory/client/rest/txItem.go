@@ -111,6 +111,7 @@ type updateItemRequest struct {
 	AESKey         string       `json:"AESKey"`
 	ItemBasePrice  string       `json:"itemBasePrice"`
 	CurrentOwnerId string       `json:"currentOwnerId"`
+	Status         string       `json:"status"`
 }
 
 func updateItemHandler(clientCtx client.Context) http.HandlerFunc {
@@ -161,6 +162,8 @@ func updateItemHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedCurrentOwnerId := req.CurrentOwnerId
 
+		parsedStatus := req.Status
+
 		msg := types.NewMsgUpdateItem(
 			req.Creator,
 			id,
@@ -176,6 +179,7 @@ func updateItemHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedAESKey,
 			parsedItemBasePrice,
 			parsedCurrentOwnerId,
+			parsedStatus,
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
