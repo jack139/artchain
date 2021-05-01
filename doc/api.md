@@ -339,7 +339,7 @@ base64后结果：
 | ---- | ------ | --------------------------------------- |
 | code | int    | 状态代码，0 表示成功，非0 表示出错      |
 | msg  | string | 成功时返回success；出错时，返回出错信息 |
-| data | json   | 物品id                                  |
+| data | json   | 交易区块高度                            |
 
 请求示例
 
@@ -437,6 +437,124 @@ base64后结果：
 
 
 
+##### 2.10 添加物品评价
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/review/new
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数          | 类型   | 必填 | 说明           |
+| ------------- | ------ | ---- | -------------- |
+| item_id       | string | Y    | 被评论的物品id |
+| reviewer_addr | string | Y    | 评论者的链地址 |
+| detail        | string | Y    | 评论内容       |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+##### 2.11 修改物品评价
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/review/modify
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数          | 类型   | 必填 | 说明                           |
+| ------------- | ------ | ---- | ------------------------------ |
+| review_id     | string | Y    | 评论id                         |
+| reviewer_addr | string | Y    | 评论者的链地址，需与新建人一致 |
+| detail        | string | Y    | 修改的评论内容                 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+##### 2.12 修改物品评价反馈信息
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/review/feedback
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数          | 类型   | 必填 | 说明                    |
+| ------------- | ------ | ---- | ----------------------- |
+| review_id     | string | Y    | 评论id                  |
+| reviewer_addr | string | Y    | 反馈者的链地址          |
+| detail        | string | Y    | 反馈信息：1 赞同 0 反对 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
 
 
 #### 3. 查询接口
@@ -498,6 +616,7 @@ base64后结果：
             "login_name":"test1",
             "phone":"",
             "referrer":"bid1art111111111",
+            "status":"ACTIVE",
             "reg_date":"2021-04-30 10:42:16",
             "last_date":"2021-04-30 15:57:03"
         }
@@ -566,6 +685,7 @@ base64后结果：
                 "owner_addr":"bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7",
                 "size":"",
                 "subject":"",
+                "status":"WAIT",
                 "type":""
             },
             {
@@ -578,6 +698,7 @@ base64后结果：
                 "owner_addr":"bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7",
                 "size":"",
                 "subject":"",
+                "status":"WAIT",
                 "type":""
             }
         ]
@@ -643,6 +764,7 @@ base64后结果：
             "owner_addr":"bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7",
             "size":"",
             "subject":"",
+            "status":"WAIT",
             "type":""
         }
     },
@@ -651,6 +773,44 @@ base64后结果：
 ```
 
 
+
+##### 3.6 查询评价清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/item/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数    | 类型   | 必填 | 说明              |
+| ------- | ------ | ---- | ----------------- |
+| item_id | string | Y    | 物品id            |
+| page    | uint   | Y    | 第几页，最小为1   |
+| limit   | uint   | Y    | 每页数量，最小为1 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 物品清单数据                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
 
 
 
