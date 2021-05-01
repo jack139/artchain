@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-func listReview(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
-	msgs := keeper.GetAllReview(ctx)
+func listReview(ctx sdk.Context, itemId string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
+	msgs := keeper.GetAllReview(ctx, itemId)
 
 	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, msgs)
 	if err != nil {
@@ -18,17 +18,17 @@ func listReview(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAm
 	return bz, nil
 }
 
-func getReview(ctx sdk.Context, key string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
+func getReview(ctx sdk.Context, key string, itemId string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
 	id, err := strconv.ParseUint(key, 10, 64)
 	if err != nil {
 		return nil, err
 	}
 
-	if !keeper.HasReview(ctx, id) {
+	if !keeper.HasReview(ctx, id, itemId) {
 		return nil, sdkerrors.ErrKeyNotFound
 	}
 
-	msg := keeper.GetReview(ctx, id)
+	msg := keeper.GetReview(ctx, id, itemId)
 
 	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, msg)
 	if err != nil {

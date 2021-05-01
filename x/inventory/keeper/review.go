@@ -48,6 +48,7 @@ func (k Keeper) AppendReview(
 	reviewDate string,
 	upCount string,
 	downCount string,
+	status string,
 ) uint64 {
 	// Create the review
 	count := k.GetReviewCount(ctx)
@@ -61,9 +62,11 @@ func (k Keeper) AppendReview(
 		ReviewDate:   reviewDate,
 		UpCount:      upCount,
 		DownCount:    downCount,
+		Status:       status,
 	}
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey))
+	// review 的 key 按 itemId 区分，方便按 itemId 查询
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+itemId))
 	value := k.cdc.MustMarshalBinaryBare(&review)
 	store.Set(GetReviewIDBytes(review.Id), value)
 
@@ -75,39 +78,39 @@ func (k Keeper) AppendReview(
 
 // SetReview set a specific review in the store
 func (k Keeper) SetReview(ctx sdk.Context, review types.Review) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+review.ItemId))
 	b := k.cdc.MustMarshalBinaryBare(&review)
 	store.Set(GetReviewIDBytes(review.Id), b)
 }
 
 // GetReview returns a review from its id
-func (k Keeper) GetReview(ctx sdk.Context, id uint64) types.Review {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey))
+func (k Keeper) GetReview(ctx sdk.Context, id uint64, itemId string) types.Review {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+itemId))
 	var review types.Review
 	k.cdc.MustUnmarshalBinaryBare(store.Get(GetReviewIDBytes(id)), &review)
 	return review
 }
 
 // HasReview checks if the review exists in the store
-func (k Keeper) HasReview(ctx sdk.Context, id uint64) bool {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey))
+func (k Keeper) HasReview(ctx sdk.Context, id uint64, itemId string) bool {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+itemId))
 	return store.Has(GetReviewIDBytes(id))
 }
 
 // GetReviewOwner returns the creator of the review
-func (k Keeper) GetReviewOwner(ctx sdk.Context, id uint64) string {
-	return k.GetReview(ctx, id).Creator
+func (k Keeper) GetReviewOwner(ctx sdk.Context, id uint64, itemId string) string {
+	return k.GetReview(ctx, id, itemId).Creator
 }
 
 // RemoveReview removes a review from the store
-func (k Keeper) RemoveReview(ctx sdk.Context, id uint64) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey))
+func (k Keeper) RemoveReview(ctx sdk.Context, id uint64, itemId string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+itemId))
 	store.Delete(GetReviewIDBytes(id))
 }
 
 // GetAllReview returns all review
-func (k Keeper) GetAllReview(ctx sdk.Context) (list []types.Review) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey))
+func (k Keeper) GetAllReview(ctx sdk.Context, itemId string) (list []types.Review) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+itemId))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()

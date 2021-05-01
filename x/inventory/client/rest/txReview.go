@@ -22,6 +22,7 @@ type createReviewRequest struct {
 	ReviewDate   string       `json:"reviewDate"`
 	UpCount      string       `json:"upCount"`
 	DownCount    string       `json:"downCount"`
+	Status       string       `json:"status"`
 }
 
 func createReviewHandler(clientCtx client.Context) http.HandlerFunc {
@@ -57,6 +58,8 @@ func createReviewHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedDownCount := req.DownCount
 
+		parsedStatus := req.Status
+
 		msg := types.NewMsgCreateReview(
 			req.Creator,
 			parsedRecType,
@@ -66,6 +69,7 @@ func createReviewHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedReviewDate,
 			parsedUpCount,
 			parsedDownCount,
+			parsedStatus,
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)

@@ -7,7 +7,8 @@ import (
 
 var _ sdk.Msg = &MsgCreateReview{}
 
-func NewMsgCreateReview(creator string, recType string, itemId string, reviewerId string, reviewDetail string, reviewDate string, upCount string, downCount string) *MsgCreateReview {
+func NewMsgCreateReview(creator string, recType string, itemId string, reviewerId string, reviewDetail string, 
+	reviewDate string, upCount string, downCount string, status string) *MsgCreateReview {
 	return &MsgCreateReview{
 		Creator:      creator,
 		RecType:      recType,
@@ -17,6 +18,7 @@ func NewMsgCreateReview(creator string, recType string, itemId string, reviewerI
 		ReviewDate:   reviewDate,
 		UpCount:      upCount,
 		DownCount:    downCount,
+		Status:       status,
 	}
 }
 
@@ -51,7 +53,8 @@ func (msg *MsgCreateReview) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateReview{}
 
-func NewMsgUpdateReview(creator string, id uint64, recType string, itemId string, reviewerId string, reviewDetail string, reviewDate string, upCount string, downCount string) *MsgUpdateReview {
+func NewMsgUpdateReview(creator string, id uint64, recType string, itemId string, reviewerId string, 
+	reviewDetail string, reviewDate string, upCount string, downCount string) *MsgUpdateReview {
 	return &MsgUpdateReview{
 		Id:           id,
 		Creator:      creator,

@@ -51,6 +51,7 @@ message MsgUpdateReviewResponse { }
 message MsgDeleteReview {
   string creator = 1;
   uint64 id = 2;
+  string itemId = 3;
 }
 
 message MsgDeleteReviewResponse { }

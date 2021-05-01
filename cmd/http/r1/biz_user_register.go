@@ -99,7 +99,7 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		userType, // userType string, 
 		string(userInfo), // userInfo string, 
 		userStatus, // status string, 
-		time.Now().Format("2006-01-02 15:04:05") , // regDate string, 
+		time.Now().Format("2006-01-02 15:04:05"), // regDate string, 
 		address, // chainAddr string,
 	)
 	if err := msg.ValidateBasic(); err != nil {

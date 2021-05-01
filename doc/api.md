@@ -491,7 +491,7 @@ base64后结果：
 
 | 参数          | 类型   | 必填 | 说明                           |
 | ------------- | ------ | ---- | ------------------------------ |
-| review_id     | string | Y    | 评论id                         |
+| id            | string | Y    | 评论id                         |
 | reviewer_addr | string | Y    | 评论者的链地址，需与新建人一致 |
 | detail        | string | Y    | 修改的评论内容                 |
 
@@ -615,7 +615,6 @@ base64后结果：
             "email":"111111@qq.com",
             "login_name":"test1",
             "phone":"",
-            "referrer":"bid1art111111111",
             "status":"ACTIVE",
             "reg_date":"2021-04-30 10:42:16",
             "last_date":"2021-04-30 15:57:03"

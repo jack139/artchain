@@ -14,7 +14,7 @@ func CmdCreateReview() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-review [recType] [itemId] [reviewerId] [reviewDetail] [reviewDate] [upCount] [downCount]",
 		Short: "Creates a new review",
-		Args:  cobra.ExactArgs(7),
+		Args:  cobra.ExactArgs(8),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsRecType := string(args[0])
 			argsItemId := string(args[1])
@@ -23,13 +23,14 @@ func CmdCreateReview() *cobra.Command {
 			argsReviewDate := string(args[4])
 			argsUpCount := string(args[5])
 			argsDownCount := string(args[6])
+			argsStatus := string(args[7])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreateReview(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsItemId), string(argsReviewerId), string(argsReviewDetail), string(argsReviewDate), string(argsUpCount), string(argsDownCount))
+			msg := types.NewMsgCreateReview(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsItemId), string(argsReviewerId), string(argsReviewDetail), string(argsReviewDate), string(argsUpCount), string(argsDownCount), string(argsStatus))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

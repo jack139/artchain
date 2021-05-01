@@ -23,6 +23,7 @@ func (k msgServer) CreateReview(goCtx context.Context, msg *types.MsgCreateRevie
 		msg.ReviewDate,
 		msg.UpCount,
 		msg.DownCount,
+		msg.Status,
 	)
 
 	return &types.MsgCreateReviewResponse{
@@ -47,12 +48,12 @@ func (k msgServer) UpdateReview(goCtx context.Context, msg *types.MsgUpdateRevie
 	}
 
 	// Checks that the element exists
-	if !k.HasReview(ctx, msg.Id) {
+	if !k.HasReview(ctx, msg.Id, msg.ItemId) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.Id))
 	}
 
 	// Checks if the the msg sender is the same as the current owner
-	if msg.Creator != k.GetReviewOwner(ctx, msg.Id) {
+	if msg.Creator != k.GetReviewOwner(ctx, msg.Id, msg.ItemId) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
@@ -64,14 +65,14 @@ func (k msgServer) UpdateReview(goCtx context.Context, msg *types.MsgUpdateRevie
 func (k msgServer) DeleteReview(goCtx context.Context, msg *types.MsgDeleteReview) (*types.MsgDeleteReviewResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.HasReview(ctx, msg.Id) {
+	if !k.HasReview(ctx, msg.Id, msg.ItemId) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.Id))
 	}
-	if msg.Creator != k.GetReviewOwner(ctx, msg.Id) {
+	if msg.Creator != k.GetReviewOwner(ctx, msg.Id, msg.ItemId) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	k.RemoveReview(ctx, msg.Id)
+	k.RemoveReview(ctx, msg.Id, msg.ItemId)
 
 	return &types.MsgDeleteReviewResponse{}, nil
 }

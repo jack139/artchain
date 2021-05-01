@@ -48,7 +48,7 @@ func (k Keeper) Review(c context.Context, req *types.QueryGetReviewRequest) (*ty
 	var review types.Review
 	ctx := sdk.UnwrapSDKContext(c)
 
-	if !k.HasReview(ctx, req.Id) {
+	if !k.HasReview(ctx, req.Id, req.ItemId) {
 		return nil, sdkerrors.ErrKeyNotFound
 	}
 

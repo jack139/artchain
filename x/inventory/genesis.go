@@ -35,7 +35,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	// this line is used by starport scaffolding # genesis/module/export
 	// Get all review
-	reviewList := k.GetAllReview(ctx)
+	reviewList := k.GetAllReview(ctx, "") // 其实 不能导出 任何东西，因为没有提供 itemId
 	for _, elem := range reviewList {
 		elem := elem
 		genesis.ReviewList = append(genesis.ReviewList, &elem)
