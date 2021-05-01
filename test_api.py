@@ -42,12 +42,15 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            'id' : '0',
+            #'id' : '0',
 
             #'desc' : '测试物品2',
             #'date' : '1911s',
             #'base_price' : '$2001',
             #'owner_addr' : 'bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7',
+
+            'page' : 1,
+            'limit' : 10,
         }#
     }
 
@@ -88,7 +91,8 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
     #url = host+'/api/r1/query/user/info'
-    url = host+'/api/r1/query/item/info'
+    #url = host+'/api/r1/query/item/info'
+    url = host+'/api/r1/query/item/list'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)

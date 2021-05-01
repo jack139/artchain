@@ -508,6 +508,84 @@ base64后结果：
 
 
 
+##### 3.3 查询物品清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/item/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数  | 类型 | 必填 | 说明              |
+| ----- | ---- | ---- | ----------------- |
+| page  | uint | Y    | 第几页，最小为1   |
+| limit | uint | Y    | 每页数量，最小为1 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 物品清单数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "page": 1, 
+        "limit": 10
+    },
+    "timestamp": 1619834379, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "ODA2MjNiY2M3MzM2NjhkNjUwMzZiZDNkMmY1NmM3ZmE5YzFlMGE5YWU4NjUzNzg5MGUyODRhY2JjNTA2YjcxYg=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "items":[
+            {
+                "base_price":"$1001",
+                "date":"1900s",
+                "desc":"测试物品",
+                "detail":"",
+                "last_date":"2021-04-30 22:09:49",
+                "media":"",
+                "owner_addr":"bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7",
+                "size":"",
+                "subject":"",
+                "type":""
+            },
+            {
+                "base_price":"$2001",
+                "date":"1911s",
+                "desc":"测试物品2",
+                "detail":"",
+                "last_date":"2021-04-30 22:11:46",
+                "media":"",
+                "owner_addr":"bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7",
+                "size":"",
+                "subject":"",
+                "type":""
+            }
+        ]
+    },
+    "msg":"success"
+}
+```
+
 
 
 ##### 3.4 查询物品信息
@@ -555,7 +633,7 @@ base64后结果：
 {
     "code":0,
     "data":{
-        "user":{
+        "item_list":{
             "base_price":"$1001",
             "date":"1900s",
             "desc":"测试物品",

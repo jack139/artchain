@@ -63,7 +63,7 @@ func QueryItemInfo(ctx *fasthttp.RequestCtx) {
 	}
 
 	resp := map[string] interface{} {
-		"user" : respData,
+		"item" : respData,
 	}
 
 	helper.RespJson(ctx, &resp)

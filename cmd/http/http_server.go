@@ -27,6 +27,7 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/query/user/credit_balance", release1.QueryBalance)
 	r.POST("/api/r1/query/block/rawdata", release1.QueryRawBlock)
 	r.POST("/api/r1/query/item/info", release1.QueryItemInfo)
+	r.POST("/api/r1/query/item/list", release1.QueryItemList)
 
 
 	log.Printf("start HTTP server at 0.0.0.0:%s\n", port)
