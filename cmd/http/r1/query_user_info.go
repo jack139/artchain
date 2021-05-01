@@ -51,17 +51,18 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 
 	// 构建返回结构
 	respData := map[string] interface{} {
-		"chain_addr": userMap["chainAddr"],
-		"login_name": userMap["name"],
-		"bank_acc_name": userInfo["bank_acc_name"],
-		"bank_name": userInfo["bank_name"],
-		"bank_acc_no": userInfo["bank_acc_no"],
-		"address": userInfo["contact_address"],
-		"phone": userInfo["phone"],
-		"email": userInfo["email"],
-		"referrer": userInfo["referrer"],
-		"reg_date": userMap["regDate"],
-		"last_date": userMap["lastDate"],
+		"chain_addr"    : userMap["chainAddr"],
+		"login_name"    : userMap["name"],
+		"bank_acc_name" : userInfo["bank_acc_name"],
+		"bank_name"     : userInfo["bank_name"],
+		"bank_acc_no"   : userInfo["bank_acc_no"],
+		"address"       : userInfo["contact_address"],
+		"phone"         : userInfo["phone"],
+		"email"         : userInfo["email"],
+		"referrer"      : userInfo["referrer"],
+		"reg_date"      : userMap["regDate"],
+		"last_date"     : userMap["lastDate"],
+		"status"        : userMap["status"],
 	}
 
 	resp := map[string] interface{} {

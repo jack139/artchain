@@ -62,7 +62,7 @@
 | :------------------: | -------------------------- | -------------------------- |
 | 1 | 查询用户信息         | **/query/user/info**       |
 | 2 | 验证用户身份          | /query/user/verify               |
-| 3 | 查询物品清单         | /query/item/list           |
+| 3 | 查询物品清单         | **/query/item/list**       |
 | 4 | 查询物品信息         | **/query/item/info**       |
 | 5 | 验证物品NFT          | /query/nft/verify                |
 | 6 | 查询物品评价清单     | /query/review/list         |

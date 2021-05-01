@@ -28,6 +28,7 @@ func (k msgServer) CreateItem(goCtx context.Context, msg *types.MsgCreateItem) (
 		msg.AESKey,
 		msg.ItemBasePrice,
 		msg.CurrentOwnerId,
+		msg.Status,
 	)
 
 	return &types.MsgCreateItemResponse{

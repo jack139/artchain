@@ -60,6 +60,7 @@ func QueryItemInfo(ctx *fasthttp.RequestCtx) {
 		"base_price" : itemMap["itemBasePrice"],
 		"owner_addr" : itemMap["currentOwnerId"],
 		"last_date"  : itemMap["lastDate"],
+		"status"     : itemMap["status"],
 	}
 
 	resp := map[string] interface{} {

@@ -54,6 +54,7 @@ func (k Keeper) AppendItem(
 	AESKey string,
 	itemBasePrice string,
 	currentOwnerId string,
+	status string,
 ) uint64 {
 	// Create the item
 	count := k.GetItemCount(ctx)
@@ -72,7 +73,8 @@ func (k Keeper) AppendItem(
 		AESKey:         AESKey,
 		ItemBasePrice:  itemBasePrice,
 		CurrentOwnerId: currentOwnerId,
-		LastDate:  time.Now().Format("2006-01-02 15:04:05"),
+		LastDate:       time.Now().Format("2006-01-02 15:04:05"),
+		Status:         status,
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))

@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
             #'id' : '0',
 
-            #'desc' : '测试物品2',
+            #'desc' : '测试物品3',
             #'date' : '1911s',
             #'base_price' : '$2001',
             #'owner_addr' : 'bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7',
