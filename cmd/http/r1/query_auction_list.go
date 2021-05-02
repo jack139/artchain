@@ -2,7 +2,7 @@ package r1
 
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
-	invtypes "github.com/jack139/artchain/x/inventory/types"
+	auctiontypes "github.com/jack139/artchain/x/auction/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -16,9 +16,9 @@ import (
 
 
 
-/* 查询物品清单 */
-func QueryItemList(ctx *fasthttp.RequestCtx) {
-	log.Println("query_item_list")
+/* 查询拍卖信息清单 */
+func QueryAuctionList(ctx *fasthttp.RequestCtx) {
+	log.Println("query_auction_list")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -48,7 +48,7 @@ func QueryItemList(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryItemListPage(ctx, uint64(page), uint64(limit))
+	respData2, err := queryAuctionListPage(ctx, uint64(page), uint64(limit))
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -63,24 +63,22 @@ func QueryItemList(ctx *fasthttp.RequestCtx) {
 		item := item0.(map[string]interface{})
 
 		newItem := map[string]interface{} {
-			"id"         : item["id"],
-			"desc"       : item["itemDesc"],
-			"detail"     : item["itemDetail"],
-			"date"       : item["itemDate"],
-			"type"       : item["itemType"],
-			"subject"    : item["itemSubject"],
-			"media"      : item["itemMedia"],
-			"size"       : item["itemSize"],
-			"base_price" : item["itemBasePrice"],
-			"owner_addr" : item["currentOwnerId"],
-			"last_date"  : item["lastDate"],
-			"status"     : item["status"],
+			"id"               : item["id"],
+			"item_id"          : item["itemId"],
+			"auction_house_id" : item["auctionHouseId"],
+			"seller_addr"      : item["SellerId"],
+			"req_date"         : item["requestDate"],
+			"reserved_price"   : item["reservePrice"],
+			"status"           : item["status"],
+			"open_date"        : item["openDate"],
+			"close_date"       : item["closeDate"],
+			"last_date"        : item["lastDate"],
 		}
 		respData = append(respData, newItem)
 	}
 
 	resp := map[string] interface{} {
-		"item_list" : respData,
+		"auction_list" : respData,
 	}
 
 	helper.RespJson(ctx, &resp)
@@ -88,12 +86,12 @@ func QueryItemList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryItemListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (*[]interface{}, error) {
+func queryAuctionListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
 	// 准备查询
-	queryClient := invtypes.NewQueryClient(clientCtx)
+	queryClient := auctiontypes.NewQueryClient(clientCtx)
 
 	pageReq := query.PageRequest{
 		Key:        []byte(""),
@@ -102,11 +100,11 @@ func queryItemListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (*[]
 		CountTotal: true,
 	}
 
-	params := &invtypes.QueryAllItemRequest{
+	params := &auctiontypes.QueryAllRequestRequest{
 		Pagination: &pageReq,
 	}
 
-	res, err := queryClient.ItemAll(context.Background(), params)
+	res, err := queryClient.RequestAll(context.Background(), params)
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +132,7 @@ func queryItemListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (*[]
 		return nil, err
 	}
 
-	itemMapList := respData["Item"].([]interface{})
+	auctionMapList := respData["Request"].([]interface{})
 
-	return &(itemMapList), nil
+	return &(auctionMapList), nil
 }

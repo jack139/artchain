@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            #'id' : '2',
+            #'id' : '0',
 
             #'desc' : '测试物品3',
             #'date' : '1911s',
@@ -52,9 +52,14 @@ if __name__ == '__main__':
             'page' : 1,
             'limit' : 10,
 
-            'item_id' : "3",
+            #'item_id' : "3",
             #'reviewer_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
             #'detail' : "aaaaabbbbbb 哈哈1111111",
+
+            #'seller_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+            #'auction_house_id' : "1",
+            #'item_id' : '2',
+            #'reserved_price' : '2000',
         }
     }
 
@@ -93,13 +98,17 @@ if __name__ == '__main__':
     #url = host+'/api/r1/biz/item/modify'
     #url = host+'/api/r1/biz/review/new'
     #url = host+'/api/r1/biz/review/modify'
+    #url = host+'/api/r1/biz/auction/new'
+    #url = host+'/api/r1/biz/auction/modify'
 
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
     #url = host+'/api/r1/query/user/info'
     #url = host+'/api/r1/query/item/info'
     #url = host+'/api/r1/query/item/list'
-    url = host+'/api/r1/query/review/list'
+    #url = host+'/api/r1/query/review/list'
+    #url = host+'/api/r1/query/auction/info'
+    url = host+'/api/r1/query/auction/list'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)

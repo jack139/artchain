@@ -68,6 +68,7 @@ func QueryReviewList(ctx *fasthttp.RequestCtx) {
 		item := item0.(map[string]interface{})
 
 		newItem := map[string]interface{} {
+			"id"            : item["id"],
 			"item_id"       : item["itemId"],
 			"detail"        : item["reviewDetail"],
 			"reviewer_addr" : item["reviewerId"],

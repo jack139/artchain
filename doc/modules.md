@@ -72,7 +72,7 @@ AuctionHouseID  // 拍卖行 USerID
 SellerID        // 卖家UserID（须与物品所有者ID一致）
 RequestDate     // 请求日期
 ReservePrice    // 底价
-Status          // 拍卖状态：INIT, OPEN, CLOSED  (由拍卖行设置)
+Status          // 拍卖状态：WAIT, INIT, OPEN, CLOSED  (由拍卖行设置)
 OpenDate        // OPEN的日期 (由拍卖行设置)
 CloseDate       // CLOSE的日期  (由拍卖行设置)
 lastDate        // 最后修改日期

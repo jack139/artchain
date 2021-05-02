@@ -7,7 +7,8 @@ import (
 
 var _ sdk.Msg = &MsgCreateRequest{}
 
-func NewMsgCreateRequest(creator string, recType string, itemId string, auctionHouseId string, SellerId string, requestDate string, reservePrice string, status string, openDate string, closeDate string) *MsgCreateRequest {
+func NewMsgCreateRequest(creator string, recType string, itemId string, auctionHouseId string, SellerId string, 
+	requestDate string, reservePrice string, status string, openDate string, closeDate string) *MsgCreateRequest {
 	return &MsgCreateRequest{
 		Creator:        creator,
 		RecType:        recType,
@@ -53,7 +54,8 @@ func (msg *MsgCreateRequest) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateRequest{}
 
-func NewMsgUpdateRequest(creator string, id uint64, recType string, itemId string, auctionHouseId string, SellerId string, requestDate string, reservePrice string, status string, openDate string, closeDate string) *MsgUpdateRequest {
+func NewMsgUpdateRequest(creator string, id uint64, recType string, itemId string, auctionHouseId string, 
+	SellerId string, requestDate string, reservePrice string, status string, openDate string, closeDate string) *MsgUpdateRequest {
 	return &MsgUpdateRequest{
 		Id:             id,
 		Creator:        creator,

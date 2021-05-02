@@ -43,8 +43,8 @@
 | 10        | 添加物品评价          | **/biz/review/new**            |
 | 11        | 修改物品评价          | **/biz/review/modify**         |
 | 12 | 修改物品评价反馈信息   | /biz/review/feedback           |
-| 13           | 发起拍卖             | /biz/auction/new               |
-| 14       | 修改拍卖信息       | /biz/auction/modify |
+| 13           | 发起拍卖             | **/biz/auction/new**           |
+| 14       | 修改拍卖信息       | **/biz/auction/modify** |
 | 15               | 出价                 | /biz/auction/bid               |
 | 16       | 建立成交交易         | /biz/transaction/new           |
 | 17 | 审核用户 | /biz/audit/user |
@@ -69,8 +69,8 @@
 | 7 | 查询物品评价信息     | /query/review/info         |
 | 8 | 查询拍卖行清单       | /query/auction_house/list  |
 | 9 | 查询拍卖行信息       | /query/auction_house/info  |
-| 10 | 查询拍卖清单         | /query/auction/list        |
-| 11 | 查询拍卖信息         | /query/auction/info        |
+| 10 | 查询拍卖清单         | **/query/auction/list**    |
+| 11 | 查询拍卖信息         | **/query/auction/info**    |
 | 12 | 查询出价信息         | /query/bid/info            |
 | 13 | 查询最高出价         | /query/bid/highest         |
 | 14 | 查询出价清单         | /query/bid/list            |
@@ -623,13 +623,31 @@ base64后结果：
 请求示例
 
 ```json
-
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "seller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "auction_house_id": "1", 
+        "item_id": "2", 
+        "reserved_price": "1000"
+    }, 
+    "timestamp": 1619946244, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NjZmNzcxMGQwZDFhMDlhNjdhNDQ4NDQ5ZWI3Yzg0MjUyZjIyNTg2OWUwMDMwZjdmY2I4YTRhMmEzODczY2I2MQ=="
+}
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "height":"41812"
+    },
+    "msg":"success"
+}
 ```
 
 
@@ -665,20 +683,33 @@ base64后结果：
 请求示例
 
 ```json
-
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "id": "0", 
+        "auction_house_id": "", 
+        "reserved_price": "2000"
+    }, 
+    "timestamp": 1619946339, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "MTBhMDNjNzgzOTNjNjdiNWNlNWI5Mzg1OTc3MTA3ODFlN2FjZDBhN2NkOWZiZGFjZmY2YzVhOGQ5NmQyMDQ4Mg=="
+}
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "height":"41907"
+    },
+    "msg":"success"
+}
 ```
 
 
-
-
-
-#### 
 
 
 
@@ -798,8 +829,9 @@ base64后结果：
 {
     "code":0,
     "data":{
-        "items":[
+        "item_list":[
             {
+                "id":"1",
                 "base_price":"$1001",
                 "date":"1900s",
                 "desc":"测试物品",
@@ -813,6 +845,7 @@ base64后结果：
                 "type":""
             },
             {
+                "id":"2",
                 "base_price":"$2001",
                 "date":"1911s",
                 "desc":"测试物品2",
@@ -878,7 +911,8 @@ base64后结果：
 {
     "code":0,
     "data":{
-        "item_list":{
+        "item":{
+            "id":"1",
             "base_price":"$1001",
             "date":"1900s",
             "desc":"测试物品",
@@ -949,6 +983,7 @@ base64后结果：
     "data":{
         "review_list":[
             {
+                "id":"1",
                 "detail":"aaaaa 哈哈",
                 "item_id":"3",
                 "last_date":"",
@@ -956,6 +991,7 @@ base64后结果：
                 "reviewer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
                 "status":"WAIT"
             },{
+                "id":"2",
                 "detail":"aaaaabbbbbb 哈哈1111111",
                 "item_id":"3",
                 "last_date":"2021-05-02 08:12:47",
@@ -983,11 +1019,10 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数             | 类型   | 必填 | 说明              |
-| ---------------- | ------ | ---- | ----------------- |
-| auction_house_id | string | Y    | 拍卖行ID          |
-| page             | uint   | Y    | 第几页，最小为1   |
-| limit            | uint   | Y    | 每页数量，最小为1 |
+| 参数  | 类型 | 必填 | 说明              |
+| ----- | ---- | ---- | ----------------- |
+| page  | uint | Y    | 第几页，最小为1   |
+| limit | uint | Y    | 每页数量，最小为1 |
 
 返回结果
 
@@ -1000,13 +1035,42 @@ base64后结果：
 请求示例
 
 ```json
-
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "page": 1, 
+        "limit": 10
+    }, 
+    "timestamp": 1619947049, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NzJhOTliNGZmMWYyMmVjYjA3NTIyNjM3ZTJkOWM0N2QyZTQxOTEwYzZmMDM1Y2QwNWFjZDQxN2E4YzlhYTM0MQ=="
+}
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "auction_list":[
+            {
+                "auction_house_id":"1",
+                "close_date":"",
+                "id":"0",
+                "item_id":"2",
+                "last_date":"2021-05-02 17:05:40",
+                "open_date":"",
+                "req_date":"2021-05-02 17:04:04",
+                "reserved_price":"2000",
+                "seller_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "status":"WAIT"
+            }
+        ]
+    },
+    "msg":"success"
+}
 ```
 
 
@@ -1038,13 +1102,40 @@ base64后结果：
 请求示例
 
 ```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "id": "0", 
+    }, 
+    "timestamp": 1619946364, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "MzUxZmJiMzNkYjRhZjk0ZGQ1ZDZkYmE2MTkyYjRlMDhjMTlhZWMzZTYyYzU0ZGQ5NWZhYTQ2NmQxNDA4ZGI2MA=="
+}
 
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "auction":{
+            "auction_house_id":"1",
+            "close_date":"",
+            "id":"0",
+            "item_id":"2",
+            "last_date":"2021-05-02 17:05:40",
+            "open_date":"",
+            "req_date":"2021-05-02 17:04:04",
+            "reserved_price":"2000",
+            "seller_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+            "status":"WAIT"
+        }
+    },
+    "msg":"success"
+}
 ```
 
 

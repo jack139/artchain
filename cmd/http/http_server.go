@@ -24,6 +24,8 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/biz/item/modify", release1.BizItemModify)
 	r.POST("/api/r1/biz/review/new", release1.BizReviewNew)
 	r.POST("/api/r1/biz/review/modify", release1.BizReviewModify)
+	r.POST("/api/r1/biz/auction/new", release1.BizAuctionNew)
+	r.POST("/api/r1/biz/auction/modify", release1.BizAuctionModify)
 
 	r.POST("/api/r1/query/user/info", release1.QueryUserInfo)
 	r.POST("/api/r1/query/user/credit_balance", release1.QueryBalance)
@@ -31,6 +33,8 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/query/item/info", release1.QueryItemInfo)
 	r.POST("/api/r1/query/item/list", release1.QueryItemList)
 	r.POST("/api/r1/query/review/list", release1.QueryReviewList)
+	r.POST("/api/r1/query/auction/info", release1.QueryAuctionInfo)
+	r.POST("/api/r1/query/auction/list", release1.QueryAuctionList)
 
 
 	log.Printf("start HTTP server at 0.0.0.0:%s\n", port)
