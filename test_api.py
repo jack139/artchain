@@ -60,6 +60,14 @@ if __name__ == '__main__':
             #'auction_house_id' : "1",
             #'item_id' : '2',
             #'reserved_price' : '2000',
+
+            #'buyer_addr' :  "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+            #'auction_id' : "1",
+            #'item_id' : "2",
+            #'trans_type' : "BID",
+            #'hammer_time' : "2021-01-01",
+            #'hammer_price' : "1000",
+            #'details' : "测试测试测试"
         }
     }
 
@@ -100,6 +108,7 @@ if __name__ == '__main__':
     #url = host+'/api/r1/biz/review/modify'
     #url = host+'/api/r1/biz/auction/new'
     #url = host+'/api/r1/biz/auction/modify'
+    #url = host+'/api/r1/biz/trans/new'
 
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
@@ -108,7 +117,9 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/item/list'
     #url = host+'/api/r1/query/review/list'
     #url = host+'/api/r1/query/auction/info'
-    url = host+'/api/r1/query/auction/list'
+    #url = host+'/api/r1/query/auction/list'
+    #url = host+'/api/r1/query/trans/info'
+    url = host+'/api/r1/query/trans/list'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)

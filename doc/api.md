@@ -46,7 +46,7 @@
 | 13           | 发起拍卖             | **/biz/auction/new**           |
 | 14       | 修改拍卖信息       | **/biz/auction/modify** |
 | 15               | 出价                 | /biz/auction/bid               |
-| 16       | 建立成交交易         | /biz/transaction/new           |
+| 16       | 建立成交交易         | **/biz/trans/new**       |
 | 17 | 审核用户 | /biz/audit/user |
 | 18 | 审核物品 | /biz/audit/item |
 | 19 | 审核照片 | /biz/audit/image |
@@ -74,8 +74,8 @@
 | 12 | 查询出价信息         | /query/bid/info            |
 | 13 | 查询最高出价         | /query/bid/highest         |
 | 14 | 查询出价清单         | /query/bid/list            |
-| 15 | 查询成交交易         | /query/transaction/list    |
-| 16 | 查询成交交易信息     | /query/transaction/info    |
+| 15 | 查询成交交易         | **/query/trans/list** |
+| 16 | 查询成交交易信息     | **/query/trans/info** |
 | 17 | 查询指定区块原始数据 | **/query/block/rawdata** |
 | 18 | 查询用户通证 | **/query/user/credit_balance** |
 
@@ -711,6 +711,71 @@ base64后结果：
 
 
 
+##### 2.16 建立成交交易
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/trans/new
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数         | 类型   | 必填 | 说明         |
+| ------------ | ------ | ---- | ------------ |
+| buyer_addr   | string | Y    | 买家的链地址 |
+| auction_id   | string | Y    | 拍卖ID       |
+| item_id      | string | Y    | 物品ID       |
+| trans_type   | string | Y    | 交易类型     |
+| hammer_time  | string | Y    | 成交时间     |
+| hammer_price | string | Y    | 成交价格     |
+| details      | string |      | 交易细节描述 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "buyer_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "auction_id": "1", 
+        "item_id": "2", 
+        "trans_type": "BID", 
+        "hammer_time": "2021-01-01", 
+        "hammer_price": "1000", 
+        "details": "\u6d4b\u8bd5\u6d4b\u8bd5\u6d4b\u8bd5"
+    }, 
+    "timestamp": 1619955365, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "Y2M2MTc4ZTk5MTk2NzFkZmMzZWY2M2U1NmQ2ODMzNzQyODI5MGEwMjE3ZjVkYjg1NTBkOTU5ZDllNmZhZDZhZA=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "height":"46674"
+    },
+    "msg":"success"
+}
+```
+
+
+
 
 
 #### 3. 查询接口
@@ -956,7 +1021,7 @@ base64后结果：
 | ---- | ------ | --------------------------------------- |
 | code | int    | 状态代码，0 表示成功，非0 表示出错      |
 | msg  | string | 成功时返回success；出错时，返回出错信息 |
-| data | json   | 物品清单数据                            |
+| data | json   | 物品评价清单数据                        |
 
 请求示例
 
@@ -1030,7 +1095,7 @@ base64后结果：
 | ---- | ------ | --------------------------------------- |
 | code | int    | 状态代码，0 表示成功，非0 表示出错      |
 | msg  | string | 成功时返回success；出错时，返回出错信息 |
-| data | json   | 物品清单数据                            |
+| data | json   | 拍卖清单数据                            |
 
 请求示例
 
@@ -1097,7 +1162,7 @@ base64后结果：
 | ---- | ------ | --------------------------------------- |
 | code | int    | 状态代码，0 表示成功，非0 表示出错      |
 | msg  | string | 成功时返回success；出错时，返回出错信息 |
-| data | json   | 物品信息数据                            |
+| data | json   | 拍卖信息数据                            |
 
 请求示例
 
@@ -1139,6 +1204,138 @@ base64后结果：
 ```
 
 
+
+##### 3.15 查询交易清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/trans/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数  | 类型 | 必填 | 说明              |
+| ----- | ---- | ---- | ----------------- |
+| page  | uint | Y    | 第几页，最小为1   |
+| limit | uint | Y    | 每页数量，最小为1 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易清单数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "page": 1, 
+        "limit": 10
+    }, 
+    "timestamp": 1619955520, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "MjQ5N2YxYjQzNzM1Y2ZmNGU1YjQ3N2U0Njg2NWM1OTEyYmY2ODc3YjAyMjAzZWYwODE1ZjljYjViZGUzMzlkZg=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "trans_list":[
+            {
+                "auction_id":"1",
+                "buyer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "details":"测试测试测试",
+                "hammer_price":"1000",
+                "hammer_time":"2021-01-01",
+                "id":"0",
+                "item_id":"2",
+                "last_date":"",
+                "status":"WAIT",
+                "trans_date":"2021-05-02 19:36:05",
+                "trans_type":"BID"
+            }
+        ]
+    },
+    "msg":"success"
+}
+```
+
+
+
+##### 3.16 查询交易信息
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/trans/info
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数 | 类型   | 必填 | 说明   |
+| ---- | ------ | ---- | ------ |
+| id   | string | Y    | 交易id |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易信息数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "id": "0"
+    }, 
+    "timestamp": 1619955444, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "M2M3NmI4MTUzMTRmYzQxYmZkZmQzMWY4ODk4OWZhZGUzYWYxZTJmYzkzYjU5YTdhODk0MGYwN2FmMmQ5YzBjNw=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "trans":{
+            "auction_id":"1",
+            "buyer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",评价
+            "details":"测试测试测试",
+            "hammer_price":"1000",
+            "hammer_time":"2021-01-01",
+            "id":"0",
+            "item_id":"2",
+            "last_date":"",
+            "status":"WAIT",
+            "trans_date":"2021-05-02 19:36:05",
+            "trans_type":"BID"
+        }
+    },
+    "msg":"success"
+}
+```
 
 
 

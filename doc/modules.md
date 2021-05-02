@@ -104,7 +104,7 @@ ID           // 交易ID
 AuctionID    // 拍卖ID
 RecType      // POSTTRAN
 ItemID       // 物品ID
-TransType    // 交易类型：立即购买、竞价
+TransType    // 交易类型：BUYNOW, BID
 UserId       // 买家ID
 TransDate    // 成交时间
 HammerTime   // 买家出价时间（成交价格出价）

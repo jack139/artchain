@@ -7,7 +7,8 @@ import (
 
 var _ sdk.Msg = &MsgCreateTransaction{}
 
-func NewMsgCreateTransaction(creator string, recType string, auctionId string, itemId string, transType string, userId string, transDate string, hammerTime string, hammerPrice string, details string, status string) *MsgCreateTransaction {
+func NewMsgCreateTransaction(creator string, recType string, auctionId string, itemId string, transType string, 
+	userId string, transDate string, hammerTime string, hammerPrice string, details string, status string) *MsgCreateTransaction {
 	return &MsgCreateTransaction{
 		Creator:     creator,
 		RecType:     recType,
