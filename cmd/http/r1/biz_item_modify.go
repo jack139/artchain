@@ -5,7 +5,6 @@ import (
 	invtypes "github.com/jack139/artchain/x/inventory/types"
 
 	"log"
-	//"time"
 	"strconv"
 	"bytes"
 	"encoding/json"
@@ -50,7 +49,11 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	itemSize, _ := (*reqData)["size"].(string)
 	itemBasePrice, _ := (*reqData)["base_price"].(string)
 
-	itemId, _ := strconv.ParseUint(itemIdStr, 10, 64)
+	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
+	if err != nil {
+		helper.RespError(ctx, 9007, err.Error())
+		return
+	}
 
 	// 获取当前链上数据
 	itemMap, err := queryItemInfoById(ctx, itemId)

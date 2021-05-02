@@ -52,7 +52,11 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 		return		
 	}
 
-	reviewId, _ := strconv.ParseUint(reviewIdStr, 10, 64)
+	reviewId, err := strconv.ParseUint(reviewIdStr, 10, 64)
+	if err != nil {
+		helper.RespError(ctx, 9007, err.Error())
+		return
+	}
 
 	// 获取当前链上数据
 	reviewMap, err := queryReviewInfoById(ctx, reviewId, itemIdStr)

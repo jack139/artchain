@@ -37,7 +37,11 @@ func QueryItemInfo(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	itemId, _ := strconv.ParseUint(itemIdStr, 10, 64)
+	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
+	if err != nil {
+		helper.RespError(ctx, 9007, err.Error())
+		return
+	}
 
 	// 查询链上数据
 	respData2, err := queryItemInfoById(ctx, itemId)

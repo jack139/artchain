@@ -5,7 +5,6 @@ import (
 	persontypes "github.com/jack139/artchain/x/person/types"
 
 	"log"
-	//"time"
 	"strconv"
 	"bytes"
 	"encoding/json"
@@ -96,7 +95,11 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	userId, _ := strconv.ParseUint((*userMap)["id"].(string), 10, 64)
+	userId, err := strconv.ParseUint((*userMap)["id"].(string), 10, 64)
+	if err != nil {
+		helper.RespError(ctx, 9007, err.Error())
+		return
+	}
 
 	// 数据上链
 	msg := persontypes.NewMsgUpdateUser(

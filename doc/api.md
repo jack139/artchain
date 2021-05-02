@@ -608,8 +608,8 @@ base64后结果：
 | 参数             | 类型   | 必填 | 说明                         |
 | ---------------- | ------ | ---- | ---------------------------- |
 | seller_addr      | string | Y    | 卖家的链地址，需与所有者一致 |
+| auction_house_id | string | Y    | 拍卖行ID                     |
 | item_id          | string | Y    | 物品id                       |
-| auction_house_id | string | Y    | 拍卖行id                     |
 | reserved_price   | string | Y    | 底价                         |
 
 返回结果
@@ -651,7 +651,7 @@ base64后结果：
 | 参数             | 类型   | 必填 | 说明           |
 | ---------------- | ------ | ---- | -------------- |
 | id               | string | Y    | 拍卖id         |
-| auction_house_id | string |      | 修改的拍卖行id |
+| auction_house_id | string |      | 修改的拍卖行ID |
 | reserved_price   | string |      | 修改的底价     |
 
 返回结果
@@ -983,10 +983,11 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数  | 类型 | 必填 | 说明              |
-| ----- | ---- | ---- | ----------------- |
-| page  | uint | Y    | 第几页，最小为1   |
-| limit | uint | Y    | 每页数量，最小为1 |
+| 参数             | 类型   | 必填 | 说明              |
+| ---------------- | ------ | ---- | ----------------- |
+| auction_house_id | string | Y    | 拍卖行ID          |
+| page             | uint   | Y    | 第几页，最小为1   |
+| limit            | uint   | Y    | 每页数量，最小为1 |
 
 返回结果
 
