@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            #'id' : '0',
+            #'id' : '2',
 
             #'desc' : '测试物品3',
             #'date' : '1911s',
@@ -51,7 +51,11 @@ if __name__ == '__main__':
 
             'page' : 1,
             'limit' : 10,
-        }#
+
+            'item_id' : "3",
+            #'reviewer_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+            #'detail' : "aaaaabbbbbb 哈哈1111111",
+        }
     }
 
     secret = 'MjdjNGQxNGU3NjA1OWI0MGVmODIyN2FkOTEwYTViNDQzYTNjNTIyNSAgLQo='
@@ -87,12 +91,15 @@ if __name__ == '__main__':
     #url = host+'/api/r1/biz/user/modify'
     #url = host+'/api/r1/biz/item/new'
     #url = host+'/api/r1/biz/item/modify'
+    #url = host+'/api/r1/biz/review/new'
+    #url = host+'/api/r1/biz/review/modify'
 
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
     #url = host+'/api/r1/query/user/info'
     #url = host+'/api/r1/query/item/info'
-    url = host+'/api/r1/query/item/list'
+    #url = host+'/api/r1/query/item/list'
+    url = host+'/api/r1/query/review/list'
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)

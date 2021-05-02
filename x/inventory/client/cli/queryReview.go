@@ -12,10 +12,13 @@ import (
 
 func CmdListReview() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-review",
+		Use:   "list-review [item id]",
 		Short: "list all review",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
+
+			argsItemId := string(args[0])
 
 			pageReq, err := client.ReadPageRequest(cmd.Flags())
 			if err != nil {
@@ -26,6 +29,7 @@ func CmdListReview() *cobra.Command {
 
 			params := &types.QueryAllReviewRequest{
 				Pagination: pageReq,
+				ItemId: argsItemId,
 			}
 
 			res, err := queryClient.ReviewAll(context.Background(), params)

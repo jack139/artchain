@@ -35,30 +35,35 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9001, "need id")
 		return
 	}
+	itemIdStr, ok := (*reqData)["item_id"].(string)
+	if !ok {
+		helper.RespError(ctx, 9002, "need item_id")
+		return
+	}
 	reviewerAddr, ok := (*reqData)["reviewer_addr"].(string)
 	if !ok {
-		helper.RespError(ctx, 9002, "need reviewer_addr")
+		helper.RespError(ctx, 9003, "need reviewer_addr")
 		return
 	}
 
 	reviewDetail, _ := (*reqData)["detail"].(string)
 	if len(reviewDetail)==0 { // 评论长度不能为0
-		helper.RespError(ctx, 9003, "need detail")
+		helper.RespError(ctx, 9004, "need detail")
 		return		
 	}
 
 	reviewId, _ := strconv.ParseUint(reviewIdStr, 10, 64)
 
 	// 获取当前链上数据
-	reviewMap, err := queryReviewInfoById(ctx, reviewId)
+	reviewMap, err := queryReviewInfoById(ctx, reviewId, itemIdStr)
 	if err!=nil {
-		helper.RespError(ctx, 9002, err.Error())
+		helper.RespError(ctx, 9005, err.Error())
 		return		
 	}
 
 	// 检查所有人addr是否一致
 	if reviewerAddr!=(*reviewMap)["reviewerId"].(string) {
-		helper.RespError(ctx, 9003, "wrong reviewer_addr")
+		helper.RespError(ctx, 9006, "wrong reviewer_addr")
 		return				
 	}
 
@@ -125,7 +130,7 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryReviewInfoById(ctx *fasthttp.RequestCtx, reviewId uint64) (*map[string]interface{}, error) {
+func queryReviewInfoById(ctx *fasthttp.RequestCtx, reviewId uint64, itemId string) (*map[string]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
@@ -134,6 +139,7 @@ func queryReviewInfoById(ctx *fasthttp.RequestCtx, reviewId uint64) (*map[string
 
 	params := &invtypes.QueryGetReviewRequest{
 		Id: reviewId,
+		ItemId: itemId,
 	}
 
 	res, err := queryClient.Review(context.Background(), params)

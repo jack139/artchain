@@ -40,8 +40,8 @@
 | 7 | 删除物品照片 | /biz/item/remove_image |
 | 8 | 修改物品所有人 | /biz/item/change_owner |
 | 9         | 生成物品NFT          | /biz/nft/new      |
-| 10        | 添加物品评价          | /biz/review/new                |
-| 11        | 修改物品评价          | /biz/review/modify             |
+| 10        | 添加物品评价          | **/biz/review/new**            |
+| 11        | 修改物品评价          | **/biz/review/modify**         |
 | 12 | 修改物品评价反馈信息   | /biz/review/feedback           |
 | 13           | 发起拍卖             | /biz/auction/new               |
 | 14       | 修改拍卖状态         | /biz/auction/change_status     |
@@ -65,7 +65,7 @@
 | 3 | 查询物品清单         | **/query/item/list**       |
 | 4 | 查询物品信息         | **/query/item/info**       |
 | 5 | 验证物品NFT          | /query/nft/verify                |
-| 6 | 查询物品评价清单     | /query/review/list         |
+| 6 | 查询物品评价清单     | **/query/review/list**     |
 | 7 | 查询物品评价信息     | /query/review/info         |
 | 8 | 查询拍卖行清单       | /query/auction_house/list  |
 | 9 | 查询拍卖行信息       | /query/auction_house/info  |
@@ -466,13 +466,30 @@ base64后结果：
 请求示例
 
 ```json
-
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "item_id": "3", 
+        "reviewer_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "detail": "aaaaabbbbbb \u54c8\u54c8"
+    }, 
+    "timestamp": 1619913711, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NzRlZWJhNmU3NDc0YzlmMmQwYmU0ZTEzODc0YThhNTc2ODVkZjcyMDBhYWQyZDVhYzVjNjg0OTliYzNjNjhlYQ=="
+}
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "height":"17186"
+    },
+    "msg":"success"
+}
 ```
 
 
@@ -492,6 +509,7 @@ base64后结果：
 | 参数          | 类型   | 必填 | 说明                           |
 | ------------- | ------ | ---- | ------------------------------ |
 | id            | string | Y    | 评论id                         |
+| item_id       | string | Y    | 被评论的物品id                 |
 | reviewer_addr | string | Y    | 评论者的链地址，需与新建人一致 |
 | detail        | string | Y    | 修改的评论内容                 |
 
@@ -506,13 +524,31 @@ base64后结果：
 请求示例
 
 ```json
-
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "id": "2", 
+        "item_id": "3", 
+        "reviewer_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "detail": "aaaaabbbbbb \u54c8\u54c81111111"
+    }, 
+    "timestamp": 1619914366, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "Njc4MzgwMTBkMTBiMjFlZmJmYWE5YzViNmI0YmMzMTc3ODJlYzllNzIxOWY1Mjk4YTNjYmIxNjc2MTkzOTZmYw=="
+}
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "height":"17835"
+    },
+    "msg":"success"
+}
 ```
 
 
@@ -802,13 +838,46 @@ base64后结果：
 请求示例
 
 ```json
-
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "page": 1, 
+        "limit": 10, 
+        "item_id": "3"
+    }, 
+    "timestamp": 1619914700, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NDU5OWU4MmFlMzM0MjNkY2Q5ZWJkYWU4OWM4YzY2ZjFmZTViZDRjOTY0MjM2OTBmMWJjNjY4ODE5MWYyZjE4MQ=="
+}
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "review_list":[
+            {
+                "detail":"aaaaa 哈哈",
+                "item_id":"3",
+                "last_date":"",
+                "review_date":"2021-05-02 08:01:41",
+                "reviewer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "status":"WAIT"
+            },{
+                "detail":"aaaaabbbbbb 哈哈1111111",
+                "item_id":"3",
+                "last_date":"2021-05-02 08:12:47",
+                "review_date":"2021-05-02 08:01:51",
+                "reviewer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "status":""
+            }
+        ]
+    },
+    "msg":"success"
+}
 ```
 
 

@@ -21,7 +21,7 @@ func (k Keeper) ReviewAll(c context.Context, req *types.QueryAllReviewRequest) (
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
-	reviewStore := prefix.NewStore(store, types.KeyPrefix(types.ReviewKey))
+	reviewStore := prefix.NewStore(store, types.KeyPrefix(types.ReviewKey+req.ItemId))
 
 	pageRes, err := query.Paginate(reviewStore, req.Pagination, func(key []byte, value []byte) error {
 		var review types.Review
@@ -52,7 +52,7 @@ func (k Keeper) Review(c context.Context, req *types.QueryGetReviewRequest) (*ty
 		return nil, sdkerrors.ErrKeyNotFound
 	}
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+req.ItemId))
 	k.cdc.MustUnmarshalBinaryBare(store.Get(GetReviewIDBytes(req.Id)), &review)
 
 	return &types.QueryGetReviewResponse{Review: &review}, nil

@@ -135,7 +135,7 @@ func queryReviewListPage(ctx *fasthttp.RequestCtx, itemId string, page uint64, l
 		return nil, err
 	}
 
-	itemMapList := respData["Item"].([]interface{})
+	itemMapList := respData["Review"].([]interface{})
 
 	return &(itemMapList), nil
 }
