@@ -44,7 +44,7 @@
 | 11        | 修改物品评价          | **/biz/review/modify**         |
 | 12 | 修改物品评价反馈信息   | /biz/review/feedback           |
 | 13           | 发起拍卖             | /biz/auction/new               |
-| 14       | 修改拍卖状态         | /biz/auction/change_status     |
+| 14       | 修改拍卖信息       | /biz/auction/modify |
 | 15               | 出价                 | /biz/auction/bid               |
 | 16       | 建立成交交易         | /biz/transaction/new           |
 | 17 | 审核用户 | /biz/audit/user |
@@ -593,6 +593,95 @@ base64后结果：
 
 
 
+##### 2.13 发起拍卖
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/auction/new
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数             | 类型   | 必填 | 说明                         |
+| ---------------- | ------ | ---- | ---------------------------- |
+| seller_addr      | string | Y    | 卖家的链地址，需与所有者一致 |
+| item_id          | string | Y    | 物品id                       |
+| auction_house_id | string | Y    | 拍卖行id                     |
+| reserved_price   | string | Y    | 底价                         |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+##### 2.14 修改拍卖信息
+
+只有当拍卖还在INIT状态时才可修改
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/auction/modify
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数             | 类型   | 必填 | 说明           |
+| ---------------- | ------ | ---- | -------------- |
+| id               | string | Y    | 拍卖id         |
+| auction_house_id | string |      | 修改的拍卖行id |
+| reserved_price   | string |      | 修改的底价     |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+
+
+#### 
+
+
+
 #### 3. 查询接口
 
 
@@ -878,6 +967,83 @@ base64后结果：
     },
     "msg":"success"
 }
+```
+
+
+
+##### 3.10 查询拍卖清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/auction/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数  | 类型 | 必填 | 说明              |
+| ----- | ---- | ---- | ----------------- |
+| page  | uint | Y    | 第几页，最小为1   |
+| limit | uint | Y    | 每页数量，最小为1 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 物品清单数据                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+##### 3.11 查询拍卖信息
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/auction/info
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数 | 类型   | 必填 | 说明   |
+| ---- | ------ | ---- | ------ |
+| id   | string | Y    | 拍卖id |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 物品信息数据                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
 ```
 
 
