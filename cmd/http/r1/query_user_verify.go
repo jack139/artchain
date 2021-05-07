@@ -24,24 +24,19 @@ func QueryUserVerify(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
-	userName, ok := (*reqData)["login_name"].(string)
-	if !ok {
-		helper.RespError(ctx, 9001, "need login_name")
-		return
-	}
 	chainAddr, ok := (*reqData)["chain_addr"].(string)
 	if !ok {
-		helper.RespError(ctx, 9002, "need chain_addr")
+		helper.RespError(ctx, 9001, "need chain_addr")
 		return
 	}
 	mnemonic, ok := (*reqData)["mystery"].(string)
 	if !ok {
-		helper.RespError(ctx, 9003, "need mystery")
+		helper.RespError(ctx, 9002, "need mystery")
 		return
 	}
 
 	// 验证用户
-	verified, err := cmdclient.VerifyUserAccount(helper.HttpCmd, userName, chainAddr, mnemonic)
+	verified, err := cmdclient.VerifyUserAccount(helper.HttpCmd, chainAddr, mnemonic)
 	if err != nil {
 		helper.RespError(ctx, 9009, err.Error())
 		return

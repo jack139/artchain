@@ -34,11 +34,12 @@ if __name__ == '__main__':
             #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
             #'chain_addr'   : 'bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7', # test1
 
-            'login_name' : 'test3',
+            #'login_name' : 'test1',
             #'user_type' : 'TRD',
             #'email' : '111112@qq.com',
             #'bank_acc_name' : '1test bank',
             #'referrer': 'bid1art111111111',
+
             'chain_addr'   : 'bid1art16zs5zpmsw5wezyrpnls76ytdy7ws2zpqan9ey9', # test3
             'mystery' : 'denial move indoor quick monkey share split fog expose orbit merge flash twelve vicious salmon toast gold unusual have purchase time dune satoshi spoil',
 

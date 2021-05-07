@@ -112,7 +112,7 @@ func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, str
 
 // 比对用户 user， 
 // 返回： bool
-func VerifyUserAccount(cmd *cobra.Command, name string, userAddr string, mnemonic string) (bool, error) {
+func VerifyUserAccount(cmd *cobra.Command, userAddr string, mnemonic string) (bool, error) {
 	clientCtx, err := client.GetClientTxContext(cmd)
 	if err != nil {
 		return false, err

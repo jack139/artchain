@@ -861,7 +861,6 @@ base64后结果：
 
 | 参数       | 类型   | 必填 | 说明       |
 | ---------- | ------ | ---- | ---------- |
-| login_name | string | Y    | 登录名     |
 | chain_addr | string | Y    | 用户链地址 |
 | mystery    | string | Y    | 密码字符串 |
 
@@ -880,7 +879,6 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
-        "login_name": "test3", 
         "chain_addr": "bid1art16zs5zpmsw5wezyrpnls76ytdy7ws2zpqan9ey9", 
         "mystery": "aware race riot apart mesh release cloud asset obey noble poet throw pigeon unveil demise expose nature flat badge gentle emotion bulb claim away"
     }, 
@@ -901,8 +899,6 @@ base64后结果：
     "msg":"success"
 }
 ```
-
-
 
 
 
