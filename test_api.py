@@ -34,11 +34,13 @@ if __name__ == '__main__':
             #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
             #'chain_addr'   : 'bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7', # test1
 
-            #'login_name' : 'test1',
+            'login_name' : 'test3',
             #'user_type' : 'TRD',
             #'email' : '111112@qq.com',
             #'bank_acc_name' : '1test bank',
-            #'referrer': 'bid1art111111111'
+            #'referrer': 'bid1art111111111',
+            'chain_addr'   : 'bid1art16zs5zpmsw5wezyrpnls76ytdy7ws2zpqan9ey9', # test3
+            'mystery' : 'denial move indoor quick monkey share split fog expose orbit merge flash twelve vicious salmon toast gold unusual have purchase time dune satoshi spoil',
 
             #'height' : '985',
 
@@ -49,8 +51,8 @@ if __name__ == '__main__':
             #'base_price' : '$2001',
             #'owner_addr' : 'bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7',
 
-            'page' : 1,
-            'limit' : 10,
+            #'page' : 1,
+            #'limit' : 10,
 
             #'item_id' : "3",
             #'reviewer_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
@@ -113,13 +115,15 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
     #url = host+'/api/r1/query/user/info'
+    url = host+'/api/r1/query/user/verify'
     #url = host+'/api/r1/query/item/info'
     #url = host+'/api/r1/query/item/list'
     #url = host+'/api/r1/query/review/list'
     #url = host+'/api/r1/query/auction/info'
     #url = host+'/api/r1/query/auction/list'
     #url = host+'/api/r1/query/trans/info'
-    url = host+'/api/r1/query/trans/list'
+    #url = host+'/api/r1/query/trans/list'
+    
 
     start_time = datetime.now()
     r = pool.urlopen('POST', url, body=body)

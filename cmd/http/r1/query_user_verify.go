@@ -1,0 +1,56 @@
+package r1
+
+import (
+	cmdclient "github.com/jack139/artchain/cmd/client"
+	"github.com/jack139/artchain/cmd/http/helper"
+
+	"log"
+	"github.com/valyala/fasthttp"
+)
+
+/* 用户验证 */
+
+func QueryUserVerify(ctx *fasthttp.RequestCtx) {
+	log.Println("query_user_verify")
+
+	// POST 的数据
+	content := ctx.PostBody()
+
+	// 验签
+	reqData, err := helper.CheckSign(content)
+	if err != nil {
+		helper.RespError(ctx, 9000, err.Error())
+		return
+	}
+
+	// 检查参数
+	userName, ok := (*reqData)["login_name"].(string)
+	if !ok {
+		helper.RespError(ctx, 9001, "need login_name")
+		return
+	}
+	chainAddr, ok := (*reqData)["chain_addr"].(string)
+	if !ok {
+		helper.RespError(ctx, 9002, "need chain_addr")
+		return
+	}
+	mnemonic, ok := (*reqData)["mystery"].(string)
+	if !ok {
+		helper.RespError(ctx, 9003, "need mystery")
+		return
+	}
+
+	// 验证用户
+	verified, err := cmdclient.VerifyUserAccount(helper.HttpCmd, userName, chainAddr, mnemonic)
+	if err != nil {
+		helper.RespError(ctx, 9009, err.Error())
+		return
+	}
+
+	// 返回区块id
+	resp := map[string]interface{}{
+		"verified" : verified,  // 是否验证通过
+	}
+
+	helper.RespJson(ctx, &resp)
+}

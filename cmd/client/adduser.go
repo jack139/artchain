@@ -3,6 +3,7 @@ package client
 import (
 	"bufio"
 	"log"
+	"fmt"
 
 	"github.com/spf13/cobra"
 
@@ -107,6 +108,56 @@ func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, str
 	return addr_new, mnemonic, tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 
 }
+
+
+// 比对用户 user， 
+// 返回： bool
+func VerifyUserAccount(cmd *cobra.Command, name string, userAddr string, mnemonic string) (bool, error) {
+	clientCtx, err := client.GetClientTxContext(cmd)
+	if err != nil {
+		return false, err
+	}
+
+	// 获取 keyring 环境
+	var kb keyring.Keyring
+
+	buf := bufio.NewReader(cmd.InOrStdin())
+	keyringBackend, err := cmd.Flags().GetString(flags.FlagKeyringBackend)
+	if err != nil {
+		return false, err
+	}
+	kb, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.KeyringDir, buf)
+
+	// 注册新的 key
+	keyringAlgos, _ := kb.SupportedAlgorithms()
+	algo, err := keyring.NewSigningAlgoFromString(string(hd.Secp256k1Type), keyringAlgos)
+	if err != nil {
+		return false, err
+	}
+
+	hdPath := hd.CreateHDPath(sdk.GetConfig().GetCoinType(), 0, 0).String()
+
+	// Get bip39 mnemonic
+	var bip39Passphrase string
+
+	if !bip39.IsMnemonicValid(mnemonic) && mnemonic != "" {
+		return false, fmt.Errorf("invalid mnemonic")
+	}
+
+	// 生成私钥
+	derivedPriv, err := algo.Derive()(mnemonic, bip39Passphrase, hdPath)
+	if err != nil {
+		return false, err
+	}
+	privKey := algo.Generate()(derivedPriv)
+
+	// 从公钥生成acc地址
+	accAddr := sdk.AccAddress(privKey.PubKey().Address().Bytes())
+	//fmt.Println(accAddr.String())
+
+	return accAddr.String()==userAddr, nil
+}
+
 
 /* 通过key name获取地址 */
 func GetAddrStr(cmd *cobra.Command, keyref string) (string, error) {

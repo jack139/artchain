@@ -61,7 +61,7 @@
 | 序号               | 接口功能                 | URI                        |
 | :------------------: | -------------------------- | -------------------------- |
 | 1 | 查询用户信息         | **/query/user/info**       |
-| 2 | 验证用户身份          | /query/user/verify               |
+| 2 | 验证用户身份          | **/query/user/verify**           |
 | 3 | 查询物品清单         | **/query/item/list**       |
 | 4 | 查询物品信息         | **/query/item/info**       |
 | 5 | 验证物品NFT          | /query/nft/verify                |
@@ -844,6 +844,65 @@ base64后结果：
     "msg":"success"
 }
 ```
+
+
+
+##### 3.2 验证用户身份
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/user/verify
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数       | 类型   | 必填 | 说明       |
+| ---------- | ------ | ---- | ---------- |
+| login_name | string | Y    | 登录名     |
+| chain_addr | string | Y    | 用户链地址 |
+| mystery    | string | Y    | 密码字符串 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 是否验证通过                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "login_name": "test3", 
+        "chain_addr": "bid1art16zs5zpmsw5wezyrpnls76ytdy7ws2zpqan9ey9", 
+        "mystery": "aware race riot apart mesh release cloud asset obey noble poet throw pigeon unveil demise expose nature flat badge gentle emotion bulb claim away"
+    }, 
+    "timestamp": 1620368483, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NGU0MjY2Yjk5ZWY2ZDM5ZWRhZmE1ZTViODAxZWY1ZGExNjU0NjEzMzdkZjE2ZGRiYjg2NGYyOTZhOTBmNWVjMA=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "verified":false, /* true 验证通过； false 验证失败 */
+    },
+    "msg":"success"
+}
+```
+
+
 
 
 
