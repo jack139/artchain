@@ -53,6 +53,7 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 	respData := map[string] interface{} {
 		"chain_addr"    : userMap["chainAddr"],
 		"login_name"    : userMap["name"],
+		"user_type"     : userMap["userType"],
 		"bank_acc_name" : userInfo["bank_acc_name"],
 		"bank_name"     : userInfo["bank_name"],
 		"bank_acc_no"   : userInfo["bank_acc_no"],

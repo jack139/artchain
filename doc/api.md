@@ -835,6 +835,7 @@ base64后结果：
             "chain_addr":"bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s",
             "email":"111111@qq.com",
             "login_name":"test1",
+            "user_type":"TRD",
             "phone":"",
             "status":"ACTIVE",
             "reg_date":"2021-04-30 10:42:16",
