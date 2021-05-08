@@ -60,24 +60,25 @@
 
 | 序号               | 接口功能                 | URI                        |
 | :------------------: | -------------------------- | -------------------------- |
-| 1 | 查询用户信息         | **/query/user/info**       |
-| 2 | 验证用户身份          | **/query/user/verify**           |
-| 3 | 查询物品清单         | **/query/item/list**       |
-| 4 | 查询物品信息         | **/query/item/info**       |
-| 5 | 验证物品NFT          | /query/nft/verify                |
-| 6 | 查询物品评价清单     | **/query/review/list**     |
-| 7 | 查询物品评价信息     | /query/review/info         |
-| 8 | 查询拍卖行清单       | /query/auction_house/list  |
-| 9 | 查询拍卖行信息       | /query/auction_house/info  |
-| 10 | 查询拍卖清单         | **/query/auction/list**    |
-| 11 | 查询拍卖信息         | **/query/auction/info**    |
-| 12 | 查询出价信息         | /query/bid/info            |
-| 13 | 查询最高出价         | /query/bid/highest         |
-| 14 | 查询出价清单         | /query/bid/list            |
-| 15 | 查询成交交易         | **/query/trans/list** |
-| 16 | 查询成交交易信息     | **/query/trans/info** |
-| 17 | 查询指定区块原始数据 | **/query/block/rawdata** |
-| 18 | 查询用户通证 | **/query/user/credit_balance** |
+| 1 | 查询用户清单 | **/query/user/list** |
+| 2 | 查询用户信息         | **/query/user/info**       |
+| 3 | 验证用户身份          | **/query/user/verify**           |
+| 4 | 查询物品清单         | **/query/item/list**       |
+| 5 | 查询物品信息         | **/query/item/info**       |
+| 6 | 验证物品NFT          | /query/nft/verify                |
+| 7 | 查询物品评价清单     | **/query/review/list**     |
+| 8 | 查询物品评价信息     | /query/review/info         |
+| 9 | 查询拍卖行清单       | /query/auction_house/list  |
+| 10 | 查询拍卖行信息       | /query/auction_house/info  |
+| 11 | 查询拍卖清单         | **/query/auction/list**    |
+| 12 | 查询拍卖信息         | **/query/auction/info**    |
+| 13 | 查询出价信息         | /query/bid/info            |
+| 14 | 查询最高出价         | /query/bid/highest         |
+| 15 | 查询出价清单         | /query/bid/list            |
+| 16 | 查询成交交易         | **/query/trans/list** |
+| 17 | 查询成交交易信息     | **/query/trans/info** |
+| 18 | 查询指定区块原始数据 | **/query/block/rawdata** |
+| 19 | 查询用户通证 | **/query/user/credit_balance** |
 
 
 
@@ -782,7 +783,80 @@ base64后结果：
 
 
 
-##### 3.1 查询用户信息
+##### 3.1 查询用户清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/user/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数  | 类型 | 必填 | 说明              |
+| ----- | ---- | ---- | ----------------- |
+| page  | uint | Y    | 第几页，最小为1   |
+| limit | uint | Y    | 每页数量，最小为1 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 用户清单数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "page": 1, 
+        "limit": 10
+    }, 
+    "timestamp": 1620440241, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NDkyOGI0NzBkYWMwMTJjMWVmOWM0NWVmMWY2YTk2ZWYyMmRiNWZkYTVmNWQwOTdhNzQzZDhhZTQzODM1Njc3ZA=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "user_list":[
+            {
+                "chain_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "id":"0",
+                "last_date":"2021-04-30 15:57:03",
+                "login_name":"test2",
+                "reg_date":"2021-04-30 15:14:38",
+                "status":"ACTIVE",
+                "user_type":"TRD"
+            },{
+                "chain_addr":"bid1art16zs5zpmsw5wezyrpnls76ytdy7ws2zpqan9ey9",
+                "id":"1",
+                "last_date":"",
+                "login_name":"test3",
+                "reg_date":"2021-05-07 13:50:25",
+                "status":"ACTIVE",
+                "user_type":"TRD"
+            }
+        ]
+    },
+    "msg":"success"
+}
+```
+
+
+
+##### 3.2 查询用户信息
 
 请求URL
 
@@ -848,7 +922,9 @@ base64后结果：
 
 
 
-##### 3.2 验证用户身份
+
+
+##### 3.3 验证用户身份
 
 请求URL
 
@@ -903,7 +979,7 @@ base64后结果：
 
 
 
-##### 3.3 查询物品清单
+##### 3.4 查询物品清单
 
 请求URL
 
@@ -987,7 +1063,7 @@ base64后结果：
 
 
 
-##### 3.4 查询物品信息
+##### 3.5 查询物品信息
 
 请求URL
 
@@ -1053,7 +1129,7 @@ base64后结果：
 
 
 
-##### 3.6 查询评价清单
+##### 3.7 查询评价清单
 
 请求URL
 
@@ -1128,7 +1204,7 @@ base64后结果：
 
 
 
-##### 3.10 查询拍卖清单
+##### 3.11 查询拍卖清单
 
 请求URL
 
@@ -1196,7 +1272,7 @@ base64后结果：
 
 
 
-##### 3.11 查询拍卖信息
+##### 3.12 查询拍卖信息
 
 请求URL
 
@@ -1261,7 +1337,7 @@ base64后结果：
 
 
 
-##### 3.15 查询交易清单
+##### 3.16 查询交易清单
 
 请求URL
 
@@ -1330,7 +1406,7 @@ base64后结果：
 
 
 
-##### 3.16 查询交易信息
+##### 3.17 查询交易信息
 
 请求URL
 
@@ -1395,7 +1471,7 @@ base64后结果：
 
 
 
-##### 3.17 查询指定区块原始数据
+##### 3.18 查询指定区块原始数据
 
 请求URL
 
@@ -1513,7 +1589,7 @@ base64后结果：
 
 
 
-##### 3.18 查询用户通证
+##### 3.19 查询用户通证
 
 请求URL
 

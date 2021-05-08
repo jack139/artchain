@@ -121,7 +121,7 @@ func queryUserInfoByChainAddr(ctx *fasthttp.RequestCtx, chainAddr string) (*map[
 	}
 
 	// 处理data字段
-	respData2, err := unmarshalUser(&respData, chainAddr)
+	respData2, err := unmarshalUser(&respData)
 	if err!=nil{
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func queryUserInfoByChainAddr(ctx *fasthttp.RequestCtx, chainAddr string) (*map[
 
 
 /* userInfo字段是已序列化的json串，反序列化一下，针对数据列表 */
-func unmarshalUser(reqData *map[string]interface{}, user string) (*map[string]interface{}, error) {
+func unmarshalUser(reqData *map[string]interface{}) (*map[string]interface{}, error) {
 	var respData map[string]interface{}
 
 	item := (*reqData)["User"].(map[string]interface{})
