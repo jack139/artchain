@@ -57,7 +57,7 @@ func QueryTransList(ctx *fasthttp.RequestCtx) {
 	dataList := *respData2
 
 	// 构建返回结构
-	var respData []map[string]interface{}
+	respData := make([]map[string]interface{}, 0) 
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
