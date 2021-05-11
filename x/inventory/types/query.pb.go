@@ -83,7 +83,7 @@ func (m *QueryGetReviewRequest) GetItemId() string {
 }
 
 type QueryGetReviewResponse struct {
-	Review *Review `protobuf:"bytes,1,opt,name=Review,proto3" json:"Review,omitempty"`
+	Review *Review `protobuf:"bytes,1,opt,name=Review,json=review,proto3" json:"Review,omitempty"`
 }
 
 func (m *QueryGetReviewResponse) Reset()         { *m = QueryGetReviewResponse{} }
@@ -127,8 +127,8 @@ func (m *QueryGetReviewResponse) GetReview() *Review {
 }
 
 type QueryAllReviewRequest struct {
-	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-	ItemId     string             `protobuf:"bytes,2,opt,name=itemId,proto3" json:"itemId,omitempty"`
+	ItemId     string             `protobuf:"bytes,1,opt,name=itemId,proto3" json:"itemId,omitempty"`
+	Pagination *query.PageRequest `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
 func (m *QueryAllReviewRequest) Reset()         { *m = QueryAllReviewRequest{} }
@@ -164,13 +164,6 @@ func (m *QueryAllReviewRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryAllReviewRequest proto.InternalMessageInfo
 
-func (m *QueryAllReviewRequest) GetPagination() *query.PageRequest {
-	if m != nil {
-		return m.Pagination
-	}
-	return nil
-}
-
 func (m *QueryAllReviewRequest) GetItemId() string {
 	if m != nil {
 		return m.ItemId
@@ -178,8 +171,15 @@ func (m *QueryAllReviewRequest) GetItemId() string {
 	return ""
 }
 
+func (m *QueryAllReviewRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 type QueryAllReviewResponse struct {
-	Review     []*Review           `protobuf:"bytes,1,rep,name=Review,proto3" json:"Review,omitempty"`
+	Review     []*Review           `protobuf:"bytes,1,rep,name=Review,json=review,proto3" json:"Review,omitempty"`
 	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
@@ -275,7 +275,7 @@ func (m *QueryGetItemRequest) GetId() uint64 {
 }
 
 type QueryGetItemResponse struct {
-	Item *Item `protobuf:"bytes,1,opt,name=Item,proto3" json:"Item,omitempty"`
+	Item *Item `protobuf:"bytes,1,opt,name=Item,json=item,proto3" json:"Item,omitempty"`
 }
 
 func (m *QueryGetItemResponse) Reset()         { *m = QueryGetItemResponse{} }
@@ -363,7 +363,7 @@ func (m *QueryAllItemRequest) GetPagination() *query.PageRequest {
 }
 
 type QueryAllItemResponse struct {
-	Item       []*Item             `protobuf:"bytes,1,rep,name=Item,proto3" json:"Item,omitempty"`
+	Item       []*Item             `protobuf:"bytes,1,rep,name=Item,json=item,proto3" json:"Item,omitempty"`
 	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
@@ -414,6 +414,110 @@ func (m *QueryAllItemResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
+type QueryAllItemByOwnerRequest struct {
+	CurrentOwnerId string             `protobuf:"bytes,1,opt,name=currentOwnerId,proto3" json:"currentOwnerId,omitempty"`
+	Pagination     *query.PageRequest `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllItemByOwnerRequest) Reset()         { *m = QueryAllItemByOwnerRequest{} }
+func (m *QueryAllItemByOwnerRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllItemByOwnerRequest) ProtoMessage()    {}
+func (*QueryAllItemByOwnerRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0e3fcd830228582b, []int{8}
+}
+func (m *QueryAllItemByOwnerRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllItemByOwnerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllItemByOwnerRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllItemByOwnerRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllItemByOwnerRequest.Merge(m, src)
+}
+func (m *QueryAllItemByOwnerRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllItemByOwnerRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllItemByOwnerRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllItemByOwnerRequest proto.InternalMessageInfo
+
+func (m *QueryAllItemByOwnerRequest) GetCurrentOwnerId() string {
+	if m != nil {
+		return m.CurrentOwnerId
+	}
+	return ""
+}
+
+func (m *QueryAllItemByOwnerRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllItemByOwnerResponse struct {
+	Item       []*Item             `protobuf:"bytes,1,rep,name=Item,json=item,proto3" json:"Item,omitempty"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllItemByOwnerResponse) Reset()         { *m = QueryAllItemByOwnerResponse{} }
+func (m *QueryAllItemByOwnerResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllItemByOwnerResponse) ProtoMessage()    {}
+func (*QueryAllItemByOwnerResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0e3fcd830228582b, []int{9}
+}
+func (m *QueryAllItemByOwnerResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllItemByOwnerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllItemByOwnerResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllItemByOwnerResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllItemByOwnerResponse.Merge(m, src)
+}
+func (m *QueryAllItemByOwnerResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllItemByOwnerResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllItemByOwnerResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllItemByOwnerResponse proto.InternalMessageInfo
+
+func (m *QueryAllItemByOwnerResponse) GetItem() []*Item {
+	if m != nil {
+		return m.Item
+	}
+	return nil
+}
+
+func (m *QueryAllItemByOwnerResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryGetReviewRequest)(nil), "jack139.artchain.inventory.QueryGetReviewRequest")
 	proto.RegisterType((*QueryGetReviewResponse)(nil), "jack139.artchain.inventory.QueryGetReviewResponse")
@@ -423,47 +527,54 @@ func init() {
 	proto.RegisterType((*QueryGetItemResponse)(nil), "jack139.artchain.inventory.QueryGetItemResponse")
 	proto.RegisterType((*QueryAllItemRequest)(nil), "jack139.artchain.inventory.QueryAllItemRequest")
 	proto.RegisterType((*QueryAllItemResponse)(nil), "jack139.artchain.inventory.QueryAllItemResponse")
+	proto.RegisterType((*QueryAllItemByOwnerRequest)(nil), "jack139.artchain.inventory.QueryAllItemByOwnerRequest")
+	proto.RegisterType((*QueryAllItemByOwnerResponse)(nil), "jack139.artchain.inventory.QueryAllItemByOwnerResponse")
 }
 
 func init() { proto.RegisterFile("inventory/query.proto", fileDescriptor_0e3fcd830228582b) }
 
 var fileDescriptor_0e3fcd830228582b = []byte{
-	// 550 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0x41, 0x6b, 0x13, 0x4f,
-	0x18, 0xc6, 0x33, 0x69, 0xfe, 0xf9, 0xd3, 0x11, 0x3c, 0x8c, 0x6d, 0x28, 0x41, 0x96, 0x30, 0x58,
-	0x13, 0x0b, 0x9d, 0x31, 0xa9, 0x17, 0xbd, 0x48, 0x3c, 0x18, 0x0a, 0x1e, 0x74, 0xf1, 0x24, 0x78,
-	0x98, 0x24, 0xc3, 0x76, 0x74, 0xb3, 0xb3, 0xdd, 0x9d, 0xa4, 0x06, 0xf1, 0xe2, 0x27, 0x10, 0x44,
-	0xf1, 0xa2, 0xf8, 0x71, 0x3c, 0x16, 0xbc, 0x78, 0x94, 0xc4, 0xef, 0xa1, 0xec, 0xcc, 0xa4, 0xd9,
-	0x24, 0x4d, 0xb2, 0x81, 0x1e, 0x77, 0x78, 0x9f, 0xe7, 0xfd, 0xbd, 0xcf, 0xcc, 0xbb, 0x70, 0x57,
-	0x04, 0x03, 0x1e, 0x28, 0x19, 0x0d, 0xe9, 0x69, 0x9f, 0x47, 0x43, 0x12, 0x46, 0x52, 0x49, 0x54,
-	0x7e, 0xc5, 0x3a, 0xaf, 0xeb, 0x47, 0xf7, 0x09, 0x8b, 0x54, 0xe7, 0x84, 0x89, 0x80, 0x5c, 0xd4,
-	0x95, 0x6f, 0x7a, 0x52, 0x7a, 0x3e, 0xa7, 0x2c, 0x14, 0x94, 0x05, 0x81, 0x54, 0x4c, 0x09, 0x19,
-	0xc4, 0x46, 0x59, 0x3e, 0xe8, 0xc8, 0xb8, 0x27, 0x63, 0xda, 0x66, 0x31, 0x37, 0x96, 0x74, 0x50,
-	0x6f, 0x73, 0xc5, 0xea, 0x34, 0x64, 0x9e, 0x08, 0x74, 0xb1, 0xad, 0x2d, 0x4d, 0x9b, 0x47, 0x7c,
-	0x20, 0xf8, 0x99, 0x3d, 0xdf, 0x99, 0x9e, 0x0b, 0xc5, 0x7b, 0xe6, 0x14, 0x3f, 0x84, 0xbb, 0xcf,
-	0x12, 0xbf, 0x16, 0x57, 0xae, 0xae, 0x76, 0xf9, 0x69, 0x9f, 0xc7, 0x0a, 0x5d, 0x87, 0x79, 0xd1,
-	0xdd, 0x03, 0x15, 0x50, 0x2b, 0xb8, 0x79, 0xd1, 0x45, 0x25, 0x58, 0x4c, 0x64, 0xc7, 0xdd, 0xbd,
-	0x7c, 0x05, 0xd4, 0xb6, 0x5d, 0xfb, 0x85, 0x9f, 0xc3, 0xd2, 0xbc, 0x41, 0x1c, 0xca, 0x20, 0xe6,
-	0xe8, 0x01, 0x2c, 0x9a, 0x13, 0xed, 0x72, 0xad, 0x81, 0xc9, 0xf2, 0xf9, 0x89, 0xd5, 0x5a, 0x05,
-	0x3e, 0xb3, 0x58, 0x4d, 0xdf, 0x9f, 0xc5, 0x7a, 0x0c, 0xe1, 0x74, 0x62, 0x6b, 0x7c, 0x9b, 0x98,
-	0x78, 0x48, 0x12, 0x0f, 0x31, 0x89, 0xdb, 0x78, 0xc8, 0x53, 0xe6, 0x71, 0xab, 0x75, 0x53, 0xca,
-	0xa5, 0xe3, 0x7c, 0x05, 0x76, 0x9e, 0x54, 0xe7, 0x4b, 0xe6, 0xd9, 0xda, 0x6c, 0x1e, 0xd4, 0x9a,
-	0xc1, 0xce, 0x6b, 0xec, 0xea, 0x5a, 0x6c, 0xd3, 0x38, 0xcd, 0x8d, 0xf7, 0xe1, 0x8d, 0x49, 0xdc,
-	0xc7, 0x8a, 0xf7, 0x96, 0xdc, 0x16, 0x7e, 0x02, 0x77, 0x66, 0xcb, 0xec, 0x0c, 0xf7, 0x60, 0x21,
-	0xf9, 0xb6, 0xc1, 0x55, 0x56, 0x4d, 0xa0, 0x75, 0xba, 0x1a, 0xbf, 0xb4, 0x4d, 0x9b, 0xbe, 0x9f,
-	0x6e, 0x7a, 0x45, 0x77, 0x81, 0x3f, 0x01, 0x4b, 0x7b, 0xe1, 0xbf, 0x40, 0xbb, 0x95, 0x9d, 0xf6,
-	0xca, 0xb2, 0x6e, 0xfc, 0x2d, 0xc0, 0xff, 0x34, 0x17, 0xfa, 0x0e, 0x26, 0x77, 0x8f, 0xea, 0xab,
-	0x28, 0x2e, 0x5d, 0xa5, 0x72, 0x63, 0x13, 0x89, 0xe1, 0xc0, 0xf4, 0xfd, 0xcf, 0x3f, 0x1f, 0xf3,
-	0x77, 0x50, 0x95, 0x5a, 0x2d, 0x9d, 0x68, 0xe9, 0xfc, 0x7e, 0xd3, 0xb7, 0xa2, 0xfb, 0x0e, 0x7d,
-	0x03, 0x70, 0xdb, 0x78, 0x34, 0x7d, 0x3f, 0x03, 0xe5, 0xfc, 0x66, 0x65, 0xa0, 0x5c, 0x58, 0x09,
-	0x7c, 0xa0, 0x29, 0x6f, 0x21, 0xbc, 0x9e, 0x12, 0x7d, 0x01, 0xe6, 0x36, 0x11, 0xcd, 0x12, 0x47,
-	0xea, 0x9d, 0x95, 0xef, 0x66, 0x17, 0x58, 0xae, 0x43, 0xcd, 0x55, 0x45, 0xfb, 0xab, 0xb8, 0x92,
-	0x8d, 0x37, 0xd9, 0x7d, 0x06, 0xf0, 0xff, 0x44, 0x9f, 0x24, 0x47, 0xb3, 0xc4, 0xb0, 0x19, 0xdd,
-	0xdc, 0xb3, 0xc6, 0x35, 0x4d, 0x87, 0x51, 0x65, 0x1d, 0xdd, 0xa3, 0xd6, 0x8f, 0x91, 0x03, 0xce,
-	0x47, 0x0e, 0xf8, 0x3d, 0x72, 0xc0, 0x87, 0xb1, 0x93, 0x3b, 0x1f, 0x3b, 0xb9, 0x5f, 0x63, 0x27,
-	0xf7, 0xe2, 0xd0, 0x13, 0xea, 0xa4, 0xdf, 0x26, 0x1d, 0xd9, 0x5b, 0x74, 0x79, 0x93, 0xf2, 0x51,
-	0xc3, 0x90, 0xc7, 0xed, 0xa2, 0xfe, 0xdb, 0x1f, 0xfd, 0x0b, 0x00, 0x00, 0xff, 0xff, 0x1a, 0xc4,
-	0x96, 0x14, 0x9a, 0x06, 0x00, 0x00,
+	// 633 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x95, 0x41, 0x6b, 0x13, 0x41,
+	0x14, 0xc7, 0x3b, 0x69, 0x8d, 0x74, 0x0a, 0x39, 0x8c, 0x6d, 0x28, 0xab, 0x2c, 0x61, 0xb0, 0x4d,
+	0x2c, 0x74, 0xc7, 0x24, 0xa2, 0xd4, 0x8b, 0xa4, 0x07, 0x43, 0x41, 0x50, 0x83, 0x27, 0xc1, 0xc3,
+	0x26, 0x19, 0xd2, 0xd1, 0xcd, 0x4e, 0xba, 0x3b, 0x49, 0x0c, 0xd2, 0x8b, 0x67, 0x0f, 0x82, 0x28,
+	0x1e, 0x54, 0xfc, 0x20, 0xe2, 0xd9, 0x63, 0xc1, 0x8b, 0x47, 0x49, 0xfc, 0x20, 0xb2, 0x33, 0x93,
+	0x64, 0x37, 0x49, 0x93, 0x8d, 0xf4, 0xe0, 0x71, 0x1f, 0xef, 0xff, 0xde, 0xef, 0xfd, 0x67, 0xe6,
+	0x2d, 0xdc, 0x62, 0x6e, 0x87, 0xba, 0x82, 0x7b, 0x3d, 0x72, 0xd2, 0xa6, 0x5e, 0xcf, 0x6a, 0x79,
+	0x5c, 0x70, 0x64, 0x3c, 0xb7, 0x6b, 0x2f, 0xf2, 0xc5, 0x03, 0xcb, 0xf6, 0x44, 0xed, 0xd8, 0x66,
+	0xae, 0x35, 0xca, 0x33, 0xae, 0x35, 0x38, 0x6f, 0x38, 0x94, 0xd8, 0x2d, 0x46, 0x6c, 0xd7, 0xe5,
+	0xc2, 0x16, 0x8c, 0xbb, 0xbe, 0x52, 0x1a, 0x7b, 0x35, 0xee, 0x37, 0xb9, 0x4f, 0xaa, 0xb6, 0x4f,
+	0x55, 0x49, 0xd2, 0xc9, 0x57, 0xa9, 0xb0, 0xf3, 0xa4, 0x65, 0x37, 0x98, 0x2b, 0x93, 0x75, 0x6e,
+	0x7a, 0xdc, 0xdc, 0xa3, 0x1d, 0x46, 0xbb, 0x3a, 0xbe, 0x39, 0x8e, 0x33, 0x41, 0x9b, 0x2a, 0x8a,
+	0xef, 0xc1, 0xad, 0xc7, 0x41, 0xbd, 0x32, 0x15, 0x15, 0x99, 0x5d, 0xa1, 0x27, 0x6d, 0xea, 0x0b,
+	0x94, 0x82, 0x09, 0x56, 0xdf, 0x06, 0x19, 0x90, 0x5b, 0xab, 0x24, 0x58, 0x1d, 0xa5, 0x61, 0x32,
+	0x90, 0x1d, 0xd5, 0xb7, 0x13, 0x19, 0x90, 0x5b, 0xaf, 0xe8, 0x2f, 0xfc, 0x04, 0xa6, 0x27, 0x0b,
+	0xf8, 0x2d, 0xee, 0xfa, 0x14, 0xdd, 0x85, 0x49, 0x15, 0x91, 0x55, 0x36, 0x0a, 0xd8, 0x3a, 0x7f,
+	0x7e, 0x4b, 0x6b, 0x93, 0x0a, 0x19, 0x77, 0x35, 0x56, 0xc9, 0x71, 0xa2, 0x58, 0x63, 0x0c, 0x10,
+	0xc6, 0x40, 0xf7, 0x21, 0x1c, 0x3b, 0x21, 0x11, 0x37, 0x0a, 0xbb, 0x96, 0xb2, 0xcd, 0x0a, 0x6c,
+	0xb3, 0xd4, 0x49, 0x68, 0xdb, 0xac, 0x47, 0x76, 0x83, 0xea, 0x9a, 0x95, 0x90, 0x12, 0x7f, 0x06,
+	0x7a, 0x9e, 0x50, 0xe7, 0x19, 0xf3, 0xac, 0x2e, 0x37, 0x0f, 0x2a, 0xcf, 0xc0, 0xcb, 0x2e, 0xc4,
+	0x53, 0x8d, 0x23, 0x7c, 0x3b, 0xf0, 0xca, 0xd0, 0xee, 0x23, 0x41, 0x9b, 0xe7, 0x9c, 0x16, 0x7e,
+	0x00, 0x37, 0xa3, 0x69, 0x7a, 0x86, 0x5b, 0x70, 0x2d, 0xf8, 0xd6, 0x27, 0x92, 0x99, 0x37, 0x81,
+	0xd4, 0xad, 0x05, 0xf6, 0xe2, 0x67, 0xba, 0x69, 0xc9, 0x71, 0xc2, 0x4d, 0xa3, 0x9e, 0x83, 0x7f,
+	0xf6, 0xfc, 0x3d, 0xd0, 0xb4, 0xa3, 0xfa, 0x53, 0xb4, 0xab, 0xf1, 0x69, 0x2f, 0xce, 0xeb, 0x37,
+	0x00, 0x1a, 0x61, 0xae, 0xc3, 0xde, 0xc3, 0xae, 0x4b, 0xbd, 0xe1, 0xf8, 0xbb, 0x30, 0x55, 0x6b,
+	0x7b, 0x1e, 0x75, 0x85, 0x0c, 0x8f, 0xae, 0xe4, 0x44, 0xf4, 0xc2, 0xae, 0xe6, 0x27, 0x00, 0xaf,
+	0xce, 0xc4, 0xf9, 0x2f, 0xdc, 0x2a, 0x7c, 0x4f, 0xc2, 0x4b, 0x12, 0x0f, 0x7d, 0x05, 0xc3, 0x97,
+	0x82, 0xf2, 0xf3, 0x28, 0x66, 0x2e, 0x1e, 0xa3, 0xb0, 0x8c, 0x44, 0x71, 0x60, 0xf2, 0xfa, 0xe7,
+	0x9f, 0x77, 0x89, 0x1b, 0x28, 0x4b, 0xb4, 0x96, 0x0c, 0xb5, 0x64, 0x72, 0x1b, 0x92, 0x57, 0xac,
+	0x7e, 0x8a, 0xbe, 0x00, 0xb8, 0xae, 0x6a, 0x94, 0x1c, 0x27, 0x06, 0xe5, 0xe4, 0x1e, 0x8a, 0x41,
+	0x39, 0xb5, 0x40, 0xf0, 0x9e, 0xa4, 0xbc, 0x8e, 0xf0, 0x62, 0x4a, 0xf4, 0x11, 0xa8, 0xd3, 0x44,
+	0x24, 0x8e, 0x1d, 0xa1, 0x57, 0x69, 0xdc, 0x8c, 0x2f, 0xd0, 0x5c, 0xfb, 0x92, 0x2b, 0x8b, 0x76,
+	0xe6, 0x71, 0x05, 0x97, 0x45, 0x79, 0xf7, 0x01, 0xc0, 0xcb, 0x81, 0x3e, 0x70, 0x8e, 0xc4, 0xb1,
+	0x61, 0x39, 0xba, 0x89, 0x25, 0x80, 0x73, 0x92, 0x0e, 0xa3, 0xcc, 0x22, 0x3a, 0xf4, 0x0d, 0xc0,
+	0x94, 0x06, 0xd3, 0x6f, 0x03, 0xdd, 0x8e, 0xdb, 0x2e, 0xfa, 0xb6, 0x8d, 0x3b, 0x4b, 0xeb, 0x34,
+	0xed, 0x81, 0xa4, 0x2d, 0xa2, 0xfc, 0x62, 0x2f, 0xa3, 0x6b, 0xe2, 0xf4, 0xb0, 0xfc, 0xa3, 0x6f,
+	0x82, 0xb3, 0xbe, 0x09, 0x7e, 0xf7, 0x4d, 0xf0, 0x76, 0x60, 0xae, 0x9c, 0x0d, 0xcc, 0x95, 0x5f,
+	0x03, 0x73, 0xe5, 0xe9, 0x7e, 0x83, 0x89, 0xe3, 0x76, 0xd5, 0xaa, 0xf1, 0xe6, 0x74, 0xd9, 0x97,
+	0xa1, 0xc2, 0xa2, 0xd7, 0xa2, 0x7e, 0x35, 0x29, 0x7f, 0xed, 0xc5, 0xbf, 0x01, 0x00, 0x00, 0xff,
+	0xff, 0xff, 0x1c, 0x7b, 0xbe, 0x87, 0x08, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -483,6 +594,7 @@ type QueryClient interface {
 	ReviewAll(ctx context.Context, in *QueryAllReviewRequest, opts ...grpc.CallOption) (*QueryAllReviewResponse, error)
 	Item(ctx context.Context, in *QueryGetItemRequest, opts ...grpc.CallOption) (*QueryGetItemResponse, error)
 	ItemAll(ctx context.Context, in *QueryAllItemRequest, opts ...grpc.CallOption) (*QueryAllItemResponse, error)
+	ItemAllByOwner(ctx context.Context, in *QueryAllItemByOwnerRequest, opts ...grpc.CallOption) (*QueryAllItemByOwnerResponse, error)
 }
 
 type queryClient struct {
@@ -529,6 +641,15 @@ func (c *queryClient) ItemAll(ctx context.Context, in *QueryAllItemRequest, opts
 	return out, nil
 }
 
+func (c *queryClient) ItemAllByOwner(ctx context.Context, in *QueryAllItemByOwnerRequest, opts ...grpc.CallOption) (*QueryAllItemByOwnerResponse, error) {
+	out := new(QueryAllItemByOwnerResponse)
+	err := c.cc.Invoke(ctx, "/jack139.artchain.inventory.Query/ItemAllByOwner", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// this line is used by starport scaffolding # 2
@@ -536,6 +657,7 @@ type QueryServer interface {
 	ReviewAll(context.Context, *QueryAllReviewRequest) (*QueryAllReviewResponse, error)
 	Item(context.Context, *QueryGetItemRequest) (*QueryGetItemResponse, error)
 	ItemAll(context.Context, *QueryAllItemRequest) (*QueryAllItemResponse, error)
+	ItemAllByOwner(context.Context, *QueryAllItemByOwnerRequest) (*QueryAllItemByOwnerResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -553,6 +675,9 @@ func (*UnimplementedQueryServer) Item(ctx context.Context, req *QueryGetItemRequ
 }
 func (*UnimplementedQueryServer) ItemAll(ctx context.Context, req *QueryAllItemRequest) (*QueryAllItemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ItemAll not implemented")
+}
+func (*UnimplementedQueryServer) ItemAllByOwner(ctx context.Context, req *QueryAllItemByOwnerRequest) (*QueryAllItemByOwnerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ItemAllByOwner not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -631,6 +756,24 @@ func _Query_ItemAll_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_ItemAllByOwner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllItemByOwnerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).ItemAllByOwner(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/jack139.artchain.inventory.Query/ItemAllByOwner",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).ItemAllByOwner(ctx, req.(*QueryAllItemByOwnerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "jack139.artchain.inventory.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -650,6 +793,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ItemAll",
 			Handler:    _Query_ItemAll_Handler,
+		},
+		{
+			MethodName: "ItemAllByOwner",
+			Handler:    _Query_ItemAllByOwner_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -746,13 +893,6 @@ func (m *QueryAllReviewRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.ItemId) > 0 {
-		i -= len(m.ItemId)
-		copy(dAtA[i:], m.ItemId)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.ItemId)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if m.Pagination != nil {
 		{
 			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
@@ -762,6 +902,13 @@ func (m *QueryAllReviewRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i -= size
 			i = encodeVarintQuery(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ItemId) > 0 {
+		i -= len(m.ItemId)
+		copy(dAtA[i:], m.ItemId)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.ItemId)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -964,6 +1111,97 @@ func (m *QueryAllItemResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryAllItemByOwnerRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllItemByOwnerRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllItemByOwnerRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.CurrentOwnerId) > 0 {
+		i -= len(m.CurrentOwnerId)
+		copy(dAtA[i:], m.CurrentOwnerId)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.CurrentOwnerId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllItemByOwnerResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllItemByOwnerResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllItemByOwnerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Item) > 0 {
+		for iNdEx := len(m.Item) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Item[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -1010,12 +1248,12 @@ func (m *QueryAllReviewRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Pagination != nil {
-		l = m.Pagination.Size()
-		n += 1 + l + sovQuery(uint64(l))
-	}
 	l = len(m.ItemId)
 	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
@@ -1079,6 +1317,42 @@ func (m *QueryAllItemRequest) Size() (n int) {
 }
 
 func (m *QueryAllItemResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Item) > 0 {
+		for _, e := range m.Item {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllItemByOwnerRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.CurrentOwnerId)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllItemByOwnerResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1321,6 +1595,38 @@ func (m *QueryAllReviewRequest) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ItemId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ItemId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
 			}
 			var msglen int
@@ -1354,38 +1660,6 @@ func (m *QueryAllReviewRequest) Unmarshal(dAtA []byte) error {
 			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ItemId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ItemId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1796,6 +2070,244 @@ func (m *QueryAllItemResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: QueryAllItemResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Item", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Item = append(m.Item, &Item{})
+			if err := m.Item[len(m.Item)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllItemByOwnerRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllItemByOwnerRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllItemByOwnerRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CurrentOwnerId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CurrentOwnerId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllItemByOwnerResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllItemByOwnerResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllItemByOwnerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

@@ -28,8 +28,8 @@ func CmdListReview() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryAllReviewRequest{
-				Pagination: pageReq,
 				ItemId: argsItemId,
+				Pagination: pageReq,
 			}
 
 			res, err := queryClient.ReviewAll(context.Background(), params)

@@ -103,8 +103,8 @@ func queryReviewListPage(ctx *fasthttp.RequestCtx, itemId string, page uint64, l
 	}
 
 	params := &invtypes.QueryAllReviewRequest{
-		Pagination: &pageReq,
 		ItemId: itemId,
+		Pagination: &pageReq,
 	}
 
 	res, err := queryClient.ReviewAll(context.Background(), params)

@@ -57,3 +57,35 @@ func (k Keeper) Item(c context.Context, req *types.QueryGetItemRequest) (*types.
 
 	return &types.QueryGetItemResponse{Item: &item}, nil
 }
+
+
+func (k Keeper) ItemAllByOwner(c context.Context, req *types.QueryAllItemByOwnerRequest) (*types.QueryAllItemByOwnerResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var items []*types.Item
+	ctx := sdk.UnwrapSDKContext(c)
+
+	store := ctx.KVStore(k.storeKey)
+	itemStore := prefix.NewStore(store, types.KeyPrefix(types.ItemKey))
+
+	pageRes, err := query.Paginate(itemStore, req.Pagination, func(key []byte, value []byte) error {
+		var item types.Item
+		if err := k.cdc.UnmarshalBinaryBare(value, &item); err != nil {
+			return err
+		}
+
+		if item.CurrentOwnerId==req.CurrentOwnerId {
+			items = append(items, &item)
+		} 
+		
+		return nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryAllItemByOwnerResponse{Item: items, Pagination: pageRes}, nil
+}
