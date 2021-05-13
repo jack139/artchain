@@ -81,6 +81,10 @@ func (k Keeper) AppendItem(
 	value := k.cdc.MustMarshalBinaryBare(&item)
 	store.Set(GetItemIDBytes(item.Id), value)
 
+	// 添加owner到id的索引
+	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+currentOwnerId))
+	store2.Set(GetItemIDBytes(item.Id), GetItemIDBytes(item.Id))
+
 	// Update item count
 	k.SetItemCount(ctx, count+1)
 
@@ -92,6 +96,10 @@ func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
 	b := k.cdc.MustMarshalBinaryBare(&item)
 	store.Set(GetItemIDBytes(item.Id), b)
+
+	// 添加owner到id的索引
+	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+item.CurrentOwnerId))
+	store2.Set(GetItemIDBytes(item.Id), GetItemIDBytes(item.Id))
 }
 
 // GetItem returns a item from its id
@@ -116,6 +124,14 @@ func (k Keeper) GetItemOwner(ctx sdk.Context, id uint64) string {
 // RemoveItem removes a item from the store
 func (k Keeper) RemoveItem(ctx sdk.Context, id uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
+
+	// 删除owner到id的索引
+	var item types.Item
+	k.cdc.MustUnmarshalBinaryBare(store.Get(GetItemIDBytes(id)), &item)
+	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+item.CurrentOwnerId))
+	store2.Delete(GetItemIDBytes(id))
+
+	// 删除 item
 	store.Delete(GetItemIDBytes(id))
 }
 

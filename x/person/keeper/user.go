@@ -82,6 +82,10 @@ func (k Keeper) SetUser(ctx sdk.Context, user types.User) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
 	b := k.cdc.MustMarshalBinaryBare(&user)
 	store.Set(GetUserIDBytes(user.Id), b)
+
+	// 添加chainAddr到id的索引
+	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AddrIndexKey))
+	store2.Set([]byte(user.ChainAddr), GetUserIDBytes(user.Id))
 }
 
 // GetUser returns a user from its id
@@ -106,6 +110,14 @@ func (k Keeper) GetUserOwner(ctx sdk.Context, id uint64) string {
 // RemoveUser removes a user from the store
 func (k Keeper) RemoveUser(ctx sdk.Context, id uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
+
+	// 删除chainAddr到id的索引
+	var user types.User
+	k.cdc.MustUnmarshalBinaryBare(store.Get(GetUserIDBytes(id)), &user)
+	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AddrIndexKey))
+	store2.Delete([]byte(user.ChainAddr))
+
+	// 删除 user
 	store.Delete(GetUserIDBytes(id))
 }
 

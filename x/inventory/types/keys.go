@@ -28,6 +28,7 @@ func KeyPrefix(p string) []byte {
 const (
 	ItemKey      = "Item-value-"
 	ItemCountKey = "Item-count-"
+	ItemOwnerKey = "Item-owner-"
 )
 
 const (

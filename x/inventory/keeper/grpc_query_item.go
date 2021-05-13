@@ -69,16 +69,17 @@ func (k Keeper) ItemAllByOwner(c context.Context, req *types.QueryAllItemByOwner
 
 	store := ctx.KVStore(k.storeKey)
 	itemStore := prefix.NewStore(store, types.KeyPrefix(types.ItemKey))
+	itemOwnerStore := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+req.CurrentOwnerId))
 
-	pageRes, err := query.Paginate(itemStore, req.Pagination, func(key []byte, value []byte) error {
+	// 从 ItemOwnerKey 索引中取索引数据
+	// 再从 ItemKey 中取实际数据
+	pageRes, err := query.Paginate(itemOwnerStore, req.Pagination, func(key []byte, value []byte) error {
 		var item types.Item
-		if err := k.cdc.UnmarshalBinaryBare(value, &item); err != nil {
+		if err := k.cdc.UnmarshalBinaryBare(itemStore.Get(value), &item); err != nil {
 			return err
 		}
 
-		if item.CurrentOwnerId==req.CurrentOwnerId {
-			items = append(items, &item)
-		} 
+		items = append(items, &item)
 		
 		return nil
 	})
