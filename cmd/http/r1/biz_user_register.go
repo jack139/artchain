@@ -9,6 +9,7 @@ import (
 	"log"
 	"time"
 	"bytes"
+	"strings"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -70,7 +71,7 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 
 	// 初始化用户状态
 	userStatus := "WAIT"
-	if userType=="TRD" {
+	if strings.HasPrefix(userType, "TRD") {
 		userStatus = "ACTIVE"
 	}
 
