@@ -2,13 +2,7 @@
 
 rm -rf ./n1
 
-artchaind init node1 --home n1
-
-#artchaind config output json
-#artchaind config indent true
-#artchaind config trust-node true
-#artchaind config chain-id namechain
-#artchaind config keyring-backend test
+artchaind init node1 --home n1 --chain-id artchain
 
 artchaind keys add user0 --home n1
 artchaind keys add gt --home n1
