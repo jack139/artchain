@@ -58,7 +58,7 @@ func QueryAHList(ctx *fasthttp.RequestCtx) {
 	}
 
 	resp := map[string] interface{} {
-		"user_list" : respData,
+		"ah_list" : respData,
 	}
 
 	helper.RespJson(ctx, &resp)
