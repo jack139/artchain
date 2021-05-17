@@ -21,6 +21,14 @@ service Query {
 		option (google.api.http).get = "/jack139/artchain/person/user/{chainAddr}";
 	}
 
+	rpc UserByUserType(QueryGetUserByUserTypeRequest) returns (QueryGetUserByUserTypeResponse) {
+		option (google.api.http).get = "/jack139/artchain/person/user/{userType}";
+	}
+
+	rpc UserByStatus(QueryGetUserByStatusRequest) returns (QueryGetUserByStatusResponse) {
+		option (google.api.http).get = "/jack139/artchain/person/user/{status}";
+	}
+
 }
 
 // this line is used by starport scaffolding # 3
@@ -47,4 +55,20 @@ message QueryGetUserByChainAddrRequest {
 
 message QueryGetUserByChainAddrResponse {
 	User User = 1;
+}
+
+message QueryGetUserByUserTypeRequest {
+	string userType = 1;
+}
+
+message QueryGetUserByUserTypeResponse {
+	repeated User User = 1;
+}
+
+message QueryGetUserByStatusRequest {
+	string status = 1;
+}
+
+message QueryGetUserByStatusResponse {
+	repeated User User = 1;
 }

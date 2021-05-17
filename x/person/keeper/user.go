@@ -160,9 +160,9 @@ func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) types.User
 	return user
 }
 
-/*
-// 使用chainAddr取得用户，不使用索引，全表遍历的版本
-func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) (list []types.User) {
+
+// 使用useType取得用户，全表遍历
+func (k Keeper) GetUserByUserType(ctx sdk.Context, userType string) (list []types.User) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
@@ -171,11 +171,26 @@ func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) (list []ty
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.User
 		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
-		if val.ChainAddr==chainAddr {
+		if val.UserType==userType {
 			list = append(list, val)
 		} 
 	}
-
 	return
 }
-*/
+
+// 使用status取得用户，全表遍历
+func (k Keeper) GetUserByStatus(ctx sdk.Context, status string) (list []types.User) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.User
+		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		if val.Status==status {
+			list = append(list, val)
+		} 
+	}
+	return
+}
