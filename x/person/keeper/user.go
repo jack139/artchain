@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/jack139/artchain/x/person/types"
 	"strconv"
+	"strings"
 )
 
 // GetUserCount get the total number of user
@@ -171,7 +172,7 @@ func (k Keeper) GetUserByUserType(ctx sdk.Context, userType string) (list []type
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.User
 		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
-		if val.UserType==userType {
+		if strings.HasPrefix(val.UserType, userType) {
 			list = append(list, val)
 		} 
 	}

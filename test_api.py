@@ -50,10 +50,10 @@ if __name__ == '__main__':
             #'desc' : '测试物品3',
             #'date' : '1911s',
             #'base_price' : '$2001',
-            'owner_addr' : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004',
+            #'owner_addr' : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004',
 
-            'page' : 1,
-            'limit' : 10,
+            #'page' : 1,
+            #'limit' : 10,
 
             #'item_id' : "3",
             #'reviewer_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
@@ -119,12 +119,13 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/user/list'
     #url = host+'/api/r1/query/user/verify'
     #url = host+'/api/r1/query/item/info'
-    url = host+'/api/r1/query/item/list'
+    #url = host+'/api/r1/query/item/list'
     #url = host+'/api/r1/query/review/list'
     #url = host+'/api/r1/query/auction/info'
     #url = host+'/api/r1/query/auction/list'
     #url = host+'/api/r1/query/trans/info'
     #url = host+'/api/r1/query/trans/list'
+    url = host+'/api/r1/query/auction_house/list'
     
 
     start_time = datetime.now()

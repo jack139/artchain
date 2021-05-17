@@ -1232,13 +1232,36 @@ base64后结果：
 请求示例
 
 ```json
-
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {}, 
+    "timestamp": 1621231367, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NTQyNzEyYjNkMDY2MzczODE5NDhjN2Y2NWI1ZDY3Mzg4M2UwOWRlYjM4MjdhYTRmODJmZjU4NDc4NDhkZDRlNw=="
+}
 ```
 
 返回示例
 
 ```json
-
+{
+    "code":0,
+    "data":{
+        "user_list":[
+            {
+                "chain_addr":"bid1art18xx25laenhg07hjqcrys05v0svpjzumqpzshag",
+                "id":"6",
+                "last_date":"",
+                "login_name":"ah",
+                "reg_date":"2021-05-17 13:58:41",
+                "status":"WAIT",
+                "user_type":"AH|AUC_OP|TRANS_OP"
+            }
+        ]
+    },
+    "msg":"success"
+}
 ```
 
 
