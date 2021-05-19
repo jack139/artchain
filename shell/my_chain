@@ -6,7 +6,7 @@ LOG_PATH="/var/log/artchain"
 
 start_back() {
 	nohup $CHAIN_BIN/"artchaind" start --log_level warn --home n1 2>&1 > $LOG_PATH"/n1.log" &
-	nohup $CHAIN_BIN/"artchaind" http 8000 --chain-id artchain --from user0 --home n1 2>&1 > $LOG_PATH"/http.log" &
+	nohup $CHAIN_BIN/"artchaind" http 8888 --chain-id artchain --from user0 --home n1 2>&1 > $LOG_PATH"/http.log" &
 	return 0 
 }
 

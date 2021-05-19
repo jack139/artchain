@@ -10,6 +10,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
 /* 新建物品 */
@@ -48,6 +49,21 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 
 	// TODO： 检查 itemOwnerAddr 合法性
 
+
+	// 保存 --from 设置
+	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom)
+	if err != nil {
+		helper.RespError(ctx, 9015, err.Error())
+		return
+	}
+	//log.Println("FlagFrom:", originFlagFrom)
+
+	// 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, itemOwnerAddr) 
+	// 结束时恢复 --from 设置
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom) 
+
+
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
 	if err != nil {
@@ -56,11 +72,12 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 创建者地址
-	creatorAddr := clientCtx.GetFromAddress().String()
+	//creatorAddr := clientCtx.GetFromAddress().String()
+
 
 	// 数据上链
 	msg := invtypes.NewMsgCreateItem(
-		creatorAddr, //creator string, 
+		itemOwnerAddr, //creator string, 
 		"ARTINV", //recType string, 
 		itemDesc, //itemDesc string, 
 		itemDetail, //itemDetail string, 
