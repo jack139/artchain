@@ -11,6 +11,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
 /* 新建物品评价 */
@@ -29,6 +30,11 @@ func BizReviewNew(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
+	callerAddr, ok := (*reqData)["caller_addr"].(string)
+	if !ok {
+		helper.RespError(ctx, 9101, "need caller_addr")
+		return
+	}
 	itemIdStr, ok := (*reqData)["item_id"].(string)
 	if !ok {
 		helper.RespError(ctx, 9001, "need item_id")
@@ -42,6 +48,15 @@ func BizReviewNew(ctx *fasthttp.RequestCtx) {
 	reviewDetail, _ := (*reqData)["detail"].(string)
 
 	// TODO： 检查 reviewerAddr 合法性
+
+	// 设置 caller_addr
+	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
+	if err != nil {
+		helper.RespError(ctx, 9015, err.Error())
+		return
+	}
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)

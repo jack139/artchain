@@ -29,6 +29,11 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
+	callerAddr, ok := (*reqData)["caller_addr"].(string)
+	if !ok {
+		helper.RespError(ctx, 9101, "need caller_addr")
+		return
+	}
 	itemDesc, ok := (*reqData)["desc"].(string)
 	if !ok {
 		helper.RespError(ctx, 9001, "need desc")
@@ -50,19 +55,14 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	// TODO： 检查 itemOwnerAddr 合法性
 
 
-	// 保存 --from 设置
-	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom)
+	// 设置 caller_addr
+	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	//log.Println("FlagFrom:", originFlagFrom)
-
-	// 设置 --from 地址
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, itemOwnerAddr) 
-	// 结束时恢复 --from 设置
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom) 
-
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -77,7 +77,7 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 
 	// 数据上链
 	msg := invtypes.NewMsgCreateItem(
-		itemOwnerAddr, //creator string, 
+		callerAddr, //creator string, 
 		"ARTINV", //recType string, 
 		itemDesc, //itemDesc string, 
 		itemDetail, //itemDetail string, 

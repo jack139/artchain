@@ -182,6 +182,7 @@ base64后结果：
 
 | 参数          | 类型   | 必填 | 说明               |
 | ------------- | ------ | ---- | ------------------ |
+| caller_addr   | string | Y    | 调用者的链地址     |
 | login_name    | string | Y    | 登录名             |
 | user_type     | string | Y    | 注册用户类型       |
 | bank_acc_name | string |      | 银行开户姓名       |
@@ -260,15 +261,16 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数          | 类型   | 必填 | 说明         |
-| ------------- | ------ | ---- | ------------ |
-| chain_addr    | string | Y    | 用户链地址   |
-| bank_acc_name | string |      | 银行开户姓名 |
-| bank_name     | string |      | 银行名称     |
-| bank_acc_no   | string |      | 银行账号     |
-| address       | string |      | 联系地址     |
-| phone         | string |      | 联系电话     |
-| email         | string |      | 电子邮件     |
+| 参数          | 类型   | 必填 | 说明           |
+| ------------- | ------ | ---- | -------------- |
+| caller_addr   | string | Y    | 调用者的链地址 |
+| chain_addr    | string | Y    | 用户链地址     |
+| bank_acc_name | string |      | 银行开户姓名   |
+| bank_name     | string |      | 银行名称       |
+| bank_acc_no   | string |      | 银行账号       |
+| address       | string |      | 联系地址       |
+| phone         | string |      | 联系电话       |
+| email         | string |      | 电子邮件       |
 
 返回结果
 
@@ -322,17 +324,18 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数       | 类型   | 必填 | 说明                                   |
-| ---------- | ------ | ---- | -------------------------------------- |
-| owner_addr | string | Y    | 所有者的链地址                         |
-| desc       | string | Y    | 物品名称                               |
-| detail     | string |      | 物品描述                               |
-| date       | string | Y    | 出现年代                               |
-| type       | string |      | 类型：原作、复制品                     |
-| subject    | string |      | 主题：古代、现代、风景、雕塑、人像，等 |
-| media      | string |      | 材质：石头、金属、瓷器、油画、素描、等 |
-| size       | string |      | 尺寸描述                               |
-| base_price | string | Y    | 最近交易价格                           |
+| 参数        | 类型   | 必填 | 说明                                   |
+| ----------- | ------ | ---- | -------------------------------------- |
+| caller_addr | string | Y    | 调用者的链地址                         |
+| owner_addr  | string | Y    | 所有者的链地址                         |
+| desc        | string | Y    | 物品名称                               |
+| detail      | string |      | 物品描述                               |
+| date        | string | Y    | 出现年代                               |
+| type        | string |      | 类型：原作、复制品                     |
+| subject     | string |      | 主题：古代、现代、风景、雕塑、人像，等 |
+| media       | string |      | 材质：石头、金属、瓷器、油画、素描、等 |
+| size        | string |      | 尺寸描述                               |
+| base_price  | string | Y    | 最近交易价格                           |
 
 返回结果
 
@@ -387,18 +390,19 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数       | 类型   | 必填 | 说明                               |
-| ---------- | ------ | ---- | ---------------------------------- |
-| id         | string | Y    | 物品id                             |
-| owner_addr | string | Y    | 所有者的链地址，需与当前所有者一致 |
-| desc       | string |      | 新的物品名称                       |
-| detail     | string |      | 新的物品描述                       |
-| date       | string |      | 新的出现年代                       |
-| type       | string |      | 新的类型                           |
-| subject    | string |      | 新的主题                           |
-| media      | string |      | 新的材质                           |
-| size       | string |      | 新的尺寸描述                       |
-| base_price | string |      | 新的最近交易价格                   |
+| 参数        | 类型   | 必填 | 说明                               |
+| ----------- | ------ | ---- | ---------------------------------- |
+| caller_addr | string | Y    | 调用者的链地址                     |
+| id          | string | Y    | 物品id                             |
+| owner_addr  | string | Y    | 所有者的链地址，需与当前所有者一致 |
+| desc        | string |      | 新的物品名称                       |
+| detail      | string |      | 新的物品描述                       |
+| date        | string |      | 新的出现年代                       |
+| type        | string |      | 新的类型                           |
+| subject     | string |      | 新的主题                           |
+| media       | string |      | 新的材质                           |
+| size        | string |      | 新的尺寸描述                       |
+| base_price  | string |      | 新的最近交易价格                   |
 
 返回结果
 
@@ -452,6 +456,7 @@ base64后结果：
 
 | 参数          | 类型   | 必填 | 说明           |
 | ------------- | ------ | ---- | -------------- |
+| caller_addr   | string | Y    | 调用者的链地址 |
 | item_id       | string | Y    | 被评论的物品id |
 | reviewer_addr | string | Y    | 评论者的链地址 |
 | detail        | string | Y    | 评论内容       |
@@ -509,6 +514,7 @@ base64后结果：
 
 | 参数          | 类型   | 必填 | 说明                           |
 | ------------- | ------ | ---- | ------------------------------ |
+| caller_addr   | string | Y    | 调用者的链地址                 |
 | id            | string | Y    | 评论id                         |
 | item_id       | string | Y    | 被评论的物品id                 |
 | reviewer_addr | string | Y    | 评论者的链地址，需与新建人一致 |
@@ -568,6 +574,7 @@ base64后结果：
 
 | 参数          | 类型   | 必填 | 说明                    |
 | ------------- | ------ | ---- | ----------------------- |
+| caller_addr   | string | Y    | 调用者的链地址          |
 | review_id     | string | Y    | 评论id                  |
 | reviewer_addr | string | Y    | 反馈者的链地址          |
 | detail        | string | Y    | 反馈信息：1 赞同 0 反对 |
@@ -608,6 +615,7 @@ base64后结果：
 
 | 参数             | 类型   | 必填 | 说明                         |
 | ---------------- | ------ | ---- | ---------------------------- |
+| caller_addr      | string | Y    | 调用者的链地址               |
 | seller_addr      | string | Y    | 卖家的链地址，需与所有者一致 |
 | auction_house_id | string | Y    | 拍卖行ID                     |
 | item_id          | string | Y    | 物品id                       |
@@ -669,6 +677,7 @@ base64后结果：
 
 | 参数             | 类型   | 必填 | 说明           |
 | ---------------- | ------ | ---- | -------------- |
+| caller_addr      | string | Y    | 调用者的链地址 |
 | id               | string | Y    | 拍卖id         |
 | auction_house_id | string |      | 修改的拍卖行ID |
 | reserved_price   | string |      | 修改的底价     |
@@ -724,15 +733,16 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数         | 类型   | 必填 | 说明         |
-| ------------ | ------ | ---- | ------------ |
-| buyer_addr   | string | Y    | 买家的链地址 |
-| auction_id   | string | Y    | 拍卖ID       |
-| item_id      | string | Y    | 物品ID       |
-| trans_type   | string | Y    | 交易类型     |
-| hammer_time  | string | Y    | 成交时间     |
-| hammer_price | string | Y    | 成交价格     |
-| details      | string |      | 交易细节描述 |
+| 参数         | 类型   | 必填 | 说明           |
+| ------------ | ------ | ---- | -------------- |
+| caller_addr  | string | Y    | 调用者的链地址 |
+| buyer_addr   | string | Y    | 买家的链地址   |
+| auction_id   | string | Y    | 拍卖ID         |
+| item_id      | string | Y    | 物品ID         |
+| trans_type   | string | Y    | 交易类型       |
+| hammer_time  | string | Y    | 成交时间       |
+| hammer_price | string | Y    | 成交价格       |
+| details      | string |      | 交易细节描述   |
 
 返回结果
 
