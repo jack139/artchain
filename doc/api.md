@@ -390,19 +390,18 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数        | 类型   | 必填 | 说明                               |
-| ----------- | ------ | ---- | ---------------------------------- |
-| caller_addr | string | Y    | 调用者的链地址                     |
-| id          | string | Y    | 物品id                             |
-| owner_addr  | string | Y    | 所有者的链地址，需与当前所有者一致 |
-| desc        | string |      | 新的物品名称                       |
-| detail      | string |      | 新的物品描述                       |
-| date        | string |      | 新的出现年代                       |
-| type        | string |      | 新的类型                           |
-| subject     | string |      | 新的主题                           |
-| media       | string |      | 新的材质                           |
-| size        | string |      | 新的尺寸描述                       |
-| base_price  | string |      | 新的最近交易价格                   |
+| 参数        | 类型   | 必填 | 说明             |
+| ----------- | ------ | ---- | ---------------- |
+| caller_addr | string | Y    | 调用者的链地址   |
+| id          | string | Y    | 物品id           |
+| desc        | string |      | 新的物品名称     |
+| detail      | string |      | 新的物品描述     |
+| date        | string |      | 新的出现年代     |
+| type        | string |      | 新的类型         |
+| subject     | string |      | 新的主题         |
+| media       | string |      | 新的材质         |
+| size        | string |      | 新的尺寸描述     |
+| base_price  | string |      | 新的最近交易价格 |
 
 返回结果
 
@@ -421,7 +420,7 @@ base64后结果：
     "data": {
         "id": "0", 
         "base_price": "$1001", 
-        "owner_addr": "bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7"
+        "caller_addr": "bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7"
     }, 
     "timestamp": 1619791789, 
     "appid": "4fcf3871f4a023712bec9ed44ee4b709", 

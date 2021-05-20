@@ -41,11 +41,6 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9001, "need id")
 		return
 	}
-	itemOwnerAddr, ok := (*reqData)["owner_addr"].(string)
-	if !ok {
-		helper.RespError(ctx, 9002, "need owner_addr")
-		return
-	}
 
 	itemDesc, ok := (*reqData)["desc"].(string)
 	itemDate, ok := (*reqData)["date"].(string)
@@ -67,12 +62,6 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	if err!=nil {
 		helper.RespError(ctx, 9002, err.Error())
 		return		
-	}
-
-	// 检查所有人addr是否一致
-	if itemOwnerAddr!=(*itemMap)["currentOwnerId"].(string) {
-		helper.RespError(ctx, 9003, "wrong owner_addr")
-		return				
 	}
 
 	// 是否要修改？
