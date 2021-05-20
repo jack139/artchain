@@ -55,7 +55,8 @@ func (msg *MsgCreateReview) ValidateBasic() error {
 var _ sdk.Msg = &MsgUpdateReview{}
 
 func NewMsgUpdateReview(creator string, id uint64, recType string, itemId string, reviewerId string, 
-	reviewDetail string, reviewDate string, upCount string, downCount string, lastDate string) *MsgUpdateReview {
+	reviewDetail string, reviewDate string, upCount string, downCount string, status string, 
+	lastDate string) *MsgUpdateReview {
 	return &MsgUpdateReview{
 		Id:           id,
 		Creator:      creator,
@@ -66,6 +67,7 @@ func NewMsgUpdateReview(creator string, id uint64, recType string, itemId string
 		ReviewDate:   reviewDate,
 		UpCount:      upCount,
 		DownCount:    downCount,
+		Status:       status,
 		LastDate:     lastDate,
 	}
 }

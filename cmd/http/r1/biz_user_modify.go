@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"bytes"
 	"time"
+	"strings"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -53,6 +54,12 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 	if err!=nil {
 		helper.RespError(ctx, 9002, err.Error())
 		return		
+	}
+
+	// 初始化用户状态
+	userStatus := "WAIT"
+	if strings.HasPrefix((*userMap)["userType"].(string), "TRD") {
+		userStatus = "ACTIVE"
 	}
 
 	userInfoOld := (*userMap)["userInfo"].(map[string]interface{})
@@ -140,7 +147,7 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 		(*userMap)["name"].(string), 
 		(*userMap)["userType"].(string), 
 		string(userInfo), 
-		(*userMap)["status"].(string), 
+		userStatus, 
 		(*userMap)["regDate"].(string), 
 		chainAddr,
 		string(lastDate),

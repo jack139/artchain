@@ -44,6 +44,7 @@ func (k msgServer) UpdateReview(goCtx context.Context, msg *types.MsgUpdateRevie
 		ReviewDate:   msg.ReviewDate,
 		UpCount:      msg.UpCount,
 		DownCount:    msg.DownCount,
+		Status:       msg.Status,
 		LastDate:     msg.LastDate,
 	}
 

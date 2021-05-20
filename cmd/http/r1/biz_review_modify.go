@@ -107,6 +107,7 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 		(*reviewMap)["reviewDate"].(string), //reviewDate string, 
 		(*reviewMap)["upCount"].(string), //upCount string, 
 		(*reviewMap)["downCount"].(string), //downCount string,
+		"WAIT", // 设置为 wait
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {

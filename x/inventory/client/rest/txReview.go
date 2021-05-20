@@ -137,6 +137,7 @@ func updateReviewHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedReviewDate,
 			parsedUpCount,
 			parsedDownCount,
+			"WAIT",
 			"",
 		)
 

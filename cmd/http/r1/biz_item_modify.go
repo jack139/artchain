@@ -135,7 +135,7 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		(*itemMap)["AESKey"].(string), //AESKey string, 
 		itemBasePrice, //itemBasePrice string, 
 		(*itemMap)["currentOwnerId"].(string), //currentOwnerId string, 
-		(*itemMap)["status"].(string), //status string
+		"WAIT", // 修改后状态自动设置为 WAIT
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {

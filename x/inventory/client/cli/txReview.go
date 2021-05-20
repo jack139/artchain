@@ -71,7 +71,7 @@ func CmdUpdateReview() *cobra.Command {
 
 			msg := types.NewMsgUpdateReview(clientCtx.GetFromAddress().String(), id, string(argsRecType), 
 				string(argsItemId), string(argsReviewerId), string(argsReviewDetail), string(argsReviewDate), 
-				string(argsUpCount), string(argsDownCount), "")
+				string(argsUpCount), string(argsDownCount), "WAIT","")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
