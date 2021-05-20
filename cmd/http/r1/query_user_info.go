@@ -132,17 +132,14 @@ func queryUserInfoByChainAddr(ctx *fasthttp.RequestCtx, chainAddr string) (*map[
 
 /* userInfo字段是已序列化的json串，反序列化一下，针对数据列表 */
 func unmarshalUser(reqData *map[string]interface{}) (*map[string]interface{}, error) {
-	var respData map[string]interface{}
-
 	item := (*reqData)["User"].(map[string]interface{})
 
 	// 检查 userInfo 字段是否正常
-	_, ok := item["userInfo"]
-	if !ok {
-		return &respData, nil
+	if _, ok := item["userInfo"]; !ok {
+		return nil, fmt.Errorf("userInfo empty") // 不应该发生
 	}
 	if !strings.HasPrefix(item["userInfo"].(string), "{") {
-		return &respData, nil
+		return nil, fmt.Errorf("userInfo broken") // 不应该发生
 	}
 
 	// 反序列化
@@ -151,6 +148,22 @@ func unmarshalUser(reqData *map[string]interface{}) (*map[string]interface{}, er
 		return nil, err
 	}
 	item["userInfo"] = data
+
+
+	// 检查 lastDate 字段是否正常
+	if _, ok := item["lastDate"]; !ok {
+		return nil, fmt.Errorf("lastDate empty") // 不应该发生
+	}
+	if !strings.HasPrefix(item["lastDate"].(string), "[") {
+		return nil, fmt.Errorf("lastDate broken") // 不应该发生
+	}
+
+	// 反序列化
+	var data2 []map[string]interface{}
+	if err := json.Unmarshal([]byte(item["lastDate"].(string)), &data2); err != nil {
+		return nil, err
+	}
+	item["lastDate"] = data2
 
 	return &item, nil
 }

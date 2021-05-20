@@ -23,6 +23,7 @@ message MsgCreateUser {
   string status = 6;
   string regDate = 7;
   string chainAddr = 8;
+  string lastDate = 9;
 }
 
 message MsgCreateUserResponse {
@@ -39,6 +40,7 @@ message MsgUpdateUser {
   string status = 7;
   string regDate = 8;
   string chainAddr = 9;
+  string lastDate = 10;
 }
 
 message MsgUpdateUserResponse { }

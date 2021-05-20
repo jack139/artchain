@@ -66,6 +66,7 @@ func createUserHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedStatus,
 			parsedRegDate,
 			parsedChainAddr,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
@@ -132,6 +133,7 @@ func updateUserHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedStatus,
 			parsedRegDate,
 			parsedChainAddr,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)

@@ -81,6 +81,21 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		userStatus = "ACTIVE"
 	}
 
+	// 构建lastDate
+	var lastDateMap []map[string]interface{}
+	lastDateMap = append(lastDateMap, map[string]interface{}{
+		"caller": callerAddr,
+		"act":  "new",
+		"date": time.Now().Format("2006-01-02 15:04:05"),
+	})
+
+	lastDate, err := json.Marshal(lastDateMap)
+	if err != nil {
+		helper.RespError(ctx, 9004, err.Error())
+		return
+	}
+
+
 	// 生成新用户密钥
 	address, mnemonic, err := cmdclient.AddUserAccount(helper.HttpCmd, userName, types.RewardRegister)
 	if err != nil {
@@ -94,7 +109,7 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, address)  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
@@ -105,11 +120,11 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 创建者地址，如果在生成新用户后，会变成faucet的地址
-	creatorAddr := clientCtx.GetFromAddress().String()
+	//creatorAddr := clientCtx.GetFromAddress().String()
 
 	// 数据上链
 	msg := persontypes.NewMsgCreateUser(
-		creatorAddr, // creator string, 
+		address, // creator string, 
 		"USER", // recType string, 
 		userName, // name string, 
 		userType, // userType string, 
@@ -117,6 +132,7 @@ func BizRegister(ctx *fasthttp.RequestCtx) {
 		userStatus, // status string, 
 		time.Now().Format("2006-01-02 15:04:05"), // regDate string, 
 		address, // chainAddr string,
+		string(lastDate), // lastDate string,
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())

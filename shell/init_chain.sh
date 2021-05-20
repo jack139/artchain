@@ -20,5 +20,4 @@ artchaind collect-gentxs --home n1
 echo "Validating genesis file..."
 artchaind validate-genesis --home n1
 
-
-artchaind start --log_level warn --home n1
+#artchaind start --log_level warn --home n1

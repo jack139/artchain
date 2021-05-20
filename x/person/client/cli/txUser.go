@@ -31,7 +31,7 @@ func CmdCreateUser() *cobra.Command {
 
 			msg := types.NewMsgCreateUser(clientCtx.GetFromAddress().String(), string(argsRecType), 
 				string(argsName), string(argsUserType), string(argsUserInfo), string(argsStatus), 
-				string(argsRegDate), string(argsChainAddr))
+				string(argsRegDate), string(argsChainAddr), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -70,7 +70,7 @@ func CmdUpdateUser() *cobra.Command {
 
 			msg := types.NewMsgUpdateUser(clientCtx.GetFromAddress().String(), id, string(argsRecType), 
 				string(argsName), string(argsUserType), string(argsUserInfo), string(argsStatus), 
-				string(argsRegDate), string(argsChainAddr))
+				string(argsRegDate), string(argsChainAddr), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

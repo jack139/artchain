@@ -32,11 +32,12 @@ if __name__ == '__main__':
         'sign_type' : 'SHA256', 
         'data'     : {
             #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
-            #'chain_addr'   : 'bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7', # test1
+            'chain_addr'   : 'bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw', # test123
 
-            #'login_name' : 'test1',
+            'caller_addr' : 'bid1art1qek76ce2qe7y3creh8arle73dunjg24jwgpp6c', # op2
+            #'login_name' : 'test123',
             #'user_type' : 'TRD',
-            #'email' : '111112@qq.com',
+            'email' : 'abc@qq.com',
             #'bank_acc_name' : '1test bank',
             #'referrer': 'bid1art111111111',
 
@@ -104,7 +105,7 @@ if __name__ == '__main__':
     host = 'http://%s:%s'%(hostname, port)
     #url = host+'/api/test'
     #url = host+'/api/r1/biz/user/register'
-    #url = host+'/api/r1/biz/user/modify'
+    url = host+'/api/r1/biz/user/modify'
     #url = host+'/api/r1/biz/item/new'
     #url = host+'/api/r1/biz/item/modify'
     #url = host+'/api/r1/biz/review/new'
@@ -125,7 +126,7 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/auction/list'
     #url = host+'/api/r1/query/trans/info'
     #url = host+'/api/r1/query/trans/list'
-    url = host+'/api/r1/query/auction_house/list'
+    #url = host+'/api/r1/query/auction_house/list'
     
 
     start_time = datetime.now()
