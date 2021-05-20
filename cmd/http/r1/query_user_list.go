@@ -68,7 +68,7 @@ func QueryUserList(ctx *fasthttp.RequestCtx) {
 			"login_name" : item["name"],
 			"user_type"  : item["userType"],
 			"reg_date"   : item["regDate"],
-			"last_date"  : item["lastDate"],
+			//"last_date"  : item["lastDate"], // lastDate 只在user_info里返回
 			"status"     : item["status"],
 		}
 		respData = append(respData, newItem)
