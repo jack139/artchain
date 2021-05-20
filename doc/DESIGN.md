@@ -273,4 +273,9 @@ Details      // 交易细节记录
 2. 每个数据的creator都是数据的实际所有者
 3. 管理员账户可以创建用户，但是一旦创建，不能修改用户内容，只能修改用户状态
 5. 审核人员/管理员可以使用creator身份修改数据
-4. lastDate 字段记录修改记录，包括：creator的修改，审核/管理人员的修改
+6. lastDate 字段记录修改记录，包括：creator的修改，审核/管理人员的修改
+  User 的 creator 是 user自己
+  Item 的 creator 是 caller
+  Review 的 creator 是 reviwer自己
+  Auction 的 creator 是 seller自己
+  Trans 的 creator 是 caller

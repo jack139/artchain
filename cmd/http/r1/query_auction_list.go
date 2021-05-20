@@ -41,6 +41,7 @@ func QueryAuctionList(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9002, "need limit")
 		return
 	}
+	sellerAddr, ok := (*reqData)["seller_addr"].(string)
 
 	if page < 1 || limit < 1 {
 		helper.RespError(ctx, 9003, "page and limit need begin from 1")
@@ -48,7 +49,7 @@ func QueryAuctionList(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryAuctionListPage(ctx, uint64(page), uint64(limit))
+	respData2, err := queryAuctionListPage(ctx, uint64(page), uint64(limit), sellerAddr)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -86,7 +87,7 @@ func QueryAuctionList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryAuctionListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (*[]interface{}, error) {
+func queryAuctionListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64, sellerAddr string) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
@@ -100,23 +101,35 @@ func queryAuctionListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (
 		CountTotal: true,
 	}
 
-	params := &auctiontypes.QueryAllRequestRequest{
-		Pagination: &pageReq,
-	}
-
-	res, err := queryClient.RequestAll(context.Background(), params)
-	if err != nil {
-		return nil, err
-	}
-
-	//log.Printf("%T\n", res)
-
 	// 设置 接收输出
 	buf := new(bytes.Buffer)
 	clientCtx.Output = buf
 
-	// 转换输出
-	clientCtx.PrintProto(res)
+	if len(sellerAddr)==0 { // 查所有的
+		params := &auctiontypes.QueryAllRequestRequest{
+			Pagination: &pageReq,
+		}
+
+		res, err := queryClient.RequestAll(context.Background(), params)
+		if err != nil {
+			return nil, err
+		}
+
+		// 转换输出
+		clientCtx.PrintProto(res)
+	} else { // 查指定seller_addr的
+		params := &auctiontypes.QueryGetRequestByChainAddrRequest{
+			ChainAddr: sellerAddr,
+		}
+
+		res, err := queryClient.RequestByChainAddr(context.Background(), params)
+		if err != nil {
+			return nil, err
+		}
+
+		// 转换输出
+		clientCtx.PrintProto(res)
+	}
 
 	// 输出的字节流
 	respBytes := []byte(buf.String())

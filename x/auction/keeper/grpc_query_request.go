@@ -57,3 +57,20 @@ func (k Keeper) Request(c context.Context, req *types.QueryGetRequestRequest) (*
 
 	return &types.QueryGetRequestResponse{Request: &request}, nil
 }
+
+// 按 seller_addr 查询 拍卖请求清单
+func (k Keeper) RequestByChainAddr(c context.Context, req *types.QueryGetRequestByChainAddrRequest) (*types.QueryGetRequestByChainAddrResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var requests []*types.Request
+	ctx := sdk.UnwrapSDKContext(c)
+
+	r := k.GetRequestByChainAddr(ctx, req.ChainAddr)
+	for i, _ := range r{
+		requests = append(requests, &r[i])
+	}
+
+	return &types.QueryGetRequestByChainAddrResponse{Request: requests}, nil
+}
