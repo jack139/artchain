@@ -74,7 +74,7 @@ func QueryItemList(ctx *fasthttp.RequestCtx) {
 			"size"       : item["itemSize"],
 			"base_price" : item["itemBasePrice"],
 			"owner_addr" : item["currentOwnerId"],
-			"last_date"  : item["lastDate"],
+			//"last_date"  : item["lastDate"],
 			"status"     : item["status"],
 		}
 		respData = append(respData, newItem)

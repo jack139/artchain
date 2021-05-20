@@ -6,6 +6,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
+	"fmt"
+	"strings"
 	"bytes"
 	"context"
 	"strconv"
@@ -114,6 +116,23 @@ func queryAuctionInfoById(ctx *fasthttp.RequestCtx, auctionId uint64) (*map[stri
 	}
 
 	auctionMap := respData["Request"].(map[string]interface{})
+
+
+	// 检查 lastDate 字段是否正常
+	if _, ok := auctionMap["lastDate"]; !ok {
+		return nil, fmt.Errorf("lastDate empty") // 不应该发生
+	}
+	if !strings.HasPrefix(auctionMap["lastDate"].(string), "[") {
+		return nil, fmt.Errorf("lastDate broken") // 不应该发生
+	}
+
+	// 反序列化
+	var data2 []map[string]interface{}
+	if err := json.Unmarshal([]byte(auctionMap["lastDate"].(string)), &data2); err != nil {
+		return nil, err
+	}
+	auctionMap["lastDate"] = data2
+
 
 	return &(auctionMap), nil
 }

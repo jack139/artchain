@@ -32,12 +32,12 @@ if __name__ == '__main__':
         'sign_type' : 'SHA256', 
         'data'     : {
             #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
-            'chain_addr'   : 'bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw', # test123
+            #'chain_addr'   : 'bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw', # test123
 
             'caller_addr' : 'bid1art1qek76ce2qe7y3creh8arle73dunjg24jwgpp6c', # op2
             #'login_name' : 'test123',
             #'user_type' : 'TRD',
-            'email' : 'abc@qq.com',
+            #'email' : 'abc@qq.com',
             #'bank_acc_name' : '1test bank',
             #'referrer': 'bid1art111111111',
 
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            #'id' : '0',
+            'id' : '1',
 
             #'desc' : '测试物品3',
             #'date' : '1911s',
@@ -60,10 +60,10 @@ if __name__ == '__main__':
             #'reviewer_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
             #'detail' : "aaaaabbbbbb 哈哈1111111",
 
-            #'seller_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
-            #'auction_house_id' : "1",
+            #'seller_addr' : "bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw",
+            'auction_house_id' : "bid1art18xx25laenhg07hjqcrys05v0svpjzumqpzshag",
             #'item_id' : '2',
-            #'reserved_price' : '2000',
+            'reserved_price' : '2002',
 
             #'buyer_addr' :  "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
             #'auction_id' : "1",
@@ -105,13 +105,13 @@ if __name__ == '__main__':
     host = 'http://%s:%s'%(hostname, port)
     #url = host+'/api/test'
     #url = host+'/api/r1/biz/user/register'
-    url = host+'/api/r1/biz/user/modify'
+    #url = host+'/api/r1/biz/user/modify'
     #url = host+'/api/r1/biz/item/new'
     #url = host+'/api/r1/biz/item/modify'
     #url = host+'/api/r1/biz/review/new'
     #url = host+'/api/r1/biz/review/modify'
     #url = host+'/api/r1/biz/auction/new'
-    #url = host+'/api/r1/biz/auction/modify'
+    url = host+'/api/r1/biz/auction/modify'
     #url = host+'/api/r1/biz/trans/new'
 
     #url = host+'/api/r1/query/block/rawdata'

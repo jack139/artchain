@@ -73,7 +73,7 @@ func QueryTransList(ctx *fasthttp.RequestCtx) {
 			"hammer_price" : item["hammerPrice"],
 			"details"      : item["details"],
 			"status"       : item["status"],
-			"last_date"    : item["lastDate"],
+			//"last_date"    : item["lastDate"],
 		}
 		respData = append(respData, newItem)
 	}

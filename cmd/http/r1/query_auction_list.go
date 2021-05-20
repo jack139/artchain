@@ -72,7 +72,7 @@ func QueryAuctionList(ctx *fasthttp.RequestCtx) {
 			"status"           : item["status"],
 			"open_date"        : item["openDate"],
 			"close_date"       : item["closeDate"],
-			"last_date"        : item["lastDate"],
+			//"last_date"        : item["lastDate"],
 		}
 		respData = append(respData, newItem)
 	}
