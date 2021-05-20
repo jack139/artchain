@@ -90,11 +90,11 @@ func BizAuctionNew(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 创建者地址
-	creatorAddr := clientCtx.GetFromAddress().String()
+	//creatorAddr := clientCtx.GetFromAddress().String()
 
 	// 数据上链
 	msg := auctiontypes.NewMsgCreateRequest(
-		creatorAddr, //creator string, 
+		sellerAddr, //creator string, 
 		"AUCREQ", //recType string, 
 		itemIdStr, //itemId string, 
 		auctionHouseId, //auctionHouseId string, 

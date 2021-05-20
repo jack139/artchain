@@ -26,6 +26,7 @@ message MsgCreateTransaction {
   string hammerPrice = 9;
   string details = 10;
   string status = 11;
+  string lastDate = 12;
 }
 
 message MsgCreateTransactionResponse {
@@ -45,6 +46,7 @@ message MsgUpdateTransaction {
   string hammerPrice = 10;
   string details = 11;
   string status = 12;
+  string lastDate = 13;
 }
 
 message MsgUpdateTransactionResponse { }

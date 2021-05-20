@@ -79,11 +79,11 @@ func BizReviewNew(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 创建者地址
-	creatorAddr := clientCtx.GetFromAddress().String()
+	//creatorAddr := clientCtx.GetFromAddress().String()
 
 	// 数据上链
 	msg := invtypes.NewMsgCreateReview(
-		creatorAddr, //creator string, 
+		reviewerAddr, //creator string, 
 		"REVIEW", //recType string, 
 		itemIdStr, //itemId string, 
 		reviewerAddr, //reviewerId string, 

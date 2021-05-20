@@ -70,6 +70,21 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 	// TODO： 检查 buyerAddr 合法性, 
 	//       检查 auction_id 合法性
 
+
+	// 构建lastDate
+	var lastDateMap []map[string]interface{}
+	lastDateMap = append(lastDateMap, map[string]interface{}{
+		"caller": callerAddr,
+		"act":  "new",
+		"date": time.Now().Format("2006-01-02 15:04:05"),
+	})
+	lastDate, err := json.Marshal(lastDateMap)
+	if err != nil {
+		helper.RespError(ctx, 9004, err.Error())
+		return
+	}
+
+
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
@@ -87,11 +102,11 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 创建者地址
-	creatorAddr := clientCtx.GetFromAddress().String()
+	//creatorAddr := clientCtx.GetFromAddress().String()
 
 	// 数据上链
 	msg := transtypes.NewMsgCreateTransaction(
-		creatorAddr, //creator string, 
+		callerAddr, //creator string, 
 		"POSTTRAN", //recType string, 
 		auctionId, //auctionId string, 
 		itemIdStr, //itemId string, 
@@ -102,6 +117,7 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 		hammerPrice, //hammerPrice string, 
 		details, //details string, 
 		"WAIT", //status string,
+		string(lastDate),
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())

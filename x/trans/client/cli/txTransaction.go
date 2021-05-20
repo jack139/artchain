@@ -32,7 +32,10 @@ func CmdCreateTransaction() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateTransaction(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsAuctionId), string(argsItemId), string(argsTransType), string(argsUserId), string(argsTransDate), string(argsHammerTime), string(argsHammerPrice), string(argsDetails), string(argsStatus))
+			msg := types.NewMsgCreateTransaction(clientCtx.GetFromAddress().String(), string(argsRecType), 
+				string(argsAuctionId), string(argsItemId), string(argsTransType), string(argsUserId), 
+				string(argsTransDate), string(argsHammerTime), string(argsHammerPrice), string(argsDetails), 
+				string(argsStatus), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -72,7 +75,10 @@ func CmdUpdateTransaction() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgUpdateTransaction(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsAuctionId), string(argsItemId), string(argsTransType), string(argsUserId), string(argsTransDate), string(argsHammerTime), string(argsHammerPrice), string(argsDetails), string(argsStatus))
+			msg := types.NewMsgUpdateTransaction(clientCtx.GetFromAddress().String(), id, string(argsRecType), 
+				string(argsAuctionId), string(argsItemId), string(argsTransType), string(argsUserId), 
+				string(argsTransDate), string(argsHammerTime), string(argsHammerPrice), string(argsDetails), 
+				string(argsStatus), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

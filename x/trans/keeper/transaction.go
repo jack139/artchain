@@ -51,6 +51,7 @@ func (k Keeper) AppendTransaction(
 	hammerPrice string,
 	details string,
 	status string,
+	lastDate string,
 ) uint64 {
 	// Create the transaction
 	count := k.GetTransactionCount(ctx)
@@ -67,6 +68,7 @@ func (k Keeper) AppendTransaction(
 		HammerPrice: hammerPrice,
 		Details:     details,
 		Status:      status,
+		LastDate:    lastDate,
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))

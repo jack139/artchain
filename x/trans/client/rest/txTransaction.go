@@ -78,6 +78,7 @@ func createTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedHammerPrice,
 			parsedDetails,
 			parsedStatus,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
@@ -156,6 +157,7 @@ func updateTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedHammerPrice,
 			parsedDetails,
 			parsedStatus,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
