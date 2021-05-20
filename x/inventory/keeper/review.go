@@ -49,6 +49,7 @@ func (k Keeper) AppendReview(
 	upCount string,
 	downCount string,
 	status string,
+	lastDate string,
 ) uint64 {
 	// Create the review
 	count := k.GetReviewCount(ctx)
@@ -63,6 +64,7 @@ func (k Keeper) AppendReview(
 		UpCount:      upCount,
 		DownCount:    downCount,
 		Status:       status,
+		LastDate:     lastDate,
 	}
 
 	// review 的 key 按 itemId 区分，方便按 itemId 查询

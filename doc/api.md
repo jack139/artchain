@@ -512,13 +512,12 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数          | 类型   | 必填 | 说明                           |
-| ------------- | ------ | ---- | ------------------------------ |
-| caller_addr   | string | Y    | 调用者的链地址                 |
-| id            | string | Y    | 评论id                         |
-| item_id       | string | Y    | 被评论的物品id                 |
-| reviewer_addr | string | Y    | 评论者的链地址，需与新建人一致 |
-| detail        | string | Y    | 修改的评论内容                 |
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| id          | string | Y    | 评论id         |
+| item_id     | string | Y    | 被评论的物品id |
+| detail      | string | Y    | 修改的评论内容 |
 
 返回结果
 
@@ -537,7 +536,7 @@ base64后结果：
     "data": {
         "id": "2", 
         "item_id": "3", 
-        "reviewer_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "detail": "aaaaabbbbbb \u54c8\u54c81111111"
     }, 
     "timestamp": 1619914366, 

@@ -35,7 +35,12 @@ func CmdCreateItem() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateItem(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsItemDesc), string(argsItemDetail), string(argsItemDate), string(argsItemType), string(argsItemSubject), string(argsItemMedia), string(argsItemSize), string(argsItemImage), string(argsAESKey), string(argsItemBasePrice), string(argsCurrentOwnerId), string(argsStatus))
+			msg := types.NewMsgCreateItem(clientCtx.GetFromAddress().String(), 
+				string(argsRecType), string(argsItemDesc), string(argsItemDetail), 
+				string(argsItemDate), string(argsItemType), string(argsItemSubject), 
+				string(argsItemMedia), string(argsItemSize), string(argsItemImage), 
+				string(argsAESKey), string(argsItemBasePrice), string(argsCurrentOwnerId),
+				string(argsStatus), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -78,7 +83,12 @@ func CmdUpdateItem() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgUpdateItem(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsItemDesc), string(argsItemDetail), string(argsItemDate), string(argsItemType), string(argsItemSubject), string(argsItemMedia), string(argsItemSize), string(argsItemImage), string(argsAESKey), string(argsItemBasePrice), string(argsCurrentOwnerId), string(argsStatus))
+			msg := types.NewMsgUpdateItem(clientCtx.GetFromAddress().String(), id, 
+				string(argsRecType), string(argsItemDesc), string(argsItemDetail), 
+				string(argsItemDate), string(argsItemType), string(argsItemSubject), 
+				string(argsItemMedia), string(argsItemSize), string(argsItemImage), 
+				string(argsAESKey), string(argsItemBasePrice), string(argsCurrentOwnerId), 
+				string(argsStatus), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

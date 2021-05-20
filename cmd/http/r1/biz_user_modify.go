@@ -96,15 +96,12 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 
 
 	// 构建lastDate
-
 	lastDateMap := (*userMap)["lastDate"].([]map[string]interface{})
-	//lastDateMap := []map[string]interface{}
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
 		"act":  "edit",
 		"date": time.Now().Format("2006-01-02 15:04:05"),
 	})
-
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
 		helper.RespError(ctx, 9004, err.Error())

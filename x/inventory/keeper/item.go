@@ -6,7 +6,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/jack139/artchain/x/inventory/types"
 	"strconv"
-	"time"
 )
 
 // GetItemCount get the total number of item
@@ -55,6 +54,7 @@ func (k Keeper) AppendItem(
 	itemBasePrice string,
 	currentOwnerId string,
 	status string,
+	lastDate string,
 ) uint64 {
 	// Create the item
 	count := k.GetItemCount(ctx)
@@ -73,7 +73,7 @@ func (k Keeper) AppendItem(
 		AESKey:         AESKey,
 		ItemBasePrice:  itemBasePrice,
 		CurrentOwnerId: currentOwnerId,
-		LastDate:       time.Now().Format("2006-01-02 15:04:05"),
+		LastDate:       lastDate,
 		Status:         status,
 	}
 

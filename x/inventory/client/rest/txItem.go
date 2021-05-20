@@ -90,6 +90,7 @@ func createItemHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedItemBasePrice,
 			parsedCurrentOwnerId,
 			parsedStatus,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
@@ -180,6 +181,7 @@ func updateItemHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedItemBasePrice,
 			parsedCurrentOwnerId,
 			parsedStatus,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)

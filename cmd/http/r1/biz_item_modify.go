@@ -7,6 +7,7 @@ import (
 	"log"
 	"strconv"
 	"bytes"
+	"time"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -100,13 +101,26 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		itemBasePrice = (*itemMap)["itemBasePrice"].(string)
 	}
 
+	// 构建lastDate
+	lastDateMap := (*itemMap)["lastDate"].([]map[string]interface{})
+	lastDateMap = append(lastDateMap, map[string]interface{}{
+		"caller": callerAddr,
+		"act":  "edit",
+		"date": time.Now().Format("2006-01-02 15:04:05"),
+	})
+	lastDate, err := json.Marshal(lastDateMap)
+	if err != nil {
+		helper.RespError(ctx, 9004, err.Error())
+		return
+	}
+
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*itemMap)["creator"].(string))  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
@@ -133,6 +147,7 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		itemBasePrice, //itemBasePrice string, 
 		(*itemMap)["currentOwnerId"].(string), //currentOwnerId string, 
 		(*itemMap)["status"].(string), //status string
+		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())

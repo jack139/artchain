@@ -9,7 +9,8 @@ var _ sdk.Msg = &MsgCreateItem{}
 
 func NewMsgCreateItem(creator string, recType string, itemDesc string, itemDetail string, 
 	itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string, 
-	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string) *MsgCreateItem {
+	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string, 
+	lastDate string) *MsgCreateItem {
 	return &MsgCreateItem{
 		Creator:        creator,
 		RecType:        recType,
@@ -25,6 +26,7 @@ func NewMsgCreateItem(creator string, recType string, itemDesc string, itemDetai
 		ItemBasePrice:  itemBasePrice,
 		CurrentOwnerId: currentOwnerId,
 		Status:         status,
+		LastDate:       lastDate,
 	}
 }
 
@@ -61,7 +63,8 @@ var _ sdk.Msg = &MsgUpdateItem{}
 
 func NewMsgUpdateItem(creator string, id uint64, recType string, itemDesc string, itemDetail string, 
 	itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string, 
-	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string) *MsgUpdateItem {
+	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string,
+	lastDate string) *MsgUpdateItem {
 	return &MsgUpdateItem{
 		Id:             id,
 		Creator:        creator,
@@ -78,6 +81,7 @@ func NewMsgUpdateItem(creator string, id uint64, recType string, itemDesc string
 		ItemBasePrice:  itemBasePrice,
 		CurrentOwnerId: currentOwnerId,
 		Status:         status,
+		LastDate:       lastDate,
 	}
 }
 

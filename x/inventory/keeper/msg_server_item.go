@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -29,6 +28,7 @@ func (k msgServer) CreateItem(goCtx context.Context, msg *types.MsgCreateItem) (
 		msg.ItemBasePrice,
 		msg.CurrentOwnerId,
 		msg.Status,
+		msg.LastDate,
 	)
 
 	return &types.MsgCreateItemResponse{
@@ -55,7 +55,7 @@ func (k msgServer) UpdateItem(goCtx context.Context, msg *types.MsgUpdateItem) (
 		ItemBasePrice:  msg.ItemBasePrice,
 		CurrentOwnerId: msg.CurrentOwnerId,
 		Status:         msg.Status,
-		LastDate:  time.Now().Format("2006-01-02 15:04:05"),
+		LastDate:       msg.LastDate,
 	}
 
 	// Checks that the element exists

@@ -70,6 +70,7 @@ func createReviewHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedUpCount,
 			parsedDownCount,
 			parsedStatus,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
@@ -136,6 +137,7 @@ func updateReviewHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedReviewDate,
 			parsedUpCount,
 			parsedDownCount,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)

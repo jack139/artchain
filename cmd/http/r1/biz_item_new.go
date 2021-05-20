@@ -6,6 +6,7 @@ import (
 
 	"log"
 	"bytes"
+	"time"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -55,6 +56,20 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	// TODO： 检查 itemOwnerAddr 合法性
 
 
+	// 构建lastDate
+	var lastDateMap []map[string]interface{}
+	lastDateMap = append(lastDateMap, map[string]interface{}{
+		"caller": callerAddr,
+		"act":  "new",
+		"date": time.Now().Format("2006-01-02 15:04:05"),
+	})
+	lastDate, err := json.Marshal(lastDateMap)
+	if err != nil {
+		helper.RespError(ctx, 9004, err.Error())
+		return
+	}
+
+
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
@@ -91,6 +106,7 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 		itemBasePrice, //itemBasePrice string, 
 		itemOwnerAddr, //currentOwnerId string, 
 		"WAIT", //status string
+		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())

@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -24,6 +23,7 @@ func (k msgServer) CreateReview(goCtx context.Context, msg *types.MsgCreateRevie
 		msg.UpCount,
 		msg.DownCount,
 		msg.Status,
+		msg.LastDate,
 	)
 
 	return &types.MsgCreateReviewResponse{
@@ -44,7 +44,7 @@ func (k msgServer) UpdateReview(goCtx context.Context, msg *types.MsgUpdateRevie
 		ReviewDate:   msg.ReviewDate,
 		UpCount:      msg.UpCount,
 		DownCount:    msg.DownCount,
-		LastDate:  time.Now().Format("2006-01-02 15:04:05"),
+		LastDate:     msg.LastDate,
 	}
 
 	// Checks that the element exists

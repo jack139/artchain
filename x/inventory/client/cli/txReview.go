@@ -30,7 +30,9 @@ func CmdCreateReview() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateReview(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsItemId), string(argsReviewerId), string(argsReviewDetail), string(argsReviewDate), string(argsUpCount), string(argsDownCount), string(argsStatus))
+			msg := types.NewMsgCreateReview(clientCtx.GetFromAddress().String(), string(argsRecType), 
+				string(argsItemId), string(argsReviewerId), string(argsReviewDetail), string(argsReviewDate), 
+				string(argsUpCount), string(argsDownCount), string(argsStatus), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -67,7 +69,9 @@ func CmdUpdateReview() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgUpdateReview(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsItemId), string(argsReviewerId), string(argsReviewDetail), string(argsReviewDate), string(argsUpCount), string(argsDownCount))
+			msg := types.NewMsgUpdateReview(clientCtx.GetFromAddress().String(), id, string(argsRecType), 
+				string(argsItemId), string(argsReviewerId), string(argsReviewDetail), string(argsReviewDate), 
+				string(argsUpCount), string(argsDownCount), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

@@ -8,6 +8,7 @@ import (
 	"context"
 	"strconv"
 	"bytes"
+	"time"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -46,11 +47,6 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9002, "need item_id")
 		return
 	}
-	reviewerAddr, ok := (*reqData)["reviewer_addr"].(string)
-	if !ok {
-		helper.RespError(ctx, 9003, "need reviewer_addr")
-		return
-	}
 
 	reviewDetail, _ := (*reqData)["detail"].(string)
 	if len(reviewDetail)==0 { // 评论长度不能为0
@@ -71,10 +67,17 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 		return		
 	}
 
-	// 检查所有人addr是否一致
-	if reviewerAddr!=(*reviewMap)["reviewerId"].(string) {
-		helper.RespError(ctx, 9006, "wrong reviewer_addr")
-		return				
+	// 构建lastDate
+	lastDateMap := (*reviewMap)["lastDate"].([]map[string]interface{})
+	lastDateMap = append(lastDateMap, map[string]interface{}{
+		"caller": callerAddr,
+		"act":  "edit",
+		"date": time.Now().Format("2006-01-02 15:04:05"),
+	})
+	lastDate, err := json.Marshal(lastDateMap)
+	if err != nil {
+		helper.RespError(ctx, 9004, err.Error())
+		return
 	}
 
 	// 设置 caller_addr
@@ -83,7 +86,7 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*reviewMap)["creator"].(string))  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
@@ -104,6 +107,7 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 		(*reviewMap)["reviewDate"].(string), //reviewDate string, 
 		(*reviewMap)["upCount"].(string), //upCount string, 
 		(*reviewMap)["downCount"].(string), //downCount string,
+		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())
