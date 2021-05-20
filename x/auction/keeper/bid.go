@@ -48,6 +48,7 @@ func (k Keeper) AppendBid(
 	buyerId string,
 	bidPrice string,
 	bidTime string,
+	lastDate string,
 ) uint64 {
 	// Create the bid
 	count := k.GetBidCount(ctx)
@@ -61,6 +62,7 @@ func (k Keeper) AppendBid(
 		BuyerId:   buyerId,
 		BidPrice:  bidPrice,
 		BidTime:   bidTime,
+		LastDate:  lastDate,
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BidKey))

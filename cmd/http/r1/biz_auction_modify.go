@@ -7,6 +7,7 @@ import (
 	"log"
 	"strconv"
 	"bytes"
+	"time"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -77,13 +78,26 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 		reservedPrice = (*auctionMap)["reservePrice"].(string)
 	}
 
+	// 构建lastDate
+	lastDateMap := (*auctionMap)["lastDate"].([]map[string]interface{})
+	lastDateMap = append(lastDateMap, map[string]interface{}{
+		"caller": callerAddr,
+		"act":  "edit",
+		"date": time.Now().Format("2006-01-02 15:04:05"),
+	})
+	lastDate, err := json.Marshal(lastDateMap)
+	if err != nil {
+		helper.RespError(ctx, 9004, err.Error())
+		return
+	}
+
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*auctionMap)["creator"].(string))  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
@@ -106,6 +120,7 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 		(*auctionMap)["status"].(string), //status string, 
 		(*auctionMap)["openDate"].(string), //openDate string, 
 		(*auctionMap)["closeDate"].(string), //closeDate string,
+		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())

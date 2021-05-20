@@ -59,6 +59,18 @@ func BizAuctionNew(ctx *fasthttp.RequestCtx) {
 	//       检查 auction_house_id 合法性
 	//       检查 sellerAddr是 itemId 物品的所有人
 
+	// 构建lastDate
+	var lastDateMap []map[string]interface{}
+	lastDateMap = append(lastDateMap, map[string]interface{}{
+		"caller": callerAddr,
+		"act":  "new",
+		"date": time.Now().Format("2006-01-02 15:04:05"),
+	})
+	lastDate, err := json.Marshal(lastDateMap)
+	if err != nil {
+		helper.RespError(ctx, 9004, err.Error())
+		return
+	}
 
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
@@ -66,7 +78,7 @@ func BizAuctionNew(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, sellerAddr)  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 
@@ -92,6 +104,7 @@ func BizAuctionNew(ctx *fasthttp.RequestCtx) {
 		"WAIT", //status string, 
 		"", //openDate string, 
 		"", //closeDate string
+		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())

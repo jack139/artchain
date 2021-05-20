@@ -29,7 +29,9 @@ func CmdCreateBid() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateBid(clientCtx.GetFromAddress().String(), string(argsRecType), string(argsAuctionId), string(argsBidNo), string(argsItemId), string(argsBuyerId), string(argsBidPrice), string(argsBidTime))
+			msg := types.NewMsgCreateBid(clientCtx.GetFromAddress().String(), string(argsRecType), 
+				string(argsAuctionId), string(argsBidNo), string(argsItemId), string(argsBuyerId), 
+				string(argsBidPrice), string(argsBidTime), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -66,7 +68,9 @@ func CmdUpdateBid() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgUpdateBid(clientCtx.GetFromAddress().String(), id, string(argsRecType), string(argsAuctionId), string(argsBidNo), string(argsItemId), string(argsBuyerId), string(argsBidPrice), string(argsBidTime))
+			msg := types.NewMsgUpdateBid(clientCtx.GetFromAddress().String(), id, string(argsRecType), 
+				string(argsAuctionId), string(argsBidNo), string(argsItemId), string(argsBuyerId), 
+				string(argsBidPrice), string(argsBidTime), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

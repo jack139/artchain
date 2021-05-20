@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"fmt"
-	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -23,6 +22,7 @@ func (k msgServer) CreateBid(goCtx context.Context, msg *types.MsgCreateBid) (*t
 		msg.BuyerId,
 		msg.BidPrice,
 		msg.BidTime,
+		msg.LastDate,
 	)
 
 	return &types.MsgCreateBidResponse{
@@ -43,7 +43,7 @@ func (k msgServer) UpdateBid(goCtx context.Context, msg *types.MsgUpdateBid) (*t
 		BuyerId:   msg.BuyerId,
 		BidPrice:  msg.BidPrice,
 		BidTime:   msg.BidTime,
-		LastDate:  time.Now().Format("2006-01-02 15:04:05"),
+		LastDate:  msg.LastDate,
 	}
 
 	// Checks that the element exists

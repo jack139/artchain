@@ -50,6 +50,7 @@ func (k Keeper) AppendRequest(
 	status string,
 	openDate string,
 	closeDate string,
+	lastDate string,
 ) uint64 {
 	// Create the request
 	count := k.GetRequestCount(ctx)
@@ -65,6 +66,7 @@ func (k Keeper) AppendRequest(
 		Status:         status,
 		OpenDate:       openDate,
 		CloseDate:      closeDate,
+		LastDate:       lastDate,
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))

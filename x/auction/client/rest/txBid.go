@@ -66,6 +66,7 @@ func createBidHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedBuyerId,
 			parsedBidPrice,
 			parsedBidTime,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
@@ -132,6 +133,7 @@ func updateBidHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedBuyerId,
 			parsedBidPrice,
 			parsedBidTime,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)

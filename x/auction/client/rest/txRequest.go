@@ -74,6 +74,7 @@ func createRequestHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedStatus,
 			parsedOpenDate,
 			parsedCloseDate,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
@@ -148,6 +149,7 @@ func updateRequestHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedStatus,
 			parsedOpenDate,
 			parsedCloseDate,
+			"",
 		)
 
 		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
