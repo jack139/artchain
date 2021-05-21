@@ -79,6 +79,10 @@
 | 17 | 查询成交交易信息     | **/query/trans/info** |
 | 18 | 查询指定区块原始数据 | **/query/block/rawdata** |
 | 19 | 查询用户通证 | **/query/user/credit_balance** |
+| 20 | 待审核用户清单 | **/query/audit/user/list** |
+| 21 | 待审核物品清单 | /query/audit/item/list |
+| 22 | 待审核评价清单 | /query/audit/review/list |
+| 23 | 待审核拍卖申请清单 | /query/audit/auction/list |
 
 
 
@@ -222,6 +226,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "caller_addr":"bid1art1rv0rvemwkw9m7tpcng53ez3ngdzttxgmtrxx3s",
         "login_name": "test1", 
         "user_type": "TRD", 
         "email": "111111@qq.com", 
@@ -287,10 +292,10 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "chain_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "login_name": "test3", 
         "bank_acc_name": "1testbank", 
-        "height": "985"
     }, 
     "timestamp": 1619767850, 
     "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
@@ -352,6 +357,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "desc": "测试物品", 
         "date": "1911s", 
         "base_price": 
@@ -475,6 +481,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "item_id": "3", 
         "reviewer_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "detail": "aaaaabbbbbb \u54c8\u54c8"
@@ -634,6 +641,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "seller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "auction_house_id": "1", 
         "item_id": "2", 
@@ -695,6 +703,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "id": "0", 
         "auction_house_id": "", 
         "reserved_price": "2000"
@@ -757,6 +766,7 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "buyer_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
         "auction_id": "1", 
         "item_id": "2", 
@@ -782,6 +792,65 @@ base64后结果：
     "msg":"success"
 }
 ```
+
+
+
+##### 2.17 审核用户
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/audit/user
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| chain_addr  | string | Y    | 用户链地址     |
+| status      | string | Y    | 用户状态       |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块的高度                          |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "chain_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "status": "ACTIVE", 
+    }, 
+    "timestamp": 1619767850, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "M2MyMDU1ZmIzZTE5YjY1ZDc3YjBhYWVkZjczNTVjYTIxYWRiZDdmN2VlNjQxODUyYmJlNTQxNzIyMWY4NzlmNA=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "height":"1010"
+    },
+    "msg":"success"
+}
+```
+
+
 
 
 
@@ -1716,4 +1785,74 @@ base64后结果：
 }
 ```
 
+
+
+##### 3.20 待审核用户清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/audit/user/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数   | 类型   | 必填 | 说明     |
+| ------ | ------ | ---- | -------- |
+| status | string | Y    | 用户状态 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 用户清单数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "status": "WAIT",
+    }, 
+    "timestamp": 1620440241, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NDkyOGI0NzBkYWMwMTJjMWVmOWM0NWVmMWY2YTk2ZWYyMmRiNWZkYTVmNWQwOTdhNzQzZDhhZTQzODM1Njc3ZA=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "user_list":[
+            {
+                "chain_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "id":"0",
+                "last_date":"2021-04-30 15:57:03",
+                "login_name":"test2",
+                "reg_date":"2021-04-30 15:14:38",
+                "status":"ACTIVE",
+                "user_type":"TRD"
+            },{
+                "chain_addr":"bid1art16zs5zpmsw5wezyrpnls76ytdy7ws2zpqan9ey9",
+                "id":"1",
+                "last_date":"",
+                "login_name":"test3",
+                "reg_date":"2021-05-07 13:50:25",
+                "status":"ACTIVE",
+                "user_type":"TRD"
+            }
+        ]
+    },
+    "msg":"success"
+}
+```
 
