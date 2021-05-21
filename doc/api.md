@@ -47,11 +47,11 @@
 | 14       | 修改拍卖信息       | **/biz/auction/modify** |
 | 15               | 出价                 | /biz/auction/bid               |
 | 16       | 建立成交交易         | **/biz/trans/new**       |
-| 17 | 审核用户 | /biz/audit/user |
-| 18 | 审核物品 | /biz/audit/item |
+| 17 | 审核用户 | **/biz/audit/user** |
+| 18 | 审核物品 | **/biz/audit/item** |
 | 19 | 审核照片 | /biz/audit/image |
-| 20 | 审核评价 | /biz/audit/review |
-| 21 | 审核拍卖请求 | /biz/audit/auction |
+| 20 | 审核评价 | **/biz/audit/review** |
+| 21 | 审核拍卖请求 | **/biz/audit/auction** |
 | 22 | 审核成交交易 | /biz/audit/transaction |
 
 
@@ -80,9 +80,9 @@
 | 18 | 查询指定区块原始数据 | **/query/block/rawdata** |
 | 19 | 查询用户通证 | **/query/user/credit_balance** |
 | 20 | 待审核用户清单 | **/query/audit/user/list** |
-| 21 | 待审核物品清单 | /query/audit/item/list |
-| 22 | 待审核评价清单 | /query/audit/review/list |
-| 23 | 待审核拍卖申请清单 | /query/audit/auction/list |
+| 21 | 待审核物品清单 | **/query/audit/item/list** |
+| 22 | 待审核评价清单 | **/query/audit/review/list** |
+| 23 | 待审核拍卖申请清单 | **/query/audit/auction/list** |
 
 
 
@@ -669,7 +669,7 @@ base64后结果：
 
 ##### 2.14 修改拍卖信息
 
-只有当拍卖还在INIT状态时才可修改
+只有当拍卖还在WAIT状态时才可修改
 
 请求URL
 
@@ -851,6 +851,180 @@ base64后结果：
 ```
 
 
+
+
+
+##### 2.18 审核物品
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/audit/item
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| id          | string | Y    | 物品id         |
+| status      | string | Y    | 状态           |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "id": "0", 
+        "status": "ACTIVE", 
+        "caller_addr": "bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7"
+    }, 
+    "timestamp": 1619791789, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NTA0NzQ3NGQzODkxYjFmMWUyMGIzZjVkMDM5MGM4YzhkYTJkNDAwNmYwMjQ2YTk1ZjI0Y2IwOTUwMmYwNzQyZg=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "height":"2576"
+    },"msg":"success"
+}
+```
+
+
+
+
+
+##### 2.20 审核物品评价
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/audit/review
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| id          | string | Y    | 评论id         |
+| item_id     | string | Y    | 被评论的物品id |
+| status      | string | Y    | 状态           |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "id": "2", 
+        "item_id": "3", 
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "status": "ACTIVE"
+    }, 
+    "timestamp": 1619914366, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "Njc4MzgwMTBkMTBiMjFlZmJmYWE5YzViNmI0YmMzMTc3ODJlYzllNzIxOWY1Mjk4YTNjYmIxNjc2MTkzOTZmYw=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "height":"17835"
+    },
+    "msg":"success"
+}
+```
+
+
+
+##### 2.21 审核拍卖请求
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/audit/auction
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| id          | string | Y    | 拍卖id         |
+| status      | string | Y    | 状态           |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "id": "0", 
+        "status": "ACTIVE", 
+    }, 
+    "timestamp": 1619946339, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "MTBhMDNjNzgzOTNjNjdiNWNlNWI5Mzg1OTc3MTA3ODFlN2FjZDBhN2NkOWZiZGFjZmY2YzVhOGQ5NmQyMDQ4Mg=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "height":"41907"
+    },
+    "msg":"success"
+}
+```
 
 
 
@@ -1211,7 +1385,7 @@ base64后结果：
 
 请求URL
 
-> http://<host>:<port>/api/<version>/query/item/list
+> http://<host>:<port>/api/<version>/query/review/list
 
 请求方式
 
@@ -1849,6 +2023,231 @@ base64后结果：
                 "reg_date":"2021-05-07 13:50:25",
                 "status":"ACTIVE",
                 "user_type":"TRD"
+            }
+        ]
+    },
+    "msg":"success"
+}
+```
+
+
+
+
+
+##### 3.21 待审核物品清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/audit/item/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数   | 类型   | 必填 | 说明 |
+| ------ | ------ | ---- | ---- |
+| status | string | Y    | 状态 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 物品清单数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "status": "WAIT", 
+    },
+    "timestamp": 1619834379, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "ODA2MjNiY2M3MzM2NjhkNjUwMzZiZDNkMmY1NmM3ZmE5YzFlMGE5YWU4NjUzNzg5MGUyODRhY2JjNTA2YjcxYg=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "item_list":[
+            {
+                "id":"1",
+                "base_price":"$1001",
+                "date":"1900s",
+                "desc":"测试物品",
+                "detail":"",
+                "last_date":"2021-04-30 22:09:49",
+                "media":"",
+                "owner_addr":"bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7",
+                "size":"",
+                "subject":"",
+                "status":"WAIT",
+                "type":""
+            },
+            {
+                "id":"2",
+                "base_price":"$2001",
+                "date":"1911s",
+                "desc":"测试物品2",
+                "detail":"",
+                "last_date":"2021-04-30 22:11:46",
+                "media":"",
+                "owner_addr":"bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7",
+                "size":"",
+                "subject":"",
+                "status":"WAIT",
+                "type":""
+            }
+        ]
+    },
+    "msg":"success"
+}
+```
+
+
+
+
+
+##### 3.22 待审核评价清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/audit/review/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数   | 类型   | 必填 | 说明 |
+| ------ | ------ | ---- | ---- |
+| status | string | Y    | 状态 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 物品评价清单数据                        |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "Status": "WAIT", 
+    }, 
+    "timestamp": 1619914700, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NDU5OWU4MmFlMzM0MjNkY2Q5ZWJkYWU4OWM4YzY2ZjFmZTViZDRjOTY0MjM2OTBmMWJjNjY4ODE5MWYyZjE4MQ=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "review_list":[
+            {
+                "id":"1",
+                "detail":"aaaaa 哈哈",
+                "item_id":"3",
+                "last_date":"",
+                "review_date":"2021-05-02 08:01:41",
+                "reviewer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "status":"WAIT"
+            },{
+                "id":"2",
+                "detail":"aaaaabbbbbb 哈哈1111111",
+                "item_id":"3",
+                "last_date":"2021-05-02 08:12:47",
+                "review_date":"2021-05-02 08:01:51",
+                "reviewer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "status":""
+            }
+        ]
+    },
+    "msg":"success"
+}
+```
+
+
+
+
+
+##### 3.23 待审核拍卖申请清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/audit/auction/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数   | 类型   | 必填 | 说明 |
+| ------ | ------ | ---- | ---- |
+| status | string | Y    | 状态 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 拍卖清单数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "status": "WAIT", 
+    }, 
+    "timestamp": 1619947049, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NzJhOTliNGZmMWYyMmVjYjA3NTIyNjM3ZTJkOWM0N2QyZTQxOTEwYzZmMDM1Y2QwNWFjZDQxN2E4YzlhYTM0MQ=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "auction_list":[
+            {
+                "auction_house_id":"1",
+                "close_date":"",
+                "id":"0",
+                "item_id":"2",
+                "last_date":"2021-05-02 17:05:40",
+                "open_date":"",
+                "req_date":"2021-05-02 17:04:04",
+                "reserved_price":"2000",
+                "seller_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "status":"WAIT"
             }
         ]
     },
