@@ -15,10 +15,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
-/* 修改物品信息 */
+/* 审核物品评价 */
 
-func BizItemModify(ctx *fasthttp.RequestCtx) {
-	log.Println("biz_item_modify")
+func BizAuditReview(ctx *fasthttp.RequestCtx) {
+	log.Println("biz_audit_review")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -36,62 +36,39 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9101, "need caller_addr")
 		return
 	}
-	itemIdStr, ok := (*reqData)["id"].(string)
+	reviewIdStr, ok := (*reqData)["id"].(string)
 	if !ok {
 		helper.RespError(ctx, 9001, "need id")
 		return
 	}
 
-	itemDesc, ok := (*reqData)["desc"].(string)
-	itemDate, ok := (*reqData)["date"].(string)
-	itemDetail, _ := (*reqData)["detail"].(string)
-	itemType, _ := (*reqData)["type"].(string)
-	itemSubject, _ := (*reqData)["subject"].(string)
-	itemMedia, _ := (*reqData)["media"].(string)
-	itemSize, _ := (*reqData)["size"].(string)
-	itemBasePrice, _ := (*reqData)["base_price"].(string)
+	itemIdStr, ok := (*reqData)["item_id"].(string)
+	if !ok {
+		helper.RespError(ctx, 9002, "need item_id")
+		return
+	}
 
-	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
+	status, ok := (*reqData)["status"].(string)
+	if !ok {
+		helper.RespError(ctx, 9003, "need status")
+		return
+	}
+
+	reviewId, err := strconv.ParseUint(reviewIdStr, 10, 64)
 	if err != nil {
 		helper.RespError(ctx, 9007, err.Error())
 		return
 	}
 
 	// 获取当前链上数据
-	itemMap, err := queryItemInfoById(ctx, itemId)
+	reviewMap, err := queryReviewInfoById(ctx, reviewId, itemIdStr)
 	if err!=nil {
-		helper.RespError(ctx, 9002, err.Error())
+		helper.RespError(ctx, 9005, err.Error())
 		return		
 	}
 
-	// 是否要修改？
-	if len(itemDesc)==0 {
-		itemDesc = (*itemMap)["itemDesc"].(string)
-	}
-	if len(itemDate)==0 {
-		itemDate = (*itemMap)["itemDate"].(string)
-	}
-	if len(itemDetail)==0 {
-		itemDetail = (*itemMap)["itemDetail"].(string)
-	}
-	if len(itemType)==0 {
-		itemType = (*itemMap)["itemType"].(string)
-	}
-	if len(itemSubject)==0 {
-		itemSubject = (*itemMap)["itemSubject"].(string)
-	}
-	if len(itemMedia)==0 {
-		itemMedia = (*itemMap)["itemMedia"].(string)
-	}
-	if len(itemSize)==0 {
-		itemSize = (*itemMap)["itemSize"].(string)
-	}
-	if len(itemBasePrice)==0 {
-		itemBasePrice = (*itemMap)["itemBasePrice"].(string)
-	}
-
 	// 构建lastDate
-	lastDateMap := (*itemMap)["lastDate"].([]map[string]interface{})
+	lastDateMap := (*reviewMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
 		"act":  "edit",
@@ -109,7 +86,7 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*itemMap)["creator"].(string))  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*reviewMap)["creator"].(string))  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
@@ -120,22 +97,17 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 数据上链
-	msg := invtypes.NewMsgUpdateItem(
-		(*itemMap)["creator"].(string), //creator string, 
-		itemId, //id uint64, 
-		(*itemMap)["recType"].(string), //recType string, 
-		itemDesc, //itemDesc string, 
-		itemDetail, //itemDetail string, 
-		itemDate, //itemDate string, 
-		itemType, //itemType string, 
-		itemSubject, //itemSubject string, 
-		itemMedia, //itemMedia string, 
-		itemSize, //itemSize string, 
-		(*itemMap)["itemImage"].(string), //itemImage string, 
-		(*itemMap)["AESKey"].(string), //AESKey string, 
-		itemBasePrice, //itemBasePrice string, 
-		(*itemMap)["currentOwnerId"].(string), //currentOwnerId string, 
-		"WAIT", // 修改后状态自动设置为 WAIT
+	msg := invtypes.NewMsgUpdateReview(
+		(*reviewMap)["creator"].(string), //creator string, 
+		reviewId, //id uint64, 
+		(*reviewMap)["recType"].(string), //recType string, 
+		(*reviewMap)["itemId"].(string), //itemId string, 
+		(*reviewMap)["reviewerId"].(string), //reviewerId string, 
+		(*reviewMap)["reviewDetail"].(string), //reviewDetail string, 
+		(*reviewMap)["reviewDate"].(string), //reviewDate string, 
+		(*reviewMap)["upCount"].(string), //upCount string, 
+		(*reviewMap)["downCount"].(string), //downCount string,
+		status, // status
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
@@ -179,3 +151,5 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 
 	helper.RespJson(ctx, &resp)
 }
+
+

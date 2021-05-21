@@ -28,6 +28,9 @@ service Query {
 	rpc RequestByChainAddr(QueryGetRequestByChainAddrRequest) returns (QueryGetRequestByChainAddrResponse) {
 		option (google.api.http).get = "/jack139/artchain/auction/request/{chainAddr}";
 	}
+	rpc RequestByStatus(QueryGetRequestByStatusRequest) returns (QueryGetRequestByStatusResponse) {
+		option (google.api.http).get = "/jack139/artchain/auction/request/{status}";
+	}
 
 }
 
@@ -70,5 +73,12 @@ message QueryGetRequestByChainAddrRequest {
 }
 
 message QueryGetRequestByChainAddrResponse {
+	repeated Request Request = 1;
+}
+
+message QueryGetRequestByStatusRequest {
+	string status = 1;
+}
+message QueryGetRequestByStatusResponse {
 	repeated Request Request = 1;
 }

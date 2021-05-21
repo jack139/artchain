@@ -74,3 +74,19 @@ func (k Keeper) RequestByChainAddr(c context.Context, req *types.QueryGetRequest
 
 	return &types.QueryGetRequestByChainAddrResponse{Request: requests}, nil
 }
+
+func (k Keeper) RequestByStatus(c context.Context, req *types.QueryGetRequestByStatusRequest) (*types.QueryGetRequestByStatusResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var requests []*types.Request
+	ctx := sdk.UnwrapSDKContext(c)
+
+	r := k.GetRequestByStatus(ctx, req.Status)
+	for i, _ := range r{
+		requests = append(requests, &r[i])
+	}
+
+	return &types.QueryGetRequestByStatusResponse{Request: requests}, nil
+}

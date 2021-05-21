@@ -90,3 +90,20 @@ func (k Keeper) ItemAllByOwner(c context.Context, req *types.QueryAllItemByOwner
 
 	return &types.QueryAllItemByOwnerResponse{Item: items, Pagination: pageRes}, nil
 }
+
+
+func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusRequest) (*types.QueryGetItemByStatusResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var items []*types.Item
+	ctx := sdk.UnwrapSDKContext(c)
+
+	r := k.GetItemByStatus(ctx, req.Status)
+	for i, _ := range r{
+		items = append(items, &r[i])
+	}
+
+	return &types.QueryGetItemByStatusResponse{Item: items}, nil
+}

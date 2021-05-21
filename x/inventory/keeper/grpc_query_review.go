@@ -57,3 +57,19 @@ func (k Keeper) Review(c context.Context, req *types.QueryGetReviewRequest) (*ty
 
 	return &types.QueryGetReviewResponse{Review: &review}, nil
 }
+
+func (k Keeper) ReviewByStatus(c context.Context, req *types.QueryGetReviewByStatusRequest) (*types.QueryGetReviewByStatusResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var reviews []*types.Review
+	ctx := sdk.UnwrapSDKContext(c)
+
+	r := k.GetReviewByStatus(ctx, req.Status)
+	for i, _ := range r{
+		reviews = append(reviews, &r[i])
+	}
+
+	return &types.QueryGetReviewByStatusResponse{Review: reviews}, nil
+}

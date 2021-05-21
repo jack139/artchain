@@ -15,10 +15,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
-/* 修改物品信息 */
+/* 审核物品（修改状态） */
 
-func BizItemModify(ctx *fasthttp.RequestCtx) {
-	log.Println("biz_item_modify")
+func BizAuditItem(ctx *fasthttp.RequestCtx) {
+	log.Println("biz_audit_item")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -41,15 +41,11 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9001, "need id")
 		return
 	}
-
-	itemDesc, ok := (*reqData)["desc"].(string)
-	itemDate, ok := (*reqData)["date"].(string)
-	itemDetail, _ := (*reqData)["detail"].(string)
-	itemType, _ := (*reqData)["type"].(string)
-	itemSubject, _ := (*reqData)["subject"].(string)
-	itemMedia, _ := (*reqData)["media"].(string)
-	itemSize, _ := (*reqData)["size"].(string)
-	itemBasePrice, _ := (*reqData)["base_price"].(string)
+	status, ok := (*reqData)["status"].(string)
+	if !ok {
+		helper.RespError(ctx, 9002, "need status")
+		return
+	}
 
 	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
 	if err != nil {
@@ -64,37 +60,11 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		return		
 	}
 
-	// 是否要修改？
-	if len(itemDesc)==0 {
-		itemDesc = (*itemMap)["itemDesc"].(string)
-	}
-	if len(itemDate)==0 {
-		itemDate = (*itemMap)["itemDate"].(string)
-	}
-	if len(itemDetail)==0 {
-		itemDetail = (*itemMap)["itemDetail"].(string)
-	}
-	if len(itemType)==0 {
-		itemType = (*itemMap)["itemType"].(string)
-	}
-	if len(itemSubject)==0 {
-		itemSubject = (*itemMap)["itemSubject"].(string)
-	}
-	if len(itemMedia)==0 {
-		itemMedia = (*itemMap)["itemMedia"].(string)
-	}
-	if len(itemSize)==0 {
-		itemSize = (*itemMap)["itemSize"].(string)
-	}
-	if len(itemBasePrice)==0 {
-		itemBasePrice = (*itemMap)["itemBasePrice"].(string)
-	}
-
 	// 构建lastDate
 	lastDateMap := (*itemMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "edit",
+		"act":  "audit",
 		"date": time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
@@ -124,18 +94,18 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		(*itemMap)["creator"].(string), //creator string, 
 		itemId, //id uint64, 
 		(*itemMap)["recType"].(string), //recType string, 
-		itemDesc, //itemDesc string, 
-		itemDetail, //itemDetail string, 
-		itemDate, //itemDate string, 
-		itemType, //itemType string, 
-		itemSubject, //itemSubject string, 
-		itemMedia, //itemMedia string, 
-		itemSize, //itemSize string, 
+		(*itemMap)["itemDesc"].(string), //itemDesc string, 
+		(*itemMap)["itemDetail"].(string), //itemDetail string, 
+		(*itemMap)["itemDate"].(string), //itemDate string, 
+		(*itemMap)["itemType"].(string), //itemType string, 
+		(*itemMap)["itemSubject"].(string), //itemSubject string, 
+		(*itemMap)["itemMedia"].(string), //itemMedia string, 
+		(*itemMap)["itemSize"].(string), //itemSize string, 
 		(*itemMap)["itemImage"].(string), //itemImage string, 
 		(*itemMap)["AESKey"].(string), //AESKey string, 
-		itemBasePrice, //itemBasePrice string, 
+		(*itemMap)["itemBasePrice"].(string), //itemBasePrice string, 
 		(*itemMap)["currentOwnerId"].(string), //currentOwnerId string, 
-		"WAIT", // 修改后状态自动设置为 WAIT
+		status, // status，修改这里
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
