@@ -279,3 +279,9 @@ Details      // 交易细节记录
   Review 的 creator 是 reviwer自己
   Auction 的 creator 是 seller自己
   Trans 的 creator 是 caller
+
+
+
+## TODO
+1. API启动时，从链上下载可显示数据到redis（需解决多节点数据更新时，对redis的刷新）
+2. 所有显示的查询均从redis中查询
