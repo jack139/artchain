@@ -91,7 +91,8 @@ func (k Keeper) ItemAllByOwner(c context.Context, req *types.QueryAllItemByOwner
 	return &types.QueryAllItemByOwnerResponse{Item: items, Pagination: pageRes}, nil
 }
 
-
+/*
+// 全链遍历版本
 func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusRequest) (*types.QueryGetItemByStatusResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -106,4 +107,41 @@ func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusR
 	}
 
 	return &types.QueryGetItemByStatusResponse{Item: items}, nil
+}
+*/
+
+// 使用 FilteredPaginate 版本
+func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusRequest) (*types.QueryGetItemByStatusResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var items []*types.Item
+	ctx := sdk.UnwrapSDKContext(c)
+
+	store := ctx.KVStore(k.storeKey)
+	itemStore := prefix.NewStore(store, types.KeyPrefix(types.ItemKey))
+
+	pageRes, err := query.FilteredPaginate(itemStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
+		var item types.Item
+		if err := k.cdc.UnmarshalBinaryBare(value, &item); err != nil {
+			return err
+		}
+
+		// filter 
+		if item.Status = req.Status {
+			if accumulate {
+				items = append(items, &item)
+			}
+			return true, nil
+		}
+
+		return false, nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryAllItemResponse{Item: items, Pagination: pageRes}, nil
 }

@@ -5,6 +5,7 @@ import (
 	invtypes "github.com/jack139/artchain/x/inventory/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/types/query"
 
 	"bytes"
 	"context"
@@ -30,14 +31,24 @@ func QueryAuditItemList(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
+	page, ok := (*reqData)["page"].(float64)
+	if !ok {
+		helper.RespError(ctx, 9001, "need page")
+		return
+	}
+	limit, ok := (*reqData)["limit"].(float64)
+	if !ok {
+		helper.RespError(ctx, 9002, "need limit")
+		return
+	}
 	status, ok := (*reqData)["status"].(string)
 	if !ok {
-		helper.RespError(ctx, 9001, "need status")
+		helper.RespError(ctx, 9003, "need status")
 		return
 	}
 
 	// 查询链上数据
-	respData2, err := queryAuditItemListPage(ctx, status)
+	respData2, err := queryAuditItemListPage(ctx, uint64(page), uint64(limit), status)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -76,12 +87,19 @@ func QueryAuditItemList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryAuditItemListPage(ctx *fasthttp.RequestCtx, status string) (*[]interface{}, error) {
+func queryAuditItemListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64, status string) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
 	// 准备查询
 	queryClient := invtypes.NewQueryClient(clientCtx)
+
+	pageReq := query.PageRequest{
+		Key:        []byte(""),
+		Offset:     (page - 1) * limit,
+		Limit:      limit,
+		CountTotal: true,
+	}
 
 	// 设置 接收输出
 	buf := new(bytes.Buffer)
@@ -89,6 +107,7 @@ func queryAuditItemListPage(ctx *fasthttp.RequestCtx, status string) (*[]interfa
 
 
 	params := &invtypes.QueryGetItemByStatusRequest{
+		Pagination: &pageReq,
 		Status: status,
 	}
 

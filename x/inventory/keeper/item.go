@@ -163,6 +163,7 @@ func GetItemIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
 
+/*
 // 使用status取得，全表遍历
 func (k Keeper) GetItemByStatus(ctx sdk.Context, status string) (list []types.Item) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
@@ -179,3 +180,4 @@ func (k Keeper) GetItemByStatus(ctx sdk.Context, status string) (list []types.It
 	}
 	return
 }
+*/
