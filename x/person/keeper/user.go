@@ -6,7 +6,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/jack139/artchain/x/person/types"
 	"strconv"
-	"strings"
 )
 
 // GetUserCount get the total number of user
@@ -161,22 +160,4 @@ func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) types.User
 	idBytes := store2.Get([]byte(chainAddr))
 	k.cdc.MustUnmarshalBinaryBare(store.Get(idBytes), &user)
 	return user
-}
-
-
-// 使用useType取得用户，全表遍历
-func (k Keeper) GetUserByUserType(ctx sdk.Context, userType string) (list []types.User) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.User
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
-		if strings.HasPrefix(val.UserType, userType) {
-			list = append(list, val)
-		} 
-	}
-	return
 }

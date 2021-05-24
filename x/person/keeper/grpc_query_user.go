@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -72,7 +73,7 @@ func (k Keeper) UserByChainAddr(c context.Context, req *types.QueryGetUserByChai
 	return &types.QueryGetUserByChainAddrResponse{User: &user}, nil
 }
 
-
+/* 按用户类型查询列表 */
 func (k Keeper) UserByUserType(c context.Context, req *types.QueryGetUserByUserTypeRequest) (*types.QueryGetUserByUserTypeResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -81,12 +82,31 @@ func (k Keeper) UserByUserType(c context.Context, req *types.QueryGetUserByUserT
 	var users []*types.User
 	ctx := sdk.UnwrapSDKContext(c)
 
-	r := k.GetUserByUserType(ctx, req.UserType)
-	for i, _ := range r{
-		users = append(users, &r[i])
+	store := ctx.KVStore(k.storeKey)
+	userStore := prefix.NewStore(store, types.KeyPrefix(types.UserKey))
+
+	pageRes, err := query.FilteredPaginate(userStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
+		var user types.User
+		if err := k.cdc.UnmarshalBinaryBare(value, &user); err != nil {
+			return false, err
+		}
+
+		// filter 
+		if strings.HasPrefix(user.UserType, req.UserType) {
+			if accumulate {
+				users = append(users, &user)
+			}
+			return true, nil
+		}
+
+		return false, nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryGetUserByUserTypeResponse{User: users}, nil
+	return &types.QueryGetUserByUserTypeResponse{User: users, Pagination: pageRes}, nil
 }
 
 // 使用 FilteredPaginate 版本

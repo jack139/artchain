@@ -5,6 +5,7 @@ import (
 	persontypes "github.com/jack139/artchain/x/person/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/types/query"
 
 	"bytes"
 	"context"
@@ -29,9 +30,22 @@ func QueryAHList(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	// 检查参数
+	/*
+	page, ok := (*reqData)["page"].(float64)
+	if !ok {
+		helper.RespError(ctx, 9001, "need page")
+		return
+	}
+	limit, ok := (*reqData)["limit"].(float64)
+	if !ok {
+		helper.RespError(ctx, 9002, "need limit")
+		return
+	}
+	*/
 
 	// 查询链上数据
-	respData2, err := queryAHListPage(ctx)
+	respData2, err := queryAHListPage(ctx, uint64(1), uint64(1000))
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -66,14 +80,22 @@ func QueryAHList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryAHListPage(ctx *fasthttp.RequestCtx) (*[]interface{}, error) {
+func queryAHListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
 	// 准备查询
 	queryClient := persontypes.NewQueryClient(clientCtx)
 
+	pageReq := query.PageRequest{
+		Key:        []byte(""),
+		Offset:     (page - 1) * limit,
+		Limit:      limit,
+		CountTotal: true,
+	}
+
 	params := &persontypes.QueryGetUserByUserTypeRequest{
+		Pagination: &pageReq,
 		UserType: "AH",
 	}
 
