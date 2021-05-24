@@ -119,7 +119,8 @@ func queryAuctionListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64, s
 		clientCtx.PrintProto(res)
 	} else { // 查指定seller_addr的
 		params := &auctiontypes.QueryGetRequestByChainAddrRequest{
-			ChainAddr: sellerAddr,
+			ChainAddr  : sellerAddr,
+			Pagination : &pageReq,
 		}
 
 		res, err := queryClient.RequestByChainAddr(context.Background(), params)

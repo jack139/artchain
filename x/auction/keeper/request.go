@@ -138,22 +138,3 @@ func GetRequestIDBytes(id uint64) []byte {
 func GetRequestIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
-
-
-// 使用seller_addr取得拍卖请求，全表遍历
-func (k Keeper) GetRequestByChainAddr(ctx sdk.Context, chainAddr string) (list []types.Request) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.Request
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
-		if val.SellerId==chainAddr {
-			list = append(list, val)
-		} 
-	}
-	return
-}
-

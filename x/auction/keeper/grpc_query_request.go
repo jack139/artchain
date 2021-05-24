@@ -58,7 +58,7 @@ func (k Keeper) Request(c context.Context, req *types.QueryGetRequestRequest) (*
 	return &types.QueryGetRequestResponse{Request: &request}, nil
 }
 
-// 按 seller_addr 查询 拍卖请求清单
+// 按 seller_addr 查询 拍卖请求清单,  FilteredPaginate 版本
 func (k Keeper) RequestByChainAddr(c context.Context, req *types.QueryGetRequestByChainAddrRequest) (*types.QueryGetRequestByChainAddrResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -67,12 +67,31 @@ func (k Keeper) RequestByChainAddr(c context.Context, req *types.QueryGetRequest
 	var requests []*types.Request
 	ctx := sdk.UnwrapSDKContext(c)
 
-	r := k.GetRequestByChainAddr(ctx, req.ChainAddr)
-	for i, _ := range r{
-		requests = append(requests, &r[i])
+	store := ctx.KVStore(k.storeKey)
+	requestStore := prefix.NewStore(store, types.KeyPrefix(types.RequestKey))
+
+	pageRes, err := query.FilteredPaginate(requestStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
+		var request types.Request
+		if err := k.cdc.UnmarshalBinaryBare(value, &request); err != nil {
+			return false, err
+		}
+
+		// filter 
+		if request.SellerId == req.ChainAddr {
+			if accumulate {
+				requests = append(requests, &request)
+			}
+			return true, nil
+		}
+
+		return false, nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryGetRequestByChainAddrResponse{Request: requests}, nil
+	return &types.QueryGetRequestByChainAddrResponse{Request: requests, Pagination: pageRes}, nil
 }
 
 // 使用 FilteredPaginate 版本

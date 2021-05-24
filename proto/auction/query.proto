@@ -70,10 +70,12 @@ message QueryAllRequestResponse {
 
 message QueryGetRequestByChainAddrRequest {
 	string chainAddr = 1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QueryGetRequestByChainAddrResponse {
 	repeated Request Request = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryGetRequestByStatusRequest {
