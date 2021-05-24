@@ -34,7 +34,7 @@ if __name__ == '__main__':
             #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
             #'chain_addr'   : 'bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw', # test123
 
-            'caller_addr' : 'bid1art1qek76ce2qe7y3creh8arle73dunjg24jwgpp6c', # op2
+            #'caller_addr' : 'bid1art1qek76ce2qe7y3creh8arle73dunjg24jwgpp6c', # op2
             #'login_name' : 'test123',
             #'user_type' : 'TRD',
             #'email' : 'abc@qq.com',
@@ -46,24 +46,24 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            'id' : '1',
+            #'id' : '1',
 
             #'desc' : '测试物品3',
             #'date' : '1911s',
             #'base_price' : '$2001',
             #'owner_addr' : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004',
 
-            #'page' : 1,
-            #'limit' : 10,
+            'page' : 1,
+            'limit' : 10,
 
             #'item_id' : "3",
             #'reviewer_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
             #'detail' : "aaaaabbbbbb 哈哈1111111",
 
             #'seller_addr' : "bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw",
-            'auction_house_id' : "bid1art18xx25laenhg07hjqcrys05v0svpjzumqpzshag",
+            #'auction_house_id' : "bid1art18xx25laenhg07hjqcrys05v0svpjzumqpzshag",
             #'item_id' : '2',
-            'reserved_price' : '2002',
+            #'reserved_price' : '2002',
 
             #'buyer_addr' :  "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
             #'auction_id' : "1",
@@ -72,6 +72,8 @@ if __name__ == '__main__':
             #'hammer_time' : "2021-01-01",
             #'hammer_price' : "1000",
             #'details' : "测试测试测试"
+
+            'status' : 'WAIT',
         }
     }
 
@@ -111,7 +113,7 @@ if __name__ == '__main__':
     #url = host+'/api/r1/biz/review/new'
     #url = host+'/api/r1/biz/review/modify'
     #url = host+'/api/r1/biz/auction/new'
-    url = host+'/api/r1/biz/auction/modify'
+    #url = host+'/api/r1/biz/auction/modify'
     #url = host+'/api/r1/biz/trans/new'
 
     #url = host+'/api/r1/query/block/rawdata'
@@ -127,6 +129,7 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/trans/info'
     #url = host+'/api/r1/query/trans/list'
     #url = host+'/api/r1/query/auction_house/list'
+    url = host+'/api/r1/query/item/list_by_status'
     
 
     start_time = datetime.now()

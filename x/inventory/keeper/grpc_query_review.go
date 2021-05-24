@@ -58,6 +58,8 @@ func (k Keeper) Review(c context.Context, req *types.QueryGetReviewRequest) (*ty
 	return &types.QueryGetReviewResponse{Review: &review}, nil
 }
 
+
+// 使用 FilteredPaginate 版本
 func (k Keeper) ReviewByStatus(c context.Context, req *types.QueryGetReviewByStatusRequest) (*types.QueryGetReviewByStatusResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -66,10 +68,29 @@ func (k Keeper) ReviewByStatus(c context.Context, req *types.QueryGetReviewBySta
 	var reviews []*types.Review
 	ctx := sdk.UnwrapSDKContext(c)
 
-	r := k.GetReviewByStatus(ctx, req.Status)
-	for i, _ := range r{
-		reviews = append(reviews, &r[i])
+	store := ctx.KVStore(k.storeKey)
+	reviewStore := prefix.NewStore(store, types.KeyPrefix(types.ReviewKey))
+
+	pageRes, err := query.FilteredPaginate(reviewStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
+		var review types.Review
+		if err := k.cdc.UnmarshalBinaryBare(value, &review); err != nil {
+			return false, err
+		}
+
+		// filter 
+		if review.Status == req.Status {
+			if accumulate {
+				reviews = append(reviews, &review)
+			}
+			return true, nil
+		}
+
+		return false, nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryGetReviewByStatusResponse{Review: reviews}, nil
+	return &types.QueryGetReviewByStatusResponse{Review: reviews, Pagination: pageRes}, nil
 }

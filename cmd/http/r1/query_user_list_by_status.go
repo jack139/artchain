@@ -2,7 +2,7 @@ package r1
 
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
-	invtypes "github.com/jack139/artchain/x/inventory/types"
+	persontypes "github.com/jack139/artchain/x/person/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -16,9 +16,9 @@ import (
 
 
 
-/* 查询物品清单 by status */
-func QueryAuditItemList(ctx *fasthttp.RequestCtx) {
-	log.Println("query_audit_item_list")
+/* 查询待审核用户清单 */
+func QueryUserListByStatus(ctx *fasthttp.RequestCtx) {
+	log.Println("query_user_list_by_status")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -48,7 +48,7 @@ func QueryAuditItemList(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryAuditItemListPage(ctx, uint64(page), uint64(limit), status)
+	respData2, err := queryUserListByStatusPage(ctx, uint64(page), uint64(limit), status)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -64,22 +64,17 @@ func QueryAuditItemList(ctx *fasthttp.RequestCtx) {
 
 		newItem := map[string]interface{} {
 			"id"         : item["id"],
-			"desc"       : item["itemDesc"],
-			"detail"     : item["itemDetail"],
-			"date"       : item["itemDate"],
-			"type"       : item["itemType"],
-			"subject"    : item["itemSubject"],
-			"media"      : item["itemMedia"],
-			"size"       : item["itemSize"],
-			"base_price" : item["itemBasePrice"],
-			"owner_addr" : item["currentOwnerId"],
+			"chain_addr" : item["chainAddr"],
+			"login_name" : item["name"],
+			"user_type"  : item["userType"],
+			"reg_date"   : item["regDate"],
 			"status"     : item["status"],
 		}
 		respData = append(respData, newItem)
 	}
 
 	resp := map[string] interface{} {
-		"item_list" : respData,
+		"user_list" : respData,
 	}
 
 	helper.RespJson(ctx, &resp)
@@ -87,12 +82,12 @@ func QueryAuditItemList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryAuditItemListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64, status string) (*[]interface{}, error) {
+func queryUserListByStatusPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64, status string) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
 	// 准备查询
-	queryClient := invtypes.NewQueryClient(clientCtx)
+	queryClient := persontypes.NewQueryClient(clientCtx)
 
 	pageReq := query.PageRequest{
 		Key:        []byte(""),
@@ -101,25 +96,24 @@ func queryAuditItemListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64,
 		CountTotal: true,
 	}
 
-	// 设置 接收输出
-	buf := new(bytes.Buffer)
-	clientCtx.Output = buf
-
-
-	params := &invtypes.QueryGetItemByStatusRequest{
+	params := &persontypes.QueryGetUserByStatusRequest{
 		Pagination: &pageReq,
 		Status: status,
 	}
 
-	res, err := queryClient.ItemByStatus(context.Background(), params)
+	res, err := queryClient.UserByStatus(context.Background(), params)
 	if err != nil {
 		return nil, err
 	}
 
+	//log.Printf("%T\n", res)
+
+	// 设置 接收输出
+	buf := new(bytes.Buffer)
+	clientCtx.Output = buf
+
 	// 转换输出
 	clientCtx.PrintProto(res)
-
-	//log.Printf("%T\n", res)
 
 	// 输出的字节流
 	respBytes := []byte(buf.String())
@@ -135,7 +129,7 @@ func queryAuditItemListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64,
 		return nil, err
 	}
 
-	itemMapList := respData["Item"].([]interface{})
+	userMapList := respData["User"].([]interface{})
 
-	return &(itemMapList), nil
+	return &(userMapList), nil
 }

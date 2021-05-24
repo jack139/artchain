@@ -86,9 +86,11 @@ message QueryAllItemByOwnerResponse {
 
 message QueryGetReviewByStatusRequest {
 	string status =1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 message QueryGetReviewByStatusResponse {
 	repeated Review Review = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 message QueryGetItemByStatusRequest {
 	string status = 1;

@@ -79,10 +79,10 @@
 | 17 | 查询成交交易信息     | **/query/trans/info** |
 | 18 | 查询指定区块原始数据 | **/query/block/rawdata** |
 | 19 | 查询用户通证 | **/query/user/credit_balance** |
-| 20 | 待审核用户清单 | **/query/audit/user/list** |
-| 21 | 待审核物品清单 | **/query/audit/item/list** |
-| 22 | 待审核评价清单 | **/query/audit/review/list** |
-| 23 | 待审核拍卖申请清单 | **/query/audit/auction/list** |
+| 20 | 指定状态的用户清单 | **/query/user/list_by_status** |
+| 21 | 指定状态的物品清单 | **/query/item/list_by_status** |
+| 22 | 指定状态的评价清单 | **/query/review/list_by_status** |
+| 23 | 指定状态的拍卖申请清单 | **/query/auction/list_by_status** |
 
 
 
@@ -1961,11 +1961,11 @@ base64后结果：
 
 
 
-##### 3.20 待审核用户清单
+##### 3.20 指定状态的用户清单
 
 请求URL
 
-> http://<host>:<port>/api/<version>/query/audit/user/list
+> http://<host>:<port>/api/<version>/query/user/list_by_status
 
 请求方式
 
@@ -1973,9 +1973,11 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数   | 类型   | 必填 | 说明     |
-| ------ | ------ | ---- | -------- |
-| status | string | Y    | 用户状态 |
+| 参数   | 类型   | 必填 | 说明              |
+| ------ | ------ | ---- | ----------------- |
+| page   | uint   | Y    | 第几页，最小为1   |
+| limit  | uint   | Y    | 每页数量，最小为1 |
+| status | string | Y    | 用户状态          |
 
 返回结果
 
@@ -1992,6 +1994,8 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "page": 1, 
+        "limit": 10,
         "status": "WAIT",
     }, 
     "timestamp": 1620440241, 
@@ -2034,11 +2038,11 @@ base64后结果：
 
 
 
-##### 3.21 待审核物品清单
+##### 3.21 指定状态的物品清单
 
 请求URL
 
-> http://<host>:<port>/api/<version>/query/audit/item/list
+> http://<host>:<port>/api/<version>/query/item/list_by_status
 
 请求方式
 
@@ -2122,11 +2126,11 @@ base64后结果：
 
 
 
-##### 3.22 待审核评价清单
+##### 3.22 指定状态的评价清单
 
 请求URL
 
-> http://<host>:<port>/api/<version>/query/audit/review/list
+> http://<host>:<port>/api/<version>/query/review/list_by_status
 
 请求方式
 
@@ -2134,9 +2138,11 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数   | 类型   | 必填 | 说明 |
-| ------ | ------ | ---- | ---- |
-| status | string | Y    | 状态 |
+| 参数   | 类型   | 必填 | 说明              |
+| ------ | ------ | ---- | ----------------- |
+| page   | uint   | Y    | 第几页，最小为1   |
+| limit  | uint   | Y    | 每页数量，最小为1 |
+| status | string | Y    | 状态              |
 
 返回结果
 
@@ -2153,6 +2159,8 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "page": 1, 
+        "limit": 10,
         "Status": "WAIT", 
     }, 
     "timestamp": 1619914700, 
@@ -2195,11 +2203,11 @@ base64后结果：
 
 
 
-##### 3.23 待审核拍卖申请清单
+##### 3.23 指定状态的拍卖申请清单
 
 请求URL
 
-> http://<host>:<port>/api/<version>/query/audit/auction/list
+> http://<host>:<port>/api/<version>/query/auction/list_by_status
 
 请求方式
 
@@ -2207,9 +2215,11 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数   | 类型   | 必填 | 说明 |
-| ------ | ------ | ---- | ---- |
-| status | string | Y    | 状态 |
+| 参数   | 类型   | 必填 | 说明              |
+| ------ | ------ | ---- | ----------------- |
+| page   | uint   | Y    | 第几页，最小为1   |
+| limit  | uint   | Y    | 每页数量，最小为1 |
+| status | string | Y    | 状态              |
 
 返回结果
 
@@ -2226,6 +2236,8 @@ base64后结果：
     "version": "1", 
     "sign_type": "SHA256", 
     "data": {
+        "page": 1, 
+        "limit": 10,
         "status": "WAIT", 
     }, 
     "timestamp": 1619947049, 

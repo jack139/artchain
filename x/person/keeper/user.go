@@ -180,20 +180,3 @@ func (k Keeper) GetUserByUserType(ctx sdk.Context, userType string) (list []type
 	}
 	return
 }
-
-// 使用status取得用户，全表遍历
-func (k Keeper) GetUserByStatus(ctx sdk.Context, status string) (list []types.User) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.User
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
-		if val.Status==status {
-			list = append(list, val)
-		} 
-	}
-	return
-}

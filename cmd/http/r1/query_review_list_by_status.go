@@ -2,9 +2,10 @@ package r1
 
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
-	persontypes "github.com/jack139/artchain/x/person/types"
+	invtypes "github.com/jack139/artchain/x/inventory/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/types/query"
 
 	"bytes"
 	"context"
@@ -15,9 +16,9 @@ import (
 
 
 
-/* 查询待审核用户清单 */
-func QueryAuditUserList(ctx *fasthttp.RequestCtx) {
-	log.Println("query_audit_user_list")
+/* 查询物品评论清单 by status */
+func QueryReviewListByStatus(ctx *fasthttp.RequestCtx) {
+	log.Println("query_review_list_by_status")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -29,14 +30,26 @@ func QueryAuditUserList(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	// 检查参数
+	page, ok := (*reqData)["page"].(float64)
+	if !ok {
+		helper.RespError(ctx, 9001, "need page")
+		return
+	}
+	limit, ok := (*reqData)["limit"].(float64)
+	if !ok {
+		helper.RespError(ctx, 9002, "need limit")
+		return
+	}
 	status, ok := (*reqData)["status"].(string)
 	if !ok {
-		helper.RespError(ctx, 9001, "need status")
+		helper.RespError(ctx, 9003, "need status")
 		return
 	}
 
+
 	// 查询链上数据
-	respData2, err := queryAuditUserListPage(ctx, status)
+	respData2, err := queryReviewListByStatusPage(ctx, uint64(page), uint64(limit), status)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -51,18 +64,19 @@ func QueryAuditUserList(ctx *fasthttp.RequestCtx) {
 		item := item0.(map[string]interface{})
 
 		newItem := map[string]interface{} {
-			"id"         : item["id"],
-			"chain_addr" : item["chainAddr"],
-			"login_name" : item["name"],
-			"user_type"  : item["userType"],
-			"reg_date"   : item["regDate"],
-			"status"     : item["status"],
+			"id"            : item["id"],
+			"item_id"       : item["itemId"],
+			"detail"        : item["reviewDetail"],
+			"reviewer_addr" : item["reviewerId"],
+			"review_date"   : item["reviewDate"],
+			"last_date"     : item["lastDate"],
+			"status"        : item["status"],
 		}
 		respData = append(respData, newItem)
 	}
 
 	resp := map[string] interface{} {
-		"user_list" : respData,
+		"review_list" : respData,
 	}
 
 	helper.RespJson(ctx, &resp)
@@ -70,18 +84,26 @@ func QueryAuditUserList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryAuditUserListPage(ctx *fasthttp.RequestCtx, status string) (*[]interface{}, error) {
+func queryReviewListByStatusPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64, status string) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
 	// 准备查询
-	queryClient := persontypes.NewQueryClient(clientCtx)
+	queryClient := invtypes.NewQueryClient(clientCtx)
 
-	params := &persontypes.QueryGetUserByStatusRequest{
+	pageReq := query.PageRequest{
+		Key:        []byte(""),
+		Offset:     (page - 1) * limit,
+		Limit:      limit,
+		CountTotal: true,
+	}
+
+	params := &invtypes.QueryGetReviewByStatusRequest{
+		Pagination: &pageReq,
 		Status: status,
 	}
 
-	res, err := queryClient.UserByStatus(context.Background(), params)
+	res, err := queryClient.ReviewByStatus(context.Background(), params)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +131,7 @@ func queryAuditUserListPage(ctx *fasthttp.RequestCtx, status string) (*[]interfa
 		return nil, err
 	}
 
-	userMapList := respData["User"].([]interface{})
+	itemMapList := respData["Review"].([]interface{})
 
-	return &(userMapList), nil
+	return &(itemMapList), nil
 }

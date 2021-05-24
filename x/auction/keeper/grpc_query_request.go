@@ -75,6 +75,7 @@ func (k Keeper) RequestByChainAddr(c context.Context, req *types.QueryGetRequest
 	return &types.QueryGetRequestByChainAddrResponse{Request: requests}, nil
 }
 
+// 使用 FilteredPaginate 版本
 func (k Keeper) RequestByStatus(c context.Context, req *types.QueryGetRequestByStatusRequest) (*types.QueryGetRequestByStatusResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -83,10 +84,29 @@ func (k Keeper) RequestByStatus(c context.Context, req *types.QueryGetRequestByS
 	var requests []*types.Request
 	ctx := sdk.UnwrapSDKContext(c)
 
-	r := k.GetRequestByStatus(ctx, req.Status)
-	for i, _ := range r{
-		requests = append(requests, &r[i])
+	store := ctx.KVStore(k.storeKey)
+	requestStore := prefix.NewStore(store, types.KeyPrefix(types.RequestKey))
+
+	pageRes, err := query.FilteredPaginate(requestStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
+		var request types.Request
+		if err := k.cdc.UnmarshalBinaryBare(value, &request); err != nil {
+			return false, err
+		}
+
+		// filter 
+		if request.Status == req.Status {
+			if accumulate {
+				requests = append(requests, &request)
+			}
+			return true, nil
+		}
+
+		return false, nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryGetRequestByStatusResponse{Request: requests}, nil
+	return &types.QueryGetRequestByStatusResponse{Request: requests, Pagination: pageRes}, nil
 }

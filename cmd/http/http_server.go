@@ -45,10 +45,10 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/query/trans/info", release1.QueryTransInfo)
 	r.POST("/api/r1/query/trans/list", release1.QueryTransList)
 	r.POST("/api/r1/query/auction_house/list", release1.QueryAHList)
-	r.POST("/api/r1/query/audit/user/list", release1.QueryAuditUserList)
-	r.POST("/api/r1/query/audit/item/list", release1.QueryAuditItemList)
-	r.POST("/api/r1/query/audit/review/list", release1.QueryAuditReviewList)
-	r.POST("/api/r1/query/audit/auction/list", release1.QueryAuditAuctionList)
+	r.POST("/api/r1/query/user/list_by_status", release1.QueryUserListByStatus)
+	r.POST("/api/r1/query/item/list_by_status", release1.QueryItemListByStatus)
+	r.POST("/api/r1/query/review/list_by_status", release1.QueryReviewListByStatus)
+	r.POST("/api/r1/query/auction/list_by_status", release1.QueryAuctionListByStatus)
 
 
 	log.Printf("start HTTP server at 0.0.0.0:%s\n", port)

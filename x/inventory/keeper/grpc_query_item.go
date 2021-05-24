@@ -125,11 +125,11 @@ func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusR
 	pageRes, err := query.FilteredPaginate(itemStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var item types.Item
 		if err := k.cdc.UnmarshalBinaryBare(value, &item); err != nil {
-			return err
+			return false, err
 		}
 
 		// filter 
-		if item.Status = req.Status {
+		if item.Status == req.Status {
 			if accumulate {
 				items = append(items, &item)
 			}
@@ -143,5 +143,5 @@ func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusR
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllItemResponse{Item: items, Pagination: pageRes}, nil
+	return &types.QueryGetItemByStatusResponse{Item: items, Pagination: pageRes}, nil
 }

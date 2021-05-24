@@ -78,7 +78,9 @@ message QueryGetRequestByChainAddrResponse {
 
 message QueryGetRequestByStatusRequest {
 	string status = 1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 message QueryGetRequestByStatusResponse {
 	repeated Request Request = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

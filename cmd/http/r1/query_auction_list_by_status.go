@@ -5,6 +5,7 @@ import (
 	auctiontypes "github.com/jack139/artchain/x/auction/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/types/query"
 
 	"bytes"
 	"context"
@@ -16,8 +17,8 @@ import (
 
 
 /* 查询拍卖信息清单 by status */
-func QueryAuditAuctionList(ctx *fasthttp.RequestCtx) {
-	log.Println("query_audit_auction_list")
+func QueryAuctionListByStatus(ctx *fasthttp.RequestCtx) {
+	log.Println("query_auction_list_by_status")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -30,14 +31,24 @@ func QueryAuditAuctionList(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 检查参数
+	page, ok := (*reqData)["page"].(float64)
+	if !ok {
+		helper.RespError(ctx, 9001, "need page")
+		return
+	}
+	limit, ok := (*reqData)["limit"].(float64)
+	if !ok {
+		helper.RespError(ctx, 9002, "need limit")
+		return
+	}
 	status, ok := (*reqData)["status"].(string)
 	if !ok {
-		helper.RespError(ctx, 9001, "need status")
+		helper.RespError(ctx, 9003, "need status")
 		return
 	}
 
 	// 查询链上数据
-	respData2, err := queryAuditAuctionListPage(ctx, status)
+	respData2, err := queryAuctionListByStatusPage(ctx, uint64(page), uint64(limit), status)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -74,12 +85,19 @@ func QueryAuditAuctionList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryAuditAuctionListPage(ctx *fasthttp.RequestCtx, status string) (*[]interface{}, error) {
+func queryAuctionListByStatusPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64, status string) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
 	// 准备查询
 	queryClient := auctiontypes.NewQueryClient(clientCtx)
+
+	pageReq := query.PageRequest{
+		Key:        []byte(""),
+		Offset:     (page - 1) * limit,
+		Limit:      limit,
+		CountTotal: true,
+	}
 
 	// 设置 接收输出
 	buf := new(bytes.Buffer)
@@ -87,6 +105,7 @@ func queryAuditAuctionListPage(ctx *fasthttp.RequestCtx, status string) (*[]inte
 
 
 	params := &auctiontypes.QueryGetRequestByStatusRequest{
+		Pagination: &pageReq,
 		Status: status,
 	}
 
