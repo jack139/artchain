@@ -39,6 +39,7 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/query/block/rawdata", release1.QueryRawBlock)
 	r.POST("/api/r1/query/item/info", release1.QueryItemInfo)
 	r.POST("/api/r1/query/item/list", release1.QueryItemList)
+	r.POST("/api/r1/query/review/info", release1.QueryReviewInfo)
 	r.POST("/api/r1/query/review/list", release1.QueryReviewList)
 	r.POST("/api/r1/query/auction/info", release1.QueryAuctionInfo)
 	r.POST("/api/r1/query/auction/list", release1.QueryAuctionList)

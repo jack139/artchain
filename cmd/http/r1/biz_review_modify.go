@@ -5,7 +5,6 @@ import (
 	invtypes "github.com/jack139/artchain/x/inventory/types"
 
 	"log"
-	"context"
 	"strconv"
 	"bytes"
 	"time"
@@ -153,48 +152,3 @@ func BizReviewModify(ctx *fasthttp.RequestCtx) {
 }
 
 
-// 查询链上数据, 返回 map
-func queryReviewInfoById(ctx *fasthttp.RequestCtx, reviewId uint64, itemId string) (*map[string]interface{}, error) {
-	// 获取 ctx 上下文
-	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
-
-	// 准备查询
-	queryClient := invtypes.NewQueryClient(clientCtx)
-
-	params := &invtypes.QueryGetReviewRequest{
-		Id: reviewId,
-		ItemId: itemId,
-	}
-
-	res, err := queryClient.Review(context.Background(), params)
-	if err != nil {
-		return nil, err
-	}
-
-	//log.Printf("%T\n", res)
-
-	// 设置 接收输出
-	buf := new(bytes.Buffer)
-	clientCtx.Output = buf
-
-	// 转换输出
-	clientCtx.PrintProto(res)
-
-	// 输出的字节流
-	respBytes := []byte(buf.String())
-
-	log.Println("output: ", buf.String())
-
-	//log.Printf("%v\n", string(respBytes))
-
-	// 转换成map, 生成返回数据
-	var respData map[string]interface{}
-
-	if err := json.Unmarshal(respBytes, &respData); err != nil {
-		return nil, err
-	}
-
-	itemMap := respData["Review"].(map[string]interface{})
-
-	return &(itemMap), nil
-}

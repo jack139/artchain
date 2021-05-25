@@ -67,8 +67,8 @@
 | 5 | 查询物品信息         | **/query/item/info**       |
 | 6 | 验证物品NFT          | /query/nft/verify                |
 | 7 | 查询物品评价清单     | **/query/review/list**     |
-| 8 | 查询物品评价信息     | /query/review/info         |
-| 9 | 查询拍卖行清单       | /query/auction_house/list  |
+| 8 | 查询物品评价信息     | **/query/review/info**     |
+| 9 | 查询拍卖行清单       | **/query/auction_house/list** |
 | 10 | 查询拍卖行信息       | /query/auction_house/info  |
 | 11 | 查询拍卖清单         | **/query/auction/list**    |
 | 12 | 查询拍卖信息         | **/query/auction/info**    |
@@ -1449,6 +1449,79 @@ base64后结果：
                 "status":""
             }
         ]
+    },
+    "msg":"success"
+}
+```
+
+
+
+##### 3.8 查询评价信息
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/review/info
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数    | 类型   | 必填 | 说明   |
+| ------- | ------ | ---- | ------ |
+| id      | string | Y    | 拍卖id |
+| item_id | string | Y    | 物品id |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 拍卖信息数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "id": "3", 
+        "item_id": "0", 
+    }, 
+    "timestamp": 1621934310, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "ZTJjM2RlYjRhOGVlOTY4NTFiN2U1OTczNjU1MzViYjU3Mzc1OTYyNWUwMGZjZDExZWZkODdhMTA0NjI3Yzg2ZQ=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "review":{
+            "detail":"xxxxxxxxxxxxxx123",
+            "id":"3",
+            "item_id":"0",
+            "last_date":[
+                {
+                    "act":"new",
+                    "caller":"bid1art1p25qdr4y7fclldmjdre4yss0fkltfteyz78p3h",
+                    "date":"2021-05-25 16:30:53"
+                },{
+                    "act":"edit",
+                    "caller":"bid1art1p25qdr4y7fclldmjdre4yss0fkltfteyz78p3h",
+                    "date":"2021-05-25 17:08:35"
+                }
+            ],
+            "review_date":"2021-05-25 16:30:53",
+            "reviewer_addr":"bid1art1p25qdr4y7fclldmjdre4yss0fkltfteyz78p3h",
+            "status":"WAIT"
+        }
     },
     "msg":"success"
 }
