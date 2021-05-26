@@ -128,7 +128,7 @@ func (k Keeper) UserByStatus(c context.Context, req *types.QueryGetUserByStatusR
 		}
 
 		// filter 
-		if user.Status == req.Status {
+		if strings.Contains(req.Status, user.Status){ // 状态可以多个
 			if accumulate {
 				users = append(users, &user)
 			}

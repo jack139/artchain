@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -129,7 +130,7 @@ func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusR
 		}
 
 		// filter 
-		if item.Status == req.Status {
+		if strings.Contains(req.Status, item.Status){ // 状态可以多个
 			if accumulate {
 				items = append(items, &item)
 			}
