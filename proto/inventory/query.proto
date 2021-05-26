@@ -50,7 +50,8 @@ message QueryGetReviewResponse {
 
 message QueryAllReviewRequest {
 	string itemId =1;
-	cosmos.base.query.v1beta1.PageRequest pagination = 2;
+	string status =2;
+	cosmos.base.query.v1beta1.PageRequest pagination = 3;
 }
 
 message QueryAllReviewResponse {

@@ -1396,6 +1396,7 @@ base64后结果：
 | 参数    | 类型   | 必填 | 说明              |
 | ------- | ------ | ---- | ----------------- |
 | item_id | string | Y    | 物品id            |
+| status  | string | Y    | 状态              |
 | page    | uint   | Y    | 第几页，最小为1   |
 | limit   | uint   | Y    | 每页数量，最小为1 |
 
@@ -1416,7 +1417,8 @@ base64后结果：
     "data": {
         "page": 1, 
         "limit": 10, 
-        "item_id": "3"
+        "item_id": "3",
+        "status": "ACTIVE",
     }, 
     "timestamp": 1619914700, 
     "appid": "4fcf3871f4a023712bec9ed44ee4b709", 

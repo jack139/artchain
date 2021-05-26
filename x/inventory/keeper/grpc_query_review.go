@@ -24,14 +24,21 @@ func (k Keeper) ReviewAll(c context.Context, req *types.QueryAllReviewRequest) (
 	store := ctx.KVStore(k.storeKey)
 	reviewStore := prefix.NewStore(store, types.KeyPrefix(types.ReviewKey+req.ItemId))
 
-	pageRes, err := query.Paginate(reviewStore, req.Pagination, func(key []byte, value []byte) error {
+	pageRes, err := query.FilteredPaginate(reviewStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var review types.Review
 		if err := k.cdc.UnmarshalBinaryBare(value, &review); err != nil {
-			return err
+			return false, err
 		}
 
-		reviews = append(reviews, &review)
-		return nil
+		// filter 
+		if strings.Contains(req.Status, review.Status){ // 状态可以多个
+			if accumulate {
+				reviews = append(reviews, &review)
+			}
+			return true, nil
+		}
+
+		return false, nil
 	})
 
 	if err != nil {
