@@ -104,9 +104,7 @@ func queryAuctionInfoById(ctx *fasthttp.RequestCtx, auctionId uint64) (*map[stri
 	// 输出的字节流
 	respBytes := []byte(buf.String())
 
-	log.Println("output: ", buf.String())
-
-	//log.Printf("%v\n", string(respBytes))
+	//log.Println("output: ", buf.String())
 
 	// 转换成map, 生成返回数据
 	var respData map[string]interface{}

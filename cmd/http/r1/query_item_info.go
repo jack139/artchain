@@ -107,9 +107,7 @@ func queryItemInfoById(ctx *fasthttp.RequestCtx, itemId uint64) (*map[string]int
 	// 输出的字节流
 	respBytes := []byte(buf.String())
 
-	log.Println("output: ", buf.String())
-
-	//log.Printf("%v\n", string(respBytes))
+	//log.Println("output: ", buf.String())
 
 	// 转换成map, 生成返回数据
 	var respData map[string]interface{}
