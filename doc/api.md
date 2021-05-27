@@ -988,6 +988,8 @@ base64后结果：
 | caller_addr | string | Y    | 调用者的链地址 |
 | id          | string | Y    | 拍卖id         |
 | status      | string | Y    | 状态           |
+| open_date   | string |      | 拍卖开始时间   |
+| close_date  | string |      | 拍卖截止时间   |
 
 返回结果
 

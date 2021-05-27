@@ -45,6 +45,8 @@ func BizAuditAuction(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9002, "need status")
 		return
 	}
+	openDate, _ := (*reqData)["open_date"].(string)
+	closeDate, _ := (*reqData)["close_date"].(string)
 
 	auctionId, err := strconv.ParseUint(auctionIdStr, 10, 64)
 	if err != nil {
@@ -57,6 +59,14 @@ func BizAuditAuction(ctx *fasthttp.RequestCtx) {
 	if err!=nil {
 		helper.RespError(ctx, 9002, err.Error())
 		return		
+	}
+
+	// 检查是否修改拍卖时间
+	if len(openDate)==0 {
+		openDate = (*auctionMap)["openDate"].(string)
+	}
+	if len(closeDate)==0 {
+		closeDate = (*auctionMap)["closeDate"].(string)
 	}
 
 	// 构建lastDate
@@ -99,8 +109,8 @@ func BizAuditAuction(ctx *fasthttp.RequestCtx) {
 		(*auctionMap)["requestDate"].(string), //requestDate string, 
 		(*auctionMap)["reservePrice"].(string), //reservePrice string, 
 		status, //status string, 
-		(*auctionMap)["openDate"].(string), //openDate string, 
-		(*auctionMap)["closeDate"].(string), //closeDate string,
+		openDate, //openDate string, 
+		closeDate, //closeDate string,
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
