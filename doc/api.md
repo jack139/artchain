@@ -86,6 +86,15 @@
 
 
 
+#### IPFS接口
+
+| 序号               | 接口功能                 | URI                        |
+| :------------------: | -------------------------- | -------------------------- |
+| 1 | 上传图片到IPFS | **/ipfs/upload/image** |
+| 2 | 从IPFS下载数据    | **/ipfs/download**       |
+
+
+
 ### 四、接口定义
 
 #### 1. 全局接口定义
@@ -2344,6 +2353,118 @@ base64后结果：
             }
         ]
     },
+    "msg":"success"
+}
+```
+
+
+
+#### 4. IPFS接口
+
+##### 4.1 上传图片到IPFS
+
+请求URL
+
+> http://<host>:<port>/api/ipfs_upload/image
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明                 |
+| ----------- | ------ | ---- | -------------------- |
+| caller_addr | string | Y    | 调用者的链地址       |
+| item_id     | string | Y    | 物品id               |
+| image       | string | Y    | base64编码的图片数据 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | IPFS文件hash值                          |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "caller_addr": "bid1art17qppfv5k29r9txqu8sj3l6vfwtt90rr82r9gt7", 
+        "item_id": "1", 
+        "image": "iVBSUhEUgAABKIAAAXqCAIAAABMelVoAA...AAAAABJRU5ErkJggg=="
+    }, 
+    "timestamp": 1622624546, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "ZmZjY2U5Mjg3OTE3NDc1ODZkYWM2ZjM3OTU1ZmFjODdhNTc2NjExYjNiMTQyNmVjOTI0OTQ0MDcyZDAzZmQzYQ=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "hash":"QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3",
+        "height":"49975"
+    },
+    "msg":"success"
+}
+```
+
+
+
+##### 4.2 从IPFS下载数据
+
+请求URL
+
+> http://<host>:<port>/api/ipfs_download
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明             |
+| ----------- | ------ | ---------------- | ---------------- |
+| hash | string | Y | IPFS文件hash值 |
+
+返回结果
+
+| 参数 | 类型           | 说明                                    |
+| ---- | -------------- | --------------------------------------- |
+| code | int            | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string         | 成功时返回success；出错时，返回出错信息 |
+| data | base64编码的数据 |                                         |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "hash": "QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3"
+    }, 
+    "timestamp": 1622626276, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "ZDUxMzhiNTQ2MjYyNTRiZWY1YWFhZjIwZDEzNDg4OTA1YTdiYjkzZDllOTIyYzYzNTUzZWFmMTI2N2NkZDVkNA=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "data":"iVBORw0KGgoAAAANSUhEUgAA...AAAABJRU5ErkJggg=="},
     "msg":"success"
 }
 ```

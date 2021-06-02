@@ -5,10 +5,9 @@ from datetime import datetime
 
 urllib3.disable_warnings()
 
-#with open("doc/exchainge.png", 'rb') as f:
-#with open("2021030117343322954.zip", 'rb') as f:
-#    img_data = f.read()
-#img_data = base64.b64encode(img_data).decode('utf-8')
+with open("doc/auction_flow.png", 'rb') as f:
+    img_data = f.read()
+img_data = base64.b64encode(img_data).decode('utf-8')
 
 # 生成参数字符串
 def gen_param_str(param1):
@@ -34,7 +33,7 @@ if __name__ == '__main__':
             #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
             #'chain_addr'   : 'bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw', # test123
 
-            #'caller_addr' : 'bid1art1qek76ce2qe7y3creh8arle73dunjg24jwgpp6c', # op2
+            'caller_addr' : 'bid1art17qppfv5k29r9txqu8sj3l6vfwtt90rr82r9gt7', # op2
             #'login_name' : 'test123',
             #'user_type' : 'TRD',
             #'email' : 'abc@qq.com',
@@ -46,17 +45,17 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            'id' : '3',
+            #'id' : '3',
 
             #'desc' : '测试物品3',
             #'date' : '1911s',
             #'base_price' : '$2001',
             #'owner_addr' : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004',
 
-            'page' : 1,
-            'limit' : 100,
+            #'page' : 1,
+            #'limit' : 100,
 
-            'item_id' : "0",
+            'item_id' : "3",
             #'reviewer_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
             #'detail' : "aaaaabbbbbb 哈哈1111111",
 
@@ -73,7 +72,11 @@ if __name__ == '__main__':
             #'hammer_price' : "1000",
             #'details' : "测试测试测试"
 
-            'status' : 'WAIT',
+            #'status' : 'WAIT',
+
+            'image' : img_data,
+
+            #'hash' : 'QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3',
         }
     }
 
@@ -124,7 +127,7 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/item/info'
     #url = host+'/api/r1/query/item/list'
     #url = host+'/api/r1/query/review/list'
-    url = host+'/api/r1/query/review/info'
+    #url = host+'/api/r1/query/review/info'
     #url = host+'/api/r1/query/auction/info'
     #url = host+'/api/r1/query/auction/list'
     #url = host+'/api/r1/query/trans/info'
@@ -132,6 +135,9 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/auction_house/list'
     #url = host+'/api/r1/query/item/list_by_status'
     #url = host+'/api/r1/query/review/list_by_status'
+    
+    url = host+'/api/r1/ipfs/upload/image'
+    #url = host+'/api/r1/ipfs/download'
     
 
     start_time = datetime.now()

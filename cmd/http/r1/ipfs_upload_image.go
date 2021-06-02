@@ -2,9 +2,11 @@ package r1
 
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
+	"github.com/jack139/artchain/cmd/ipfs"
 	invtypes "github.com/jack139/artchain/x/inventory/types"
 
 	"log"
+	"strconv"
 	"bytes"
 	"time"
 	"encoding/json"
@@ -14,10 +16,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
-/* 新建物品 */
+/* 上传物品图片 */
 
-func BizItemNew(ctx *fasthttp.RequestCtx) {
-	log.Println("biz_item_new")
+func IpfsUploadImage(ctx *fasthttp.RequestCtx) {
+	log.Println("ipfs_upload_image")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -35,32 +37,63 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9101, "need caller_addr")
 		return
 	}
-	itemDesc, ok := (*reqData)["desc"].(string)
+	itemIdStr, ok := (*reqData)["item_id"].(string)
 	if !ok {
-		helper.RespError(ctx, 9001, "need desc")
+		helper.RespError(ctx, 9001, "need item_id")
 		return
 	}
-	itemDate, ok := (*reqData)["date"].(string)
+
+	image, ok := (*reqData)["image"].(string)
 	if !ok {
-		helper.RespError(ctx, 9002, "need date")
+		helper.RespError(ctx, 9002, "need image")
 		return
 	}
-	itemDetail, _ := (*reqData)["detail"].(string)
-	itemType, _ := (*reqData)["type"].(string)
-	itemSubject, _ := (*reqData)["subject"].(string)
-	itemMedia, _ := (*reqData)["media"].(string)
-	itemSize, _ := (*reqData)["size"].(string)
-	itemBasePrice, _ := (*reqData)["base_price"].(string)
-	itemOwnerAddr, _ := (*reqData)["owner_addr"].(string)
 
-	// TODO： 检查 itemOwnerAddr 合法性
+	if len(image)>5242880 {
+		helper.RespError(ctx, 90011, "image too large: over 5M")
+		return
+	}
 
+	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
+	if err != nil {
+		helper.RespError(ctx, 9007, err.Error())
+		return
+	}
+
+	// 获取当前链上数据
+	itemMap, err := queryItemInfoById(ctx, itemId)
+	if err!=nil {
+		helper.RespError(ctx, 9002, err.Error())
+		return		
+	}
+
+
+	// 图片 存 ipfs
+	var cid string
+	if len(image)>0 {
+		cid, err = ipfs.Add([]byte(image))
+		if err!=nil {
+			helper.RespError(ctx, 9012, err.Error())
+			return
+		}
+	} else {
+		cid = ""
+	}
+
+	// 准备数据
+	loadData := (*itemMap)["itemImage"].([]string)	
+	loadData = append(loadData, cid)
+	loadBytes, err := json.Marshal(loadData)
+	if err != nil {
+		helper.RespError(ctx, 9008, err.Error())
+		return
+	}
 
 	// 构建lastDate
-	var lastDateMap []map[string]interface{}
+	lastDateMap := (*itemMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "new",
+		"act":  "upload image",
 		"date": time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
@@ -69,14 +102,13 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*itemMap)["creator"].(string))  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
@@ -86,26 +118,23 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// 创建者地址
-	//creatorAddr := clientCtx.GetFromAddress().String()
-
-
 	// 数据上链
-	msg := invtypes.NewMsgCreateItem(
-		callerAddr, //creator string, 
-		"ARTINV", //recType string, 
-		itemDesc, //itemDesc string, 
-		itemDetail, //itemDetail string, 
-		itemDate, //itemDate string, 
-		itemType, //itemType string, 
-		itemSubject, //itemSubject string, 
-		itemMedia, //itemMedia string, 
-		itemSize, //itemSize string, 
-		"[]", //itemImage string, 
-		"", //AESKey string, 
-		itemBasePrice, //itemBasePrice string, 
-		itemOwnerAddr, //currentOwnerId string, 
-		"WAIT", //status string
+	msg := invtypes.NewMsgUpdateItem(
+		(*itemMap)["creator"].(string), //creator string, 
+		itemId, //id uint64, 
+		(*itemMap)["recType"].(string), //recType string, 
+		(*itemMap)["itemDesc"].(string), //itemDesc string, 
+		(*itemMap)["itemDetail"].(string), //itemDetail string, 
+		(*itemMap)["itemDate"].(string), //itemDate string, 
+		(*itemMap)["itemType"].(string), //itemType string, 
+		(*itemMap)["itemSubject"].(string), //itemSubject string, 
+		(*itemMap)["itemMedia"].(string), //itemMedia string, 
+		(*itemMap)["itemSize"].(string), //itemSize string, 
+		string(loadBytes), //itemImage string, 图片信息， ipfs 哈希列表
+		(*itemMap)["AESKey"].(string), //AESKey string, 
+		(*itemMap)["itemBasePrice"].(string), //itemBasePrice string, 
+		(*itemMap)["currentOwnerId"].(string), //currentOwnerId string, 
+		"WAIT", // 修改后状态自动设置为 WAIT
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
@@ -142,10 +171,10 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-
 	// 返回区块id
 	resp := map[string]interface{}{
 		"height" : respData["height"].(string),  // 区块高度
+		"hash"   : cid, // ipfs hash
 	}
 
 	helper.RespJson(ctx, &resp)

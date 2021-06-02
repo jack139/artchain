@@ -66,6 +66,7 @@ func QueryItemInfo(ctx *fasthttp.RequestCtx) {
 		"size"       : itemMap["itemSize"],
 		"base_price" : itemMap["itemBasePrice"],
 		"owner_addr" : itemMap["currentOwnerId"],
+		"image"      : itemMap["itemImage"],
 		"last_date"  : itemMap["lastDate"],
 		"status"     : itemMap["status"],
 	}
@@ -117,6 +118,22 @@ func queryItemInfoById(ctx *fasthttp.RequestCtx, itemId uint64) (*map[string]int
 	}
 
 	itemMap := respData["Item"].(map[string]interface{})
+
+	// 检查 image 字段是否正常
+	if _, ok := itemMap["itemImage"]; !ok {
+		return nil, fmt.Errorf("itemImage empty") // 不应该发生
+	}
+	if !strings.HasPrefix(itemMap["itemImage"].(string), "[") {
+		itemMap["itemImage"]= "[]" // 不应该发生
+	}
+
+	// 反序列化
+	var data1 []string
+	if err := json.Unmarshal([]byte(itemMap["itemImage"].(string)), &data1); err != nil {
+		return nil, err
+	}
+	itemMap["itemImage"] = data1
+
 
 	// 检查 lastDate 字段是否正常
 	if _, ok := itemMap["lastDate"]; !ok {
