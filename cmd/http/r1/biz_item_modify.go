@@ -103,6 +103,15 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	// 构建 itemImage
+	imageList := (*itemMap)["itemImage"].([]string)
+	imageData, err := json.Marshal(imageList)
+	if err != nil {
+		helper.RespError(ctx, 9005, err.Error())
+		return
+	}
+
+
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
@@ -131,7 +140,7 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		itemSubject, //itemSubject string, 
 		itemMedia, //itemMedia string, 
 		itemSize, //itemSize string, 
-		(*itemMap)["itemImage"].(string), //itemImage string, 
+		string(imageData), //itemImage string, 
 		(*itemMap)["AESKey"].(string), //AESKey string, 
 		itemBasePrice, //itemBasePrice string, 
 		(*itemMap)["currentOwnerId"].(string), //currentOwnerId string, 

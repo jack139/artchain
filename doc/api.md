@@ -2365,7 +2365,7 @@ base64后结果：
 
 请求URL
 
-> http://<host>:<port>/api/ipfs_upload/image
+> http://<host>:<port>/api/ipfs/upload/image
 
 请求方式
 
@@ -2423,7 +2423,7 @@ base64后结果：
 
 请求URL
 
-> http://<host>:<port>/api/ipfs_download
+> http://<host>:<port>/api/ipfs/download
 
 请求方式
 

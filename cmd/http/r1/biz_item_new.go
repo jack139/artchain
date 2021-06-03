@@ -4,14 +4,20 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	invtypes "github.com/jack139/artchain/x/inventory/types"
 
+	"github.com/gogo/protobuf/proto"
+
 	"log"
 	"bytes"
 	"time"
+	"strings"
+	"strconv"
 	"encoding/json"
+	"encoding/hex"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	//sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 /* 新建物品 */
@@ -142,10 +148,37 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	// 处理 data字段
+	bs, err := hex.DecodeString(respData["data"].(string))
+	if err != nil {
+		helper.RespError(ctx, 9013, err.Error())
+		return
+	}
+
+	// 0A100A0A4372656174654974656D1202081F
+	// 0A   10   0A   0A  4372656174654974656D  12      02    081F
+	// 标记 长度 标记  长度   数据                标记？  长度   数据
+	slice1 := strings.Split(string(bs), "\n") // TODO: 有问题！ 需要解决格式分析问题
+	//log.Println(len(slice1))
+	//log.Println(slice1)
+	slice2 := strings.Split(slice1[3], "\x12")
+	//log.Println(len(slice2))
+	//log.Println(slice2)
+	//log.Println("new id: ", slice2[1])
+	//log.Println("new id: %v", []byte(slice2[1])[1:])
+
+	var pb invtypes.MsgCreateItemResponse
+	//var pb sdk.Result
+	if err := proto.Unmarshal([]byte(slice2[1])[1:], &pb); err != nil{
+		helper.RespError(ctx, 9014, err.Error())
+		return		
+	}
+	log.Println("New id: ", pb.Id)
 
 	// 返回区块id
 	resp := map[string]interface{}{
 		"height" : respData["height"].(string),  // 区块高度
+		"id" : strconv.FormatUint(pb.Id, 10), // item_id
 	}
 
 	helper.RespJson(ctx, &resp)
