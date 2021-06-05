@@ -53,6 +53,7 @@ func RunServer(port string /*, userPath string*/) {
 
 	r.POST("/api/r1/ipfs/upload/image", release1.IpfsUploadImage)
 	r.POST("/api/r1/ipfs/download", release1.IpfsDownload)
+	r.POST("/api/r1/ipfs/remove/image", release1.IpfsRemoveImage)
 
 	log.Printf("start HTTP server at 0.0.0.0:%s\n", port)
 
