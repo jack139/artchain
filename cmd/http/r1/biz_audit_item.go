@@ -73,6 +73,14 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	// 构建 itemImage
+	imageList := (*itemMap)["itemImage"].([]string)
+	imageData, err := json.Marshal(imageList)
+	if err != nil {
+		helper.RespError(ctx, 9005, err.Error())
+		return
+	}
+
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
@@ -101,7 +109,7 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 		(*itemMap)["itemSubject"].(string), //itemSubject string, 
 		(*itemMap)["itemMedia"].(string), //itemMedia string, 
 		(*itemMap)["itemSize"].(string), //itemSize string, 
-		(*itemMap)["itemImage"].(string), //itemImage string, 
+		string(imageData), //itemImage string, 
 		(*itemMap)["AESKey"].(string), //AESKey string, 
 		(*itemMap)["itemBasePrice"].(string), //itemBasePrice string, 
 		(*itemMap)["currentOwnerId"].(string), //currentOwnerId string, 
