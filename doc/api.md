@@ -36,8 +36,8 @@
 | 3       | 恢复已注册用户        | /biz/user/restore              |
 | 4            | 新建物品             | **/biz/item/new**         |
 | 5         | 修改物品信息          | **/biz/item/modify**           |
-| 6 | 添加物品照片 | /biz/item/new_image |
-| 7 | 删除物品照片 | /biz/item/remove_image |
+| 6 | ~~添加物品照片~~ | ~~/biz/item/new_image~~ |
+| 7 | ~~删除物品照片~~ | ~~/biz/item/remove_image~~ |
 | 8 | 修改物品所有人 | /biz/item/change_owner |
 | 9         | 生成物品NFT          | /biz/nft/new      |
 | 10        | 添加物品评价          | **/biz/review/new**            |
@@ -49,7 +49,7 @@
 | 16       | 建立成交交易         | **/biz/trans/new**       |
 | 17 | 审核用户 | **/biz/audit/user** |
 | 18 | 审核物品 | **/biz/audit/item** |
-| 19 | 审核照片 | /biz/audit/image |
+| 19 | ~~审核照片~~ | ~~/biz/audit/image~~ |
 | 20 | 审核评价 | **/biz/audit/review** |
 | 21 | 审核拍卖请求 | **/biz/audit/auction** |
 | 22 | 审核成交交易 | /biz/audit/transaction |
@@ -69,7 +69,7 @@
 | 7 | 查询物品评价清单     | **/query/review/list**     |
 | 8 | 查询物品评价信息     | **/query/review/info**     |
 | 9 | 查询拍卖行清单       | **/query/auction_house/list** |
-| 10 | 查询拍卖行信息       | /query/auction_house/info  |
+| 10 | ~~查询拍卖行信息~~   | ~~/query/auction_house/info~~ |
 | 11 | 查询拍卖清单         | **/query/auction/list**    |
 | 12 | 查询拍卖信息         | **/query/auction/info**    |
 | 13 | 查询出价信息         | /query/bid/info            |
@@ -92,6 +92,7 @@
 | :------------------: | -------------------------- | -------------------------- |
 | 1 | 上传图片到IPFS | **/ipfs/upload/image** |
 | 2 | 从IPFS下载数据    | **/ipfs/download**       |
+| 3 | 删除图片 | **/ipfs/remove/image** |
 
 
 
@@ -2510,5 +2511,45 @@ base64后结果：
         "data":"iVBORw0KGgoAAAANSUhEUgAA...AAAABJRU5ErkJggg=="},
     "msg":"success"
 }
+```
+
+
+
+##### 4.3 从IPFS删除图片
+
+请求URL
+
+> http://<host>:<port>/api/ipfs/remove/image
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| item_id     | string | Y    | 物品id         |
+| hash        | string | Y    | 图片hash       |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | IPFS文件hash值                          |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
 ```
 
