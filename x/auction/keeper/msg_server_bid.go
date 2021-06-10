@@ -18,7 +18,7 @@ func (k msgServer) CreateBid(goCtx context.Context, msg *types.MsgCreateBid) (*t
 		msg.RecType,
 		msg.AuctionId,
 		msg.BidNo,
-		msg.ItemId,
+		msg.Status,
 		msg.BuyerId,
 		msg.BidPrice,
 		msg.BidTime,
@@ -39,7 +39,7 @@ func (k msgServer) UpdateBid(goCtx context.Context, msg *types.MsgUpdateBid) (*t
 		RecType:   msg.RecType,
 		AuctionId: msg.AuctionId,
 		BidNo:     msg.BidNo,
-		ItemId:    msg.ItemId,
+		Status:    msg.Status,
 		BuyerId:   msg.BuyerId,
 		BidPrice:  msg.BidPrice,
 		BidTime:   msg.BidTime,
@@ -47,12 +47,12 @@ func (k msgServer) UpdateBid(goCtx context.Context, msg *types.MsgUpdateBid) (*t
 	}
 
 	// Checks that the element exists
-	if !k.HasBid(ctx, msg.Id) {
+	if !k.HasBid(ctx, msg.Id, msg.AuctionId) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.Id))
 	}
 
 	// Checks if the the msg sender is the same as the current owner
-	if msg.Creator != k.GetBidOwner(ctx, msg.Id) {
+	if msg.Creator != k.GetBidOwner(ctx, msg.Id, msg.AuctionId) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
@@ -64,14 +64,14 @@ func (k msgServer) UpdateBid(goCtx context.Context, msg *types.MsgUpdateBid) (*t
 func (k msgServer) DeleteBid(goCtx context.Context, msg *types.MsgDeleteBid) (*types.MsgDeleteBidResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.HasBid(ctx, msg.Id) {
+	if !k.HasBid(ctx, msg.Id, msg.AuctionId) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, fmt.Sprintf("key %d doesn't exist", msg.Id))
 	}
-	if msg.Creator != k.GetBidOwner(ctx, msg.Id) {
+	if msg.Creator != k.GetBidOwner(ctx, msg.Id, msg.AuctionId) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "incorrect owner")
 	}
 
-	k.RemoveBid(ctx, msg.Id)
+	k.RemoveBid(ctx, msg.Id, msg.AuctionId)
 
 	return &types.MsgDeleteBidResponse{}, nil
 }

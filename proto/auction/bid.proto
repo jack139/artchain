@@ -11,10 +11,9 @@ message Bid {
   string recType = 3; 
   string auctionId = 4; 
   string bidNo = 5; 
-  string itemId = 6; 
-  string buyerId = 7; 
-  string bidPrice = 8; 
-  string bidTime = 9; 
-  string status = 10;
-  string lastDate = 11;
+  string buyerId = 6; 
+  string bidPrice = 7; 
+  string bidTime = 8; 
+  string status = 9;
+  string lastDate = 10;
 }

@@ -220,7 +220,7 @@ CloseDate       // CLOSE的日期  (由拍卖行设置)
 AuctionID  // 拍卖ID
 RecType    // BID
 BidNo      // 出价编号（自动生成）
-ItemID     // 物品编号
+AuctionID  // 拍卖编号
 BuyerID    // 买家ID（须与物品所有者ID不同）
 BidPrice   // 出价（须大于前一次出价）
 BidTime    // 出价时间

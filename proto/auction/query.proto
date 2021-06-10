@@ -37,6 +37,7 @@ service Query {
 // this line is used by starport scaffolding # 3
 message QueryGetBidRequest {
 	uint64 id = 1;
+	string auctionId = 2;
 }
 
 message QueryGetBidResponse {
@@ -44,7 +45,8 @@ message QueryGetBidResponse {
 }
 
 message QueryAllBidRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+	string auctionId = 1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QueryAllBidResponse {

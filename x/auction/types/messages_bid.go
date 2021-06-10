@@ -8,13 +8,13 @@ import (
 var _ sdk.Msg = &MsgCreateBid{}
 
 func NewMsgCreateBid(creator string, recType string, auctionId string, bidNo string, 
-	itemId string, buyerId string, bidPrice string, bidTime string, lastDate string) *MsgCreateBid {
+	status string, buyerId string, bidPrice string, bidTime string, lastDate string) *MsgCreateBid {
 	return &MsgCreateBid{
 		Creator:   creator,
 		RecType:   recType,
 		AuctionId: auctionId,
 		BidNo:     bidNo,
-		ItemId:    itemId,
+		Status:    status,
 		BuyerId:   buyerId,
 		BidPrice:  bidPrice,
 		BidTime:   bidTime,
@@ -54,14 +54,14 @@ func (msg *MsgCreateBid) ValidateBasic() error {
 var _ sdk.Msg = &MsgUpdateBid{}
 
 func NewMsgUpdateBid(creator string, id uint64, recType string, auctionId string, bidNo string, 
-	itemId string, buyerId string, bidPrice string, bidTime string, lastDate string) *MsgUpdateBid {
+	status string, buyerId string, bidPrice string, bidTime string, lastDate string) *MsgUpdateBid {
 	return &MsgUpdateBid{
 		Id:        id,
 		Creator:   creator,
 		RecType:   recType,
 		AuctionId: auctionId,
 		BidNo:     bidNo,
-		ItemId:    itemId,
+		Status:    status,
 		BuyerId:   buyerId,
 		BidPrice:  bidPrice,
 		BidTime:   bidTime,

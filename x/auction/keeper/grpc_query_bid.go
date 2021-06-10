@@ -21,7 +21,7 @@ func (k Keeper) BidAll(c context.Context, req *types.QueryAllBidRequest) (*types
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
-	bidStore := prefix.NewStore(store, types.KeyPrefix(types.BidKey))
+	bidStore := prefix.NewStore(store, types.KeyPrefix(types.BidKey+req.AuctionId))
 
 	pageRes, err := query.Paginate(bidStore, req.Pagination, func(key []byte, value []byte) error {
 		var bid types.Bid
@@ -48,11 +48,11 @@ func (k Keeper) Bid(c context.Context, req *types.QueryGetBidRequest) (*types.Qu
 	var bid types.Bid
 	ctx := sdk.UnwrapSDKContext(c)
 
-	if !k.HasBid(ctx, req.Id) {
+	if !k.HasBid(ctx, req.Id, req.AuctionId) {
 		return nil, sdkerrors.ErrKeyNotFound
 	}
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BidKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BidKey+req.AuctionId))
 	k.cdc.MustUnmarshalBinaryBare(store.Get(GetBidIDBytes(req.Id)), &bid)
 
 	return &types.QueryGetBidResponse{Bid: &bid}, nil

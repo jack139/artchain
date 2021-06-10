@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-func listBid(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
-	msgs := keeper.GetAllBid(ctx)
+func listBid(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino, auctionId string,) ([]byte, error) {
+	msgs := keeper.GetAllBid(ctx, auctionId)
 
 	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, msgs)
 	if err != nil {
@@ -18,17 +18,17 @@ func listBid(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino
 	return bz, nil
 }
 
-func getBid(ctx sdk.Context, key string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
+func getBid(ctx sdk.Context, key string, auctionId string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
 	id, err := strconv.ParseUint(key, 10, 64)
 	if err != nil {
 		return nil, err
 	}
 
-	if !keeper.HasBid(ctx, id) {
+	if !keeper.HasBid(ctx, id, auctionId) {
 		return nil, sdkerrors.ErrKeyNotFound
 	}
 
-	msg := keeper.GetBid(ctx, id)
+	msg := keeper.GetBid(ctx, id, auctionId)
 
 	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, msg)
 	if err != nil {

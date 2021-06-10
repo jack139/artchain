@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func listReview(ctx sdk.Context, itemId string, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino) ([]byte, error) {
+func listReview(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino, itemId string) ([]byte, error) {
 	msgs := keeper.GetAllReview(ctx, itemId)
 
 	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, msgs)

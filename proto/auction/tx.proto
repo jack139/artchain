@@ -22,12 +22,11 @@ message MsgCreateBid {
   string recType = 2;
   string auctionId = 3;
   string bidNo = 4;
-  string itemId = 5;
-  string buyerId = 6;
-  string bidPrice = 7;
-  string bidTime = 8;
-  string status = 9;
-  string lastDate = 10;
+  string buyerId = 5;
+  string bidPrice = 6;
+  string bidTime = 7;
+  string status = 8;
+  string lastDate = 9;
 }
 
 message MsgCreateBidResponse {
@@ -40,12 +39,11 @@ message MsgUpdateBid {
   string recType = 3;
   string auctionId = 4;
   string bidNo = 5;
-  string itemId = 6;
-  string buyerId = 7;
-  string bidPrice = 8;
-  string bidTime = 9;
-  string status = 10;
-  string lastDate = 11;
+  string buyerId = 6;
+  string bidPrice = 7;
+  string bidTime = 8;
+  string status = 9;
+  string lastDate = 10;
 }
 
 message MsgUpdateBidResponse { }
@@ -53,6 +51,7 @@ message MsgUpdateBidResponse { }
 message MsgDeleteBid {
   string creator = 1;
   uint64 id = 2;
+  string auctionId = 3;
 }
 
 message MsgDeleteBidResponse { }

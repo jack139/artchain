@@ -35,7 +35,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	// this line is used by starport scaffolding # genesis/module/export
 	// Get all bid
-	bidList := k.GetAllBid(ctx)
+	bidList := k.GetAllBid(ctx, "") // 其实 不能导出 任何东西，因为没有提供 auctionId
 	for _, elem := range bidList {
 		elem := elem
 		genesis.BidList = append(genesis.BidList, &elem)
