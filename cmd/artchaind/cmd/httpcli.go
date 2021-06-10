@@ -23,8 +23,8 @@ func HttpCliCmd() *cobra.Command {
 			// 保存 cmd
 			httphelper.HttpCmd = cmd
 
-			// 设置定时任务
-			ticker1 := time.NewTicker(5 * time.Second)
+			// 设置定时任务 : 15 秒 一次
+			ticker1 := time.NewTicker(15 * time.Second)
 			// 一定要调用Stop()，回收资源
 			defer ticker1.Stop()
 			go func(t *time.Ticker) {
