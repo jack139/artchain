@@ -72,9 +72,9 @@
 | 10 | ~~查询拍卖行信息~~   | ~~/query/auction_house/info~~ |
 | 11 | 查询拍卖清单         | **/query/auction/list**    |
 | 12 | 查询拍卖信息         | **/query/auction/info**    |
-| 13 | 查询出价信息         | /query/bid/info            |
+| 13 | 查询出价清单      | **/query/bid/list**    |
 | 14 | 查询最高出价         | /query/bid/highest         |
-| 15 | 查询出价清单         | /query/bid/list            |
+| 15 | 查询出价信息       | **/query/bid/info**    |
 | 16 | 查询成交交易         | **/query/trans/list** |
 | 17 | 查询成交交易信息     | **/query/trans/info** |
 | 18 | 查询指定区块原始数据 | **/query/block/rawdata** |
@@ -1527,7 +1527,7 @@ base64后结果：
 
 | 参数    | 类型   | 必填 | 说明   |
 | ------- | ------ | ---- | ------ |
-| id      | string | Y    | 拍卖id |
+| id      | string | Y    | 评价id |
 | item_id | string | Y    | 物品id |
 
 返回结果
@@ -1780,6 +1780,88 @@ base64后结果：
     "msg":"success"
 }
 ```
+
+
+
+##### 3.13 查询出价清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/bid/list
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数       | 类型   | 必填 | 说明              |
+| ---------- | ------ | ---- | ----------------- |
+| auction_id | string | Y    | 拍卖id            |
+| status     | string | Y    | 状态              |
+| page       | uint   | Y    | 第几页，最小为1   |
+| limit      | uint   | Y    | 每页数量，最小为1 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 物品评价清单数据                        |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+##### 3.15 查询出价信息
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/bid/info
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数       | 类型   | 必填 | 说明   |
+| ---------- | ------ | ---- | ------ |
+| id         | string | Y    | 出价id |
+| auction_id | string | Y    | 拍卖id |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 拍卖信息数据                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
 
 
 

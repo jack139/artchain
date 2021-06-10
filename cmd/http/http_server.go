@@ -46,6 +46,8 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/query/auction/list", release1.QueryAuctionList)
 	r.POST("/api/r1/query/trans/info", release1.QueryTransInfo)
 	r.POST("/api/r1/query/trans/list", release1.QueryTransList)
+	r.POST("/api/r1/query/bid/info", release1.QueryBidInfo)
+	r.POST("/api/r1/query/bid/list", release1.QueryBidList)
 	r.POST("/api/r1/query/auction_house/list", release1.QueryAHList)
 	r.POST("/api/r1/query/user/list_by_status", release1.QueryUserListByStatus)
 	r.POST("/api/r1/query/item/list_by_status", release1.QueryItemListByStatus)

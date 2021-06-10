@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -23,14 +24,21 @@ func (k Keeper) BidAll(c context.Context, req *types.QueryAllBidRequest) (*types
 	store := ctx.KVStore(k.storeKey)
 	bidStore := prefix.NewStore(store, types.KeyPrefix(types.BidKey+req.AuctionId))
 
-	pageRes, err := query.Paginate(bidStore, req.Pagination, func(key []byte, value []byte) error {
+	pageRes, err := query.FilteredPaginate(bidStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var bid types.Bid
 		if err := k.cdc.UnmarshalBinaryBare(value, &bid); err != nil {
-			return err
+			return false, err
 		}
 
-		bids = append(bids, &bid)
-		return nil
+		// filter 
+		if strings.Contains(req.Status, bid.Status){ // 状态可以多个
+			if accumulate {
+				bids = append(bids, &bid)
+			}
+			return true, nil
+		}
+
+		return false, nil
 	})
 
 	if err != nil {
