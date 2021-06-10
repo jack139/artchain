@@ -26,6 +26,7 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/biz/review/modify", release1.BizReviewModify)
 	r.POST("/api/r1/biz/auction/new", release1.BizAuctionNew)
 	r.POST("/api/r1/biz/auction/modify", release1.BizAuctionModify)
+	r.POST("/api/r1/biz/auction/bid", release1.BizAuctionBid)
 	r.POST("/api/r1/biz/trans/new", release1.BizTransNew)
 	r.POST("/api/r1/biz/audit/user", release1.BizAuditUser)
 	r.POST("/api/r1/biz/audit/item", release1.BizAuditItem)

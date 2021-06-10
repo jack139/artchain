@@ -45,7 +45,7 @@
 | 12 | 修改物品评价反馈信息   | /biz/review/feedback           |
 | 13           | 发起拍卖             | **/biz/auction/new**           |
 | 14       | 修改拍卖信息       | **/biz/auction/modify** |
-| 15               | 出价                 | /biz/auction/bid               |
+| 15               | 出价                 | **/biz/auction/bid**           |
 | 16       | 建立成交交易         | **/biz/trans/new**       |
 | 17 | 审核用户 | **/biz/audit/user** |
 | 18 | 审核物品 | **/biz/audit/item** |
