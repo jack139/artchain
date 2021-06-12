@@ -53,6 +53,7 @@
 | 20 | 审核评价 | **/biz/audit/review** |
 | 21 | 审核拍卖请求 | **/biz/audit/auction** |
 | 22 | 审核成交交易 | /biz/audit/transaction |
+| 23 | 撤销出价 | **/biz/auction/bid/withdraw** |
 
 
 
@@ -1079,6 +1080,46 @@ base64后结果：
     },
     "msg":"success"
 }
+```
+
+
+
+##### 2.23 撤销出价
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/auction/bid/withdraw
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| auction_id  | string | Y    | 拍卖ID         |
+| id          | string | Y    | 出价ID         |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
 ```
 
 
