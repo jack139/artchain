@@ -86,7 +86,7 @@ func QueryBidList(ctx *fasthttp.RequestCtx) {
 	}
 
 	resp := map[string] interface{} {
-		"review_list" : respData,
+		"bid_list" : respData,
 	}
 
 	helper.RespJson(ctx, &resp)

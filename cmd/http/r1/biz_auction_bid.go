@@ -93,7 +93,7 @@ func BizAuctionBid(ctx *fasthttp.RequestCtx) {
 		"BID", //recType string, 
 		auctionIdStr, //auctionId string, 
 		"", //bidNo string, 
-		"WAIT", //Status string, 
+		"ACTIVE", //Status string, 
 		buyerAddr, //buyerId string, 
 		bidPrice, //bidPrice string, 
 		time.Now().Format("2006-01-02 15:04:05"), //bidTime string, 
