@@ -12,11 +12,12 @@ message Transaction {
   string auctionId = 4; 
   string itemId = 5; 
   string transType = 6; 
-  string userId = 7; 
-  string transDate = 8; 
-  string hammerTime = 9; 
-  string hammerPrice = 10; 
-  string details = 11; 
-  string status = 12; 
-  string lastDate = 13;
+  string buyerId = 7; 
+  string sellerId = 8; 
+  string transDate = 9; 
+  string hammerTime = 10; 
+  string hammerPrice = 11; 
+  string details = 12; 
+  string status = 13; 
+  string lastDate = 14;
 }

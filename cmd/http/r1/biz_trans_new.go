@@ -8,6 +8,8 @@ import (
 	"bytes"
 	"time"
 	"encoding/json"
+	"strconv"
+
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -39,7 +41,7 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9001, "need buyer_addr")
 		return
 	}
-	auctionId, ok := (*reqData)["auction_id"].(string)
+	auctionIdStr, ok := (*reqData)["auction_id"].(string)
 	if !ok {
 		helper.RespError(ctx, 9002, "need auction_id")
 		return
@@ -68,8 +70,25 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 	details, _ := (*reqData)["details"].(string)
 
 	// TODO： 检查 buyerAddr 合法性, 
-	//       检查 auction_id 合法性
 
+	auctionId, err := strconv.ParseUint(auctionIdStr, 10, 64)
+	if err != nil {
+		helper.RespError(ctx, 9007, err.Error())
+		return
+	}
+
+	// 获取当前链上数据, 拍卖信息, 进而获取卖家信息
+	auctionMap, err := queryAuctionInfoById(ctx, auctionId)
+	if err!=nil {
+		helper.RespError(ctx, 9002, err.Error())
+		return		
+	}
+
+	// 检查拍卖状态是否是 WAIT， 其他状态不能修改
+	if (*auctionMap)["status"].(string)!="CLOSE" {
+		helper.RespError(ctx, 9003, "cannot create new transaction, status is not CLOSE")
+		return				
+	}
 
 	// 构建lastDate
 	var lastDateMap []map[string]interface{}
@@ -108,10 +127,11 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 	msg := transtypes.NewMsgCreateTransaction(
 		callerAddr, //creator string, 
 		"POSTTRAN", //recType string, 
-		auctionId, //auctionId string, 
+		auctionIdStr, //auctionId string, 
 		itemIdStr, //itemId string, 
 		transType, //transType string, 
-		buyerAddr, //userId string, 
+		buyerAddr, //buyerId string, 
+		(*auctionMap)["SellerId"].(string), //sellerId string, 
 		time.Now().Format("2006-01-02 15:04:05"), //transDate string, 
 		hammerTime, //hammerTime string, 
 		hammerPrice, //hammerPrice string, 

@@ -33,7 +33,7 @@ func CmdCreateTransaction() *cobra.Command {
 			}
 
 			msg := types.NewMsgCreateTransaction(clientCtx.GetFromAddress().String(), string(argsRecType), 
-				string(argsAuctionId), string(argsItemId), string(argsTransType), string(argsUserId), 
+				string(argsAuctionId), string(argsItemId), string(argsTransType), string(argsUserId), string(argsUserId), 
 				string(argsTransDate), string(argsHammerTime), string(argsHammerPrice), string(argsDetails), 
 				string(argsStatus), "")
 			if err := msg.ValidateBasic(); err != nil {
@@ -76,7 +76,7 @@ func CmdUpdateTransaction() *cobra.Command {
 			}
 
 			msg := types.NewMsgUpdateTransaction(clientCtx.GetFromAddress().String(), id, string(argsRecType), 
-				string(argsAuctionId), string(argsItemId), string(argsTransType), string(argsUserId), 
+				string(argsAuctionId), string(argsItemId), string(argsTransType), string(argsUserId), string(argsUserId), 
 				string(argsTransDate), string(argsHammerTime), string(argsHammerPrice), string(argsDetails), 
 				string(argsStatus), "")
 			if err := msg.ValidateBasic(); err != nil {

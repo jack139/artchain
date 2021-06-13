@@ -34,13 +34,14 @@ type MsgCreateTransaction struct {
 	AuctionId   string `protobuf:"bytes,3,opt,name=auctionId,proto3" json:"auctionId,omitempty"`
 	ItemId      string `protobuf:"bytes,4,opt,name=itemId,proto3" json:"itemId,omitempty"`
 	TransType   string `protobuf:"bytes,5,opt,name=transType,proto3" json:"transType,omitempty"`
-	UserId      string `protobuf:"bytes,6,opt,name=userId,proto3" json:"userId,omitempty"`
-	TransDate   string `protobuf:"bytes,7,opt,name=transDate,proto3" json:"transDate,omitempty"`
-	HammerTime  string `protobuf:"bytes,8,opt,name=hammerTime,proto3" json:"hammerTime,omitempty"`
-	HammerPrice string `protobuf:"bytes,9,opt,name=hammerPrice,proto3" json:"hammerPrice,omitempty"`
-	Details     string `protobuf:"bytes,10,opt,name=details,proto3" json:"details,omitempty"`
-	Status      string `protobuf:"bytes,11,opt,name=status,proto3" json:"status,omitempty"`
-	LastDate    string `protobuf:"bytes,12,opt,name=lastDate,proto3" json:"lastDate,omitempty"`
+	BuyerId     string `protobuf:"bytes,6,opt,name=buyerId,proto3" json:"buyerId,omitempty"`
+	SellerId    string `protobuf:"bytes,7,opt,name=sellerId,proto3" json:"sellerId,omitempty"`
+	TransDate   string `protobuf:"bytes,8,opt,name=transDate,proto3" json:"transDate,omitempty"`
+	HammerTime  string `protobuf:"bytes,9,opt,name=hammerTime,proto3" json:"hammerTime,omitempty"`
+	HammerPrice string `protobuf:"bytes,10,opt,name=hammerPrice,proto3" json:"hammerPrice,omitempty"`
+	Details     string `protobuf:"bytes,11,opt,name=details,proto3" json:"details,omitempty"`
+	Status      string `protobuf:"bytes,12,opt,name=status,proto3" json:"status,omitempty"`
+	LastDate    string `protobuf:"bytes,13,opt,name=lastDate,proto3" json:"lastDate,omitempty"`
 }
 
 func (m *MsgCreateTransaction) Reset()         { *m = MsgCreateTransaction{} }
@@ -111,9 +112,16 @@ func (m *MsgCreateTransaction) GetTransType() string {
 	return ""
 }
 
-func (m *MsgCreateTransaction) GetUserId() string {
+func (m *MsgCreateTransaction) GetBuyerId() string {
 	if m != nil {
-		return m.UserId
+		return m.BuyerId
+	}
+	return ""
+}
+
+func (m *MsgCreateTransaction) GetSellerId() string {
+	if m != nil {
+		return m.SellerId
 	}
 	return ""
 }
@@ -211,13 +219,14 @@ type MsgUpdateTransaction struct {
 	AuctionId   string `protobuf:"bytes,4,opt,name=auctionId,proto3" json:"auctionId,omitempty"`
 	ItemId      string `protobuf:"bytes,5,opt,name=itemId,proto3" json:"itemId,omitempty"`
 	TransType   string `protobuf:"bytes,6,opt,name=transType,proto3" json:"transType,omitempty"`
-	UserId      string `protobuf:"bytes,7,opt,name=userId,proto3" json:"userId,omitempty"`
-	TransDate   string `protobuf:"bytes,8,opt,name=transDate,proto3" json:"transDate,omitempty"`
-	HammerTime  string `protobuf:"bytes,9,opt,name=hammerTime,proto3" json:"hammerTime,omitempty"`
-	HammerPrice string `protobuf:"bytes,10,opt,name=hammerPrice,proto3" json:"hammerPrice,omitempty"`
-	Details     string `protobuf:"bytes,11,opt,name=details,proto3" json:"details,omitempty"`
-	Status      string `protobuf:"bytes,12,opt,name=status,proto3" json:"status,omitempty"`
-	LastDate    string `protobuf:"bytes,13,opt,name=lastDate,proto3" json:"lastDate,omitempty"`
+	BuyerId     string `protobuf:"bytes,7,opt,name=buyerId,proto3" json:"buyerId,omitempty"`
+	SellerId    string `protobuf:"bytes,8,opt,name=sellerId,proto3" json:"sellerId,omitempty"`
+	TransDate   string `protobuf:"bytes,9,opt,name=transDate,proto3" json:"transDate,omitempty"`
+	HammerTime  string `protobuf:"bytes,10,opt,name=hammerTime,proto3" json:"hammerTime,omitempty"`
+	HammerPrice string `protobuf:"bytes,11,opt,name=hammerPrice,proto3" json:"hammerPrice,omitempty"`
+	Details     string `protobuf:"bytes,12,opt,name=details,proto3" json:"details,omitempty"`
+	Status      string `protobuf:"bytes,13,opt,name=status,proto3" json:"status,omitempty"`
+	LastDate    string `protobuf:"bytes,14,opt,name=lastDate,proto3" json:"lastDate,omitempty"`
 }
 
 func (m *MsgUpdateTransaction) Reset()         { *m = MsgUpdateTransaction{} }
@@ -295,9 +304,16 @@ func (m *MsgUpdateTransaction) GetTransType() string {
 	return ""
 }
 
-func (m *MsgUpdateTransaction) GetUserId() string {
+func (m *MsgUpdateTransaction) GetBuyerId() string {
 	if m != nil {
-		return m.UserId
+		return m.BuyerId
+	}
+	return ""
+}
+
+func (m *MsgUpdateTransaction) GetSellerId() string {
+	if m != nil {
+		return m.SellerId
 	}
 	return ""
 }
@@ -480,37 +496,38 @@ func init() {
 func init() { proto.RegisterFile("trans/tx.proto", fileDescriptor_fafbc61d59eabb4e) }
 
 var fileDescriptor_fafbc61d59eabb4e = []byte{
-	// 477 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0x4d, 0x6f, 0xd3, 0x30,
-	0x18, 0xc7, 0x9b, 0xb4, 0xeb, 0xcb, 0xd3, 0x31, 0x69, 0x16, 0x9a, 0xac, 0x69, 0xb2, 0xa6, 0x9e,
-	0x40, 0x42, 0x89, 0x60, 0x5c, 0xb8, 0x21, 0xb6, 0x4b, 0x0f, 0x93, 0x50, 0x55, 0x2e, 0xdc, 0xbc,
-	0xe4, 0x51, 0x6b, 0x68, 0x9a, 0xc8, 0x76, 0xb5, 0xed, 0x5b, 0xf0, 0xb1, 0x38, 0xee, 0xc8, 0x11,
-	0xb5, 0x7c, 0x00, 0x0e, 0x7c, 0x00, 0x64, 0x3b, 0x29, 0x15, 0xa9, 0xc3, 0xcb, 0xf1, 0xff, 0xbc,
-	0xfb, 0xf9, 0xd9, 0x86, 0x23, 0x2d, 0xf9, 0x52, 0xc5, 0xfa, 0x2e, 0x2a, 0x64, 0xae, 0x73, 0x72,
-	0xf2, 0x81, 0x27, 0x1f, 0x9f, 0x5f, 0xbc, 0x8a, 0xb8, 0xd4, 0xc9, 0x9c, 0x8b, 0x65, 0x64, 0x03,
-	0x46, 0xdf, 0x42, 0x78, 0x7c, 0xad, 0x66, 0x97, 0x12, 0xb9, 0xc6, 0xa9, 0x31, 0xf1, 0x44, 0x8b,
-	0x7c, 0x49, 0x28, 0xf4, 0x12, 0x63, 0xcc, 0x25, 0x0d, 0xce, 0x83, 0x27, 0x83, 0x49, 0x25, 0x8d,
-	0x47, 0x62, 0x32, 0xbd, 0x2f, 0x90, 0x86, 0xce, 0x53, 0x4a, 0x72, 0x06, 0x03, 0xbe, 0xb2, 0xe9,
-	0xe3, 0x94, 0xb6, 0xad, 0xef, 0x97, 0x81, 0x9c, 0x40, 0x57, 0x68, 0xcc, 0xc6, 0x29, 0xed, 0x58,
-	0x57, 0xa9, 0x4c, 0x96, 0x9d, 0xc5, 0x56, 0x3c, 0x70, 0x59, 0x5b, 0x83, 0xc9, 0x5a, 0x29, 0x94,
-	0xe3, 0x94, 0x76, 0x5d, 0x96, 0x53, 0xdb, 0xac, 0x2b, 0xae, 0x91, 0xf6, 0x76, 0xb2, 0x8c, 0x81,
-	0x30, 0x80, 0x39, 0xcf, 0x32, 0x94, 0x53, 0x91, 0x21, 0xed, 0x5b, 0xf7, 0x8e, 0x85, 0x9c, 0xc3,
-	0xd0, 0xa9, 0xb7, 0x52, 0x24, 0x48, 0x07, 0x36, 0x60, 0xd7, 0x64, 0x4e, 0x99, 0xa2, 0xe6, 0x62,
-	0xa1, 0x28, 0xb8, 0x53, 0x96, 0xd2, 0x4c, 0xa4, 0x34, 0xd7, 0x2b, 0x45, 0x87, 0x6e, 0x22, 0xa7,
-	0xc8, 0x29, 0xf4, 0x17, 0x5c, 0x69, 0x3b, 0xd0, 0xa1, 0xf5, 0x6c, 0xf5, 0x28, 0x82, 0xb3, 0x7d,
-	0x5b, 0x9e, 0xa0, 0x2a, 0xf2, 0xa5, 0x42, 0x72, 0x04, 0xa1, 0x48, 0xed, 0xa2, 0x3b, 0x93, 0x50,
-	0xa4, 0xa3, 0x1f, 0x0e, 0xcb, 0xbb, 0x22, 0xfd, 0x6b, 0x2c, 0xae, 0x44, 0x58, 0x95, 0xd8, 0xc5,
-	0xd4, 0x6e, 0xc0, 0xd4, 0xf1, 0x63, 0x3a, 0xf0, 0x63, 0xea, 0xfa, 0x31, 0xf5, 0xfc, 0x98, 0xfa,
-	0xcd, 0x98, 0x06, 0x7f, 0xc2, 0x04, 0x8d, 0x98, 0x86, 0x3e, 0x4c, 0x87, 0x5e, 0x4c, 0x8f, 0x7e,
-	0xc3, 0xc4, 0x2c, 0xa6, 0xda, 0xd6, 0x2b, 0x4c, 0xa3, 0xd7, 0x96, 0xca, 0x15, 0x2e, 0xf0, 0x3f,
-	0xa9, 0x94, 0x1d, 0x6a, 0x15, 0xaa, 0x0e, 0x2f, 0xbe, 0x87, 0xd0, 0xbe, 0x56, 0x33, 0x72, 0x0b,
-	0xc7, 0xf5, 0x37, 0xf9, 0x2c, 0xda, 0xff, 0x8a, 0xa3, 0x7d, 0x77, 0xeb, 0xf4, 0xe5, 0xbf, 0x44,
-	0x6f, 0x6f, 0xe2, 0x2d, 0x1c, 0xd7, 0x6f, 0x5d, 0x53, 0xe3, 0x5a, 0x74, 0x63, 0x63, 0xef, 0x6e,
-	0x4d, 0xe3, 0xfa, 0x62, 0x9b, 0x1a, 0xd7, 0xa2, 0x1b, 0x1b, 0x7b, 0x57, 0xfe, 0xe6, 0xf2, 0xf3,
-	0x9a, 0x05, 0x0f, 0x6b, 0x16, 0x7c, 0x5d, 0xb3, 0xe0, 0xd3, 0x86, 0xb5, 0x1e, 0x36, 0xac, 0xf5,
-	0x65, 0xc3, 0x5a, 0xef, 0x9f, 0xce, 0x84, 0x9e, 0xaf, 0x6e, 0xa2, 0x24, 0xcf, 0xe2, 0xb2, 0x72,
-	0x5c, 0x55, 0x8e, 0xef, 0xe2, 0xf2, 0x8b, 0xbd, 0x2f, 0x50, 0xdd, 0x74, 0xed, 0x37, 0x7b, 0xf1,
-	0x33, 0x00, 0x00, 0xff, 0xff, 0xee, 0x15, 0x58, 0x83, 0x78, 0x05, 0x00, 0x00,
+	// 494 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0x4f, 0x6f, 0xd3, 0x30,
+	0x18, 0xc6, 0x9b, 0xb4, 0xeb, 0x1f, 0x77, 0xab, 0x34, 0x0b, 0x4d, 0xd6, 0x34, 0x59, 0x53, 0x4f,
+	0x20, 0xa1, 0x44, 0x30, 0x2e, 0xdc, 0x10, 0xdb, 0xa5, 0x87, 0x49, 0xa8, 0x2a, 0x17, 0x6e, 0x6e,
+	0xf2, 0xaa, 0x35, 0x24, 0x4d, 0x64, 0xbb, 0xda, 0x7a, 0xe5, 0x13, 0x20, 0x3e, 0x15, 0xc7, 0x1d,
+	0x39, 0xa2, 0xf6, 0x0b, 0xf0, 0x11, 0x90, 0xed, 0xa4, 0x44, 0xa4, 0x31, 0xb0, 0xe3, 0xf3, 0xbe,
+	0xf6, 0xf3, 0xbc, 0xf1, 0xcf, 0x31, 0x1a, 0x29, 0xc1, 0x56, 0x32, 0x54, 0xf7, 0x41, 0x2e, 0x32,
+	0x95, 0xe1, 0xb3, 0x8f, 0x2c, 0xfa, 0xf4, 0xe2, 0xea, 0x75, 0xc0, 0x84, 0x8a, 0x96, 0x8c, 0xaf,
+	0x02, 0xb3, 0x60, 0xfc, 0xb9, 0x8d, 0x9e, 0xdc, 0xca, 0xc5, 0xb5, 0x00, 0xa6, 0x60, 0xa6, 0x4b,
+	0x2c, 0x52, 0x3c, 0x5b, 0x61, 0x82, 0x7a, 0x91, 0x2e, 0x66, 0x82, 0x78, 0x97, 0xde, 0xd3, 0xc1,
+	0xb4, 0x94, 0xba, 0x23, 0x20, 0x9a, 0x6d, 0x72, 0x20, 0xbe, 0xed, 0x14, 0x12, 0x5f, 0xa0, 0x01,
+	0x5b, 0x9b, 0xed, 0x93, 0x98, 0xb4, 0x4d, 0xef, 0x77, 0x01, 0x9f, 0xa1, 0x2e, 0x57, 0x90, 0x4e,
+	0x62, 0xd2, 0x31, 0xad, 0x42, 0xe9, 0x5d, 0x66, 0x16, 0xe3, 0x78, 0x64, 0x77, 0xed, 0x0b, 0x3a,
+	0x6d, 0xbe, 0xde, 0x80, 0x98, 0xc4, 0xa4, 0x6b, 0xd3, 0x0a, 0x89, 0xcf, 0x51, 0x5f, 0x42, 0x92,
+	0x98, 0x56, 0xcf, 0xb4, 0xf6, 0x7a, 0xef, 0x79, 0xc3, 0x14, 0x90, 0x7e, 0xc5, 0x53, 0x17, 0x30,
+	0x45, 0x68, 0xc9, 0xd2, 0x14, 0xc4, 0x8c, 0xa7, 0x40, 0x06, 0xa6, 0x5d, 0xa9, 0xe0, 0x4b, 0x34,
+	0xb4, 0xea, 0x9d, 0xe0, 0x11, 0x10, 0x64, 0x16, 0x54, 0x4b, 0x7a, 0xaa, 0x18, 0x14, 0xe3, 0x89,
+	0x24, 0x43, 0x3b, 0x55, 0x21, 0xf5, 0x57, 0x4a, 0xc5, 0xd4, 0x5a, 0x92, 0x63, 0xfb, 0x95, 0x56,
+	0xe9, 0x69, 0x13, 0x26, 0x95, 0x19, 0xe8, 0xc4, 0x4e, 0x5b, 0xea, 0x71, 0x80, 0x2e, 0x0e, 0x31,
+	0x98, 0x82, 0xcc, 0xb3, 0x95, 0x04, 0x3c, 0x42, 0x3e, 0x8f, 0x0d, 0x86, 0xce, 0xd4, 0xe7, 0xf1,
+	0xf8, 0xab, 0x85, 0xf6, 0x3e, 0x8f, 0xff, 0x19, 0x9a, 0xb5, 0xf0, 0x4b, 0x8b, 0x2a, 0xc4, 0xb6,
+	0x03, 0x62, 0xa7, 0x19, 0xe2, 0x51, 0x33, 0xc4, 0xae, 0x03, 0x62, 0xaf, 0x19, 0x62, 0xdf, 0x05,
+	0x71, 0xe0, 0x86, 0x88, 0xfe, 0x06, 0x71, 0xe8, 0x84, 0x78, 0xdc, 0x04, 0xf1, 0xa4, 0x11, 0xe2,
+	0xe8, 0x0f, 0x88, 0xd4, 0x40, 0xac, 0x31, 0x29, 0x21, 0x8e, 0xdf, 0x18, 0x66, 0x37, 0x90, 0xc0,
+	0x23, 0x99, 0x15, 0x09, 0x35, 0x87, 0x32, 0xe1, 0xe5, 0x4f, 0x1f, 0xb5, 0x6f, 0xe5, 0x02, 0xdf,
+	0xa1, 0xd3, 0xfa, 0xff, 0xfc, 0x3c, 0x38, 0xfc, 0x02, 0x04, 0x87, 0x6e, 0xde, 0xf9, 0xab, 0xff,
+	0x59, 0xbd, 0xbf, 0xa7, 0x77, 0xe8, 0xb4, 0x7e, 0x27, 0x5d, 0xc1, 0xb5, 0xd5, 0xce, 0xe0, 0xc6,
+	0xb3, 0xd5, 0xc1, 0xf5, 0x83, 0x75, 0x05, 0xd7, 0x56, 0x3b, 0x83, 0x1b, 0x8f, 0xfc, 0xed, 0xf5,
+	0xb7, 0x2d, 0xf5, 0x1e, 0xb6, 0xd4, 0xfb, 0xb1, 0xa5, 0xde, 0x97, 0x1d, 0x6d, 0x3d, 0xec, 0x68,
+	0xeb, 0xfb, 0x8e, 0xb6, 0x3e, 0x3c, 0x5b, 0x70, 0xb5, 0x5c, 0xcf, 0x83, 0x28, 0x4b, 0xc3, 0xc2,
+	0x39, 0x2c, 0x9d, 0xc3, 0xfb, 0xb0, 0x78, 0x9e, 0x37, 0x39, 0xc8, 0x79, 0xd7, 0x3c, 0xd1, 0x57,
+	0xbf, 0x02, 0x00, 0x00, 0xff, 0xff, 0xa4, 0xd3, 0xf6, 0xbd, 0xb4, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -692,47 +709,54 @@ func (m *MsgCreateTransaction) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.LastDate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.LastDate)))
 		i--
-		dAtA[i] = 0x62
+		dAtA[i] = 0x6a
 	}
 	if len(m.Status) > 0 {
 		i -= len(m.Status)
 		copy(dAtA[i:], m.Status)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Status)))
 		i--
-		dAtA[i] = 0x5a
+		dAtA[i] = 0x62
 	}
 	if len(m.Details) > 0 {
 		i -= len(m.Details)
 		copy(dAtA[i:], m.Details)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Details)))
 		i--
-		dAtA[i] = 0x52
+		dAtA[i] = 0x5a
 	}
 	if len(m.HammerPrice) > 0 {
 		i -= len(m.HammerPrice)
 		copy(dAtA[i:], m.HammerPrice)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.HammerPrice)))
 		i--
-		dAtA[i] = 0x4a
+		dAtA[i] = 0x52
 	}
 	if len(m.HammerTime) > 0 {
 		i -= len(m.HammerTime)
 		copy(dAtA[i:], m.HammerTime)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.HammerTime)))
 		i--
-		dAtA[i] = 0x42
+		dAtA[i] = 0x4a
 	}
 	if len(m.TransDate) > 0 {
 		i -= len(m.TransDate)
 		copy(dAtA[i:], m.TransDate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.TransDate)))
 		i--
+		dAtA[i] = 0x42
+	}
+	if len(m.SellerId) > 0 {
+		i -= len(m.SellerId)
+		copy(dAtA[i:], m.SellerId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.SellerId)))
+		i--
 		dAtA[i] = 0x3a
 	}
-	if len(m.UserId) > 0 {
-		i -= len(m.UserId)
-		copy(dAtA[i:], m.UserId)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.UserId)))
+	if len(m.BuyerId) > 0 {
+		i -= len(m.BuyerId)
+		copy(dAtA[i:], m.BuyerId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.BuyerId)))
 		i--
 		dAtA[i] = 0x32
 	}
@@ -827,47 +851,54 @@ func (m *MsgUpdateTransaction) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.LastDate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.LastDate)))
 		i--
-		dAtA[i] = 0x6a
+		dAtA[i] = 0x72
 	}
 	if len(m.Status) > 0 {
 		i -= len(m.Status)
 		copy(dAtA[i:], m.Status)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Status)))
 		i--
-		dAtA[i] = 0x62
+		dAtA[i] = 0x6a
 	}
 	if len(m.Details) > 0 {
 		i -= len(m.Details)
 		copy(dAtA[i:], m.Details)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Details)))
 		i--
-		dAtA[i] = 0x5a
+		dAtA[i] = 0x62
 	}
 	if len(m.HammerPrice) > 0 {
 		i -= len(m.HammerPrice)
 		copy(dAtA[i:], m.HammerPrice)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.HammerPrice)))
 		i--
-		dAtA[i] = 0x52
+		dAtA[i] = 0x5a
 	}
 	if len(m.HammerTime) > 0 {
 		i -= len(m.HammerTime)
 		copy(dAtA[i:], m.HammerTime)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.HammerTime)))
 		i--
-		dAtA[i] = 0x4a
+		dAtA[i] = 0x52
 	}
 	if len(m.TransDate) > 0 {
 		i -= len(m.TransDate)
 		copy(dAtA[i:], m.TransDate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.TransDate)))
 		i--
+		dAtA[i] = 0x4a
+	}
+	if len(m.SellerId) > 0 {
+		i -= len(m.SellerId)
+		copy(dAtA[i:], m.SellerId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.SellerId)))
+		i--
 		dAtA[i] = 0x42
 	}
-	if len(m.UserId) > 0 {
-		i -= len(m.UserId)
-		copy(dAtA[i:], m.UserId)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.UserId)))
+	if len(m.BuyerId) > 0 {
+		i -= len(m.BuyerId)
+		copy(dAtA[i:], m.BuyerId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.BuyerId)))
 		i--
 		dAtA[i] = 0x3a
 	}
@@ -1032,7 +1063,11 @@ func (m *MsgCreateTransaction) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.UserId)
+	l = len(m.BuyerId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.SellerId)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -1104,7 +1139,11 @@ func (m *MsgUpdateTransaction) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.UserId)
+	l = len(m.BuyerId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.SellerId)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -1366,7 +1405,7 @@ func (m *MsgCreateTransaction) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field UserId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field BuyerId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1394,9 +1433,41 @@ func (m *MsgCreateTransaction) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.UserId = string(dAtA[iNdEx:postIndex])
+			m.BuyerId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SellerId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SellerId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TransDate", wireType)
 			}
@@ -1428,7 +1499,7 @@ func (m *MsgCreateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.TransDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 8:
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field HammerTime", wireType)
 			}
@@ -1460,7 +1531,7 @@ func (m *MsgCreateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.HammerTime = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 9:
+		case 10:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field HammerPrice", wireType)
 			}
@@ -1492,7 +1563,7 @@ func (m *MsgCreateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.HammerPrice = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 10:
+		case 11:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Details", wireType)
 			}
@@ -1524,7 +1595,7 @@ func (m *MsgCreateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.Details = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 11:
+		case 12:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
@@ -1556,7 +1627,7 @@ func (m *MsgCreateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.Status = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 12:
+		case 13:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field LastDate", wireType)
 			}
@@ -1888,7 +1959,7 @@ func (m *MsgUpdateTransaction) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field UserId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field BuyerId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1916,9 +1987,41 @@ func (m *MsgUpdateTransaction) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.UserId = string(dAtA[iNdEx:postIndex])
+			m.BuyerId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SellerId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SellerId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TransDate", wireType)
 			}
@@ -1950,7 +2053,7 @@ func (m *MsgUpdateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.TransDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 9:
+		case 10:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field HammerTime", wireType)
 			}
@@ -1982,7 +2085,7 @@ func (m *MsgUpdateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.HammerTime = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 10:
+		case 11:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field HammerPrice", wireType)
 			}
@@ -2014,7 +2117,7 @@ func (m *MsgUpdateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.HammerPrice = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 11:
+		case 12:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Details", wireType)
 			}
@@ -2046,7 +2149,7 @@ func (m *MsgUpdateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.Details = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 12:
+		case 13:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
@@ -2078,7 +2181,7 @@ func (m *MsgUpdateTransaction) Unmarshal(dAtA []byte) error {
 			}
 			m.Status = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 13:
+		case 14:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field LastDate", wireType)
 			}

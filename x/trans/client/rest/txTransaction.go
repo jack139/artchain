@@ -19,7 +19,8 @@ type createTransactionRequest struct {
 	AuctionId   string       `json:"auctionId"`
 	ItemId      string       `json:"itemId"`
 	TransType   string       `json:"transType"`
-	UserId      string       `json:"userId"`
+	BuyerId     string       `json:"buyerId"`
+	SellerId    string       `json:"sellerId"`
 	TransDate   string       `json:"transDate"`
 	HammerTime  string       `json:"hammerTime"`
 	HammerPrice string       `json:"hammerPrice"`
@@ -54,7 +55,9 @@ func createTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedTransType := req.TransType
 
-		parsedUserId := req.UserId
+		parsedBuyerId := req.BuyerId
+
+		parsedSellerId := req.SellerId
 
 		parsedTransDate := req.TransDate
 
@@ -72,7 +75,8 @@ func createTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedAuctionId,
 			parsedItemId,
 			parsedTransType,
-			parsedUserId,
+			parsedBuyerId,
+			parsedSellerId,
 			parsedTransDate,
 			parsedHammerTime,
 			parsedHammerPrice,
@@ -92,7 +96,8 @@ type updateTransactionRequest struct {
 	AuctionId   string       `json:"auctionId"`
 	ItemId      string       `json:"itemId"`
 	TransType   string       `json:"transType"`
-	UserId      string       `json:"userId"`
+	BuyerId     string       `json:"buyerId"`
+	SellerId    string       `json:"sellerId"`
 	TransDate   string       `json:"transDate"`
 	HammerTime  string       `json:"hammerTime"`
 	HammerPrice string       `json:"hammerPrice"`
@@ -132,7 +137,9 @@ func updateTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 
 		parsedTransType := req.TransType
 
-		parsedUserId := req.UserId
+		parsedBuyerId := req.BuyerId
+
+		parsedSellerId := req.SellerId
 
 		parsedTransDate := req.TransDate
 
@@ -151,7 +158,8 @@ func updateTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 			parsedAuctionId,
 			parsedItemId,
 			parsedTransType,
-			parsedUserId,
+			parsedBuyerId,
+			parsedSellerId,
 			parsedTransDate,
 			parsedHammerTime,
 			parsedHammerPrice,

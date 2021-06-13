@@ -8,7 +8,7 @@ import (
 var _ sdk.Msg = &MsgCreateTransaction{}
 
 func NewMsgCreateTransaction(creator string, recType string, auctionId string, itemId string, transType string, 
-	userId string, transDate string, hammerTime string, hammerPrice string, details string, 
+	buyerId string, sellerId string, transDate string, hammerTime string, hammerPrice string, details string, 
 	status string, lastDate string) *MsgCreateTransaction {
 	return &MsgCreateTransaction{
 		Creator:     creator,
@@ -16,7 +16,8 @@ func NewMsgCreateTransaction(creator string, recType string, auctionId string, i
 		AuctionId:   auctionId,
 		ItemId:      itemId,
 		TransType:   transType,
-		UserId:      userId,
+		BuyerId:     buyerId,
+		SellerId:    sellerId,
 		TransDate:   transDate,
 		HammerTime:  hammerTime,
 		HammerPrice: hammerPrice,
@@ -58,7 +59,7 @@ func (msg *MsgCreateTransaction) ValidateBasic() error {
 var _ sdk.Msg = &MsgUpdateTransaction{}
 
 func NewMsgUpdateTransaction(creator string, id uint64, recType string, auctionId string, 
-	itemId string, transType string, userId string, transDate string, hammerTime string, 
+	itemId string, transType string, buyerId string, sellerId string, transDate string, hammerTime string, 
 	hammerPrice string, details string, status string, lastDate string) *MsgUpdateTransaction {
 	return &MsgUpdateTransaction{
 		Id:          id,
@@ -67,7 +68,8 @@ func NewMsgUpdateTransaction(creator string, id uint64, recType string, auctionI
 		AuctionId:   auctionId,
 		ItemId:      itemId,
 		TransType:   transType,
-		UserId:      userId,
+		BuyerId:     buyerId,
+		SellerId:    sellerId,
 		TransDate:   transDate,
 		HammerTime:  hammerTime,
 		HammerPrice: hammerPrice,
