@@ -1,9 +1,7 @@
 package cmd
 
 import (
-	"log"
 	"errors"
-	"time"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 
@@ -22,21 +20,6 @@ func HttpCliCmd() *cobra.Command {
 
 			// 保存 cmd
 			httphelper.HttpCmd = cmd
-
-			// 设置定时任务 : 15 秒 一次
-			ticker1 := time.NewTicker(15 * time.Second)
-			// 一定要调用Stop()，回收资源
-			defer ticker1.Stop()
-			go func(t *time.Ticker) {
-				for {
-					// 每5秒中从chan t.C 中读取一次
-					<-t.C
-					// 检查拍卖时间，进行状态转换
-					if err := checkAuction(); err!=nil{
-						log.Println(err.Error())
-					}
-				}
-			}(ticker1)
 
 			// 启动 http 服务
 			httpcli.RunServer(args[0])

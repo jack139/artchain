@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"bytes"
 	"time"
+	"fmt"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -78,6 +79,26 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 		reservedPrice = (*auctionMap)["reservePrice"].(string)
 	}
 
+	// 修改链上数据
+	respData, err := auctionModify(auctionMap, callerAddr, auctionId, 
+		auctionHouseId, reservedPrice, (*auctionMap)["status"].(string))
+	if err != nil {
+		helper.RespError(ctx, 9010, err.Error())
+		return
+	}
+
+	// 返回区块id
+	resp := map[string]interface{}{
+		"height" : (*respData)["height"].(string),  // 区块高度
+	}
+
+	helper.RespJson(ctx, &resp)
+}
+
+
+func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
+	auctionId uint64, auctionHouseId string, reservedPrice string, status string) (*map[string]interface{}, error) {
+
 	// 构建lastDate
 	lastDateMap := (*auctionMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
@@ -87,15 +108,13 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
-		helper.RespError(ctx, 9004, err.Error())
-		return
+		return nil, err
 	}
 
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
-		helper.RespError(ctx, 9015, err.Error())
-		return
+		return nil, err
 	}
 	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*auctionMap)["creator"].(string))  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
@@ -103,8 +122,7 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
 	if err != nil {
-		helper.RespError(ctx, 9009, err.Error())
-		return
+		return nil, err
 	}
 
 	// 数据上链
@@ -123,8 +141,7 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
-		helper.RespError(ctx, 9010, err.Error())
-		return
+		return nil, err
 	}
 
 	// 设置 接收输出
@@ -133,8 +150,7 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 
 	err = tx.GenerateOrBroadcastTxCLI(clientCtx, helper.HttpCmd.Flags(), msg)
 	if err != nil {
-		helper.RespError(ctx, 9011, err.Error())
-		return		
+		return nil, err
 	}
 
 	// 结果输出
@@ -146,20 +162,13 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 	var respData map[string]interface{}
 
 	if err := json.Unmarshal(respBytes, &respData); err != nil {
-		helper.RespError(ctx, 9012, err.Error())
-		return
+		return nil, err
 	}
 
 	// code==0 提交成功
 	if respData["code"].(float64)!=0 { 
-		helper.RespError(ctx, 9099, buf.String())  ///  提交失败
-		return
+		return nil, fmt.Errorf("Tx fail: %s", buf.String())
 	}
 
-	// 返回区块id
-	resp := map[string]interface{}{
-		"height" : respData["height"].(string),  // 区块高度
-	}
-
-	helper.RespJson(ctx, &resp)
+	return &respData, nil
 }
