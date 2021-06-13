@@ -1,14 +1,16 @@
 package keeper
 
 import (
+	"github.com/jack139/artchain/x/auction/types"
+
 	"context"
 	"strings"
+	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/jack139/artchain/x/auction/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -64,4 +66,38 @@ func (k Keeper) Bid(c context.Context, req *types.QueryGetBidRequest) (*types.Qu
 	k.cdc.MustUnmarshalBinaryBare(store.Get(GetBidIDBytes(req.Id)), &bid)
 
 	return &types.QueryGetBidResponse{Bid: &bid}, nil
+}
+
+
+// 获取最高出价
+func (k Keeper) BidHigh(c context.Context, req *types.QueryGetHighBidRequest) (*types.QueryGetHighBidResponse, error) {
+	ctx := sdk.UnwrapSDKContext(c)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BidKey+req.AuctionId))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	var bidHigh *types.Bid
+
+	bidHigh = nil
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Bid
+		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+
+		if bidHigh==nil {
+			bidHigh = &val
+			continue
+		}
+
+		if s1, err := strconv.ParseFloat(val.BidPrice, 64); err == nil {
+			if s2, err := strconv.ParseFloat(bidHigh.BidPrice, 64); err == nil {
+				if s1>s2 {
+					bidHigh = &val
+				}
+			}
+		}
+	}
+
+	return &types.QueryGetHighBidResponse{Bid: bidHigh}, nil
 }

@@ -5,9 +5,9 @@ from datetime import datetime
 
 urllib3.disable_warnings()
 
-with open("doc/auction_flow.png", 'rb') as f:
-    img_data = f.read()
-img_data = base64.b64encode(img_data).decode('utf-8')
+#with open("doc/auction_flow.png", 'rb') as f:
+#    img_data = f.read()
+#img_data = base64.b64encode(img_data).decode('utf-8')
 
 # 生成参数字符串
 def gen_param_str(param1):
@@ -33,7 +33,7 @@ if __name__ == '__main__':
             #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
             #'chain_addr'   : 'bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw', # test123
 
-            'caller_addr' : 'bid1art17qppfv5k29r9txqu8sj3l6vfwtt90rr82r9gt7', # op2
+            #'caller_addr' : 'bid1art17qppfv5k29r9txqu8sj3l6vfwtt90rr82r9gt7', # op2
             #'login_name' : 'test123',
             #'user_type' : 'TRD',
             #'email' : 'abc@qq.com',
@@ -55,7 +55,7 @@ if __name__ == '__main__':
             #'page' : 1,
             #'limit' : 100,
 
-            'item_id' : "3",
+            #'item_id' : "3",
             #'reviewer_addr' : "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
             #'detail' : "aaaaabbbbbb 哈哈1111111",
 
@@ -65,7 +65,7 @@ if __name__ == '__main__':
             #'reserved_price' : '2002',
 
             #'buyer_addr' :  "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
-            #'auction_id' : "1",
+            'auction_id' : "2",
             #'item_id' : "2",
             #'trans_type' : "BID",
             #'hammer_time' : "2021-01-01",
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
             #'status' : 'WAIT',
 
-            'image' : img_data,
+            #'image' : img_data,
 
             #'hash' : 'QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3',
         }
@@ -135,8 +135,9 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/auction_house/list'
     #url = host+'/api/r1/query/item/list_by_status'
     #url = host+'/api/r1/query/review/list_by_status'
+    url = host+'/api/r1/query/bid/highest'
     
-    url = host+'/api/r1/ipfs/upload/image'
+    #url = host+'/api/r1/ipfs/upload/image'
     #url = host+'/api/r1/ipfs/download'
     
 

@@ -15,6 +15,9 @@ service Query {
 	rpc Bid(QueryGetBidRequest) returns (QueryGetBidResponse) {
 		option (google.api.http).get = "/jack139/artchain/auction/bid/{id}";
 	}
+	rpc BidHigh(QueryGetHighBidRequest) returns (QueryGetHighBidResponse) {
+		option (google.api.http).get = "/jack139/artchain/auction/bidhigh/{auctionId}";
+	}
 	rpc BidAll(QueryAllBidRequest) returns (QueryAllBidResponse) {
 		option (google.api.http).get = "/jack139/artchain/auction/bid";
 	}
@@ -41,6 +44,14 @@ message QueryGetBidRequest {
 }
 
 message QueryGetBidResponse {
+	Bid Bid = 1;
+}
+
+message QueryGetHighBidRequest {
+	string auctionId = 1;
+}
+
+message QueryGetHighBidResponse {
 	Bid Bid = 1;
 }
 
