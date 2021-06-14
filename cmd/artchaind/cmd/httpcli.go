@@ -34,6 +34,7 @@ func HttpCliCmd() *cobra.Command {
 	cmd.Flags().String(flags.FlagFrom, "", "Name or address of private key with which to sign")
 	cmd.Flags().String(flags.FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")
 	cmd.Flags().BoolP(flags.FlagSkipConfirmation, "y", true, "Skip tx broadcasting prompt confirmation")
+	cmd.Flags().Float64(flags.FlagGasAdjustment, 1.5, "adjustment gas")
 
 	return cmd
 }

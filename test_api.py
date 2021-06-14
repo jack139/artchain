@@ -33,7 +33,7 @@ if __name__ == '__main__':
             #'chain_addr'   : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004', # test1
             #'chain_addr'   : 'bid1art18vjv9a6t85mf8drfnl5pxv4ksas5dm7p5y3hxw', # test123
 
-            #'caller_addr' : 'bid1art17qppfv5k29r9txqu8sj3l6vfwtt90rr82r9gt7', # op2
+            'caller_addr' : 'bid1art17qppfv5k29r9txqu8sj3l6vfwtt90rr82r9gt7', # op2
             #'login_name' : 'test123',
             #'user_type' : 'TRD',
             #'email' : 'abc@qq.com',
@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            #'id' : '3',
+            'id' : '2',
 
             #'desc' : '测试物品3',
             #'date' : '1911s',
@@ -65,18 +65,21 @@ if __name__ == '__main__':
             #'reserved_price' : '2002',
 
             #'buyer_addr' :  "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
-            'auction_id' : "2",
+            #'auction_id' : "2",
             #'item_id' : "2",
             #'trans_type' : "BID",
             #'hammer_time' : "2021-01-01",
             #'hammer_price' : "1000",
             #'details' : "测试测试测试"
 
-            #'status' : 'WAIT',
+            'status' : 'OPEN',
 
             #'image' : img_data,
 
             #'hash' : 'QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3',
+
+            'open_date' : '2021-06-14 10:00',
+            'close_date' : '2021-06-14 11:00',
         }
     }
 
@@ -118,6 +121,7 @@ if __name__ == '__main__':
     #url = host+'/api/r1/biz/auction/new'
     #url = host+'/api/r1/biz/auction/modify'
     #url = host+'/api/r1/biz/trans/new'
+    url = host+'/api/r1/biz/audit/auction'
 
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
@@ -135,7 +139,7 @@ if __name__ == '__main__':
     #url = host+'/api/r1/query/auction_house/list'
     #url = host+'/api/r1/query/item/list_by_status'
     #url = host+'/api/r1/query/review/list_by_status'
-    url = host+'/api/r1/query/bid/highest'
+    #url = host+'/api/r1/query/bid/highest'
     
     #url = host+'/api/r1/ipfs/upload/image'
     #url = host+'/api/r1/ipfs/download'

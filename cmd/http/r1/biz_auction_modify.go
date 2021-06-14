@@ -139,7 +139,7 @@ func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
 		(*auctionMap)["SellerId"].(string), //SellerId string, 
 		(*auctionMap)["requestDate"].(string), //requestDate string, 
 		reservedPrice, //reservePrice string, 
-		(*auctionMap)["status"].(string), //status string, 
+		status, //status string, 
 		(*auctionMap)["openDate"].(string), //openDate string, 
 		(*auctionMap)["closeDate"].(string), //closeDate string,
 		string(lastDate), // lastDate

@@ -3,8 +3,6 @@ package r1
 import (
 	"log"
 	"time"
-	//"bytes"
-	"fmt"
 	"strings"
 	"strconv"
 	"encoding/json"
@@ -41,7 +39,7 @@ func CheckAuction() error {
 			if item["closeDate"].(string) < nowTime { // 停止拍卖
 				newStatus = "CLOSE"
 				log.Printf("auction --> CLOSE: %v", item["id"])
-			}			
+			}
 		} else {
 			continue
 		}
@@ -51,22 +49,26 @@ func CheckAuction() error {
 
 			// 检查 lastDate 字段是否正常
 			if _, ok := item["lastDate"]; !ok {
-				return fmt.Errorf("lastDate empty") // 不应该发生
+				log.Print("ERROR: lastDate empty") // 不应该发生
+				continue
 			}
 			if !strings.HasPrefix(item["lastDate"].(string), "[") {
-				return fmt.Errorf("lastDate broken") // 不应该发生
+				log.Print("ERROR: lastDate broken") // 不应该发生
+				continue
 			}
 
 			// 反序列化
 			var data2 []map[string]interface{}
 			if err := json.Unmarshal([]byte(item["lastDate"].(string)), &data2); err != nil {
-				return err
+				log.Println("ERROR: ", err.Error())
+				continue
 			}
 			item["lastDate"] = data2
 
 			auctionId, err := strconv.ParseUint(item["id"].(string), 10, 64)
 			if err != nil {
-				return err
+				log.Println("ERROR: ", err.Error())
+				continue
 			}
 
 			// 修改链上数据
@@ -78,10 +80,10 @@ func CheckAuction() error {
 				newStatus,
 			)
 			if err != nil {
-				return err
+				log.Println("ERROR: ", err.Error())
+				continue
 			}
 		}
-
 	}
 
 	return nil
