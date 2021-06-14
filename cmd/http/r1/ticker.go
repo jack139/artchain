@@ -71,7 +71,8 @@ func CheckAuction() error {
 
 			// 修改链上数据
 			_, err = auctionModify(&item, 
-				item["creator"].(string), auctionId, 
+				item["auctionHouseId"].(string), 
+				auctionId, 
 				item["auctionHouseId"].(string), 
 				item["reservePrice"].(string), 
 				newStatus,

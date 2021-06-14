@@ -54,6 +54,10 @@ func BizAuctionBid(ctx *fasthttp.RequestCtx) {
 	//       检查 auction_id 合法性, 状态
 	//       检查 buyerAddr 不是是 itemId 物品的所有人
 
+	/* 信号量 */
+	helper.AcquireSem(buyerAddr)
+	defer helper.ReleaseSem(buyerAddr)
+
 	// 构建lastDate
 	var lastDateMap []map[string]interface{}
 	lastDateMap = append(lastDateMap, map[string]interface{}{

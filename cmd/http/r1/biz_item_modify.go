@@ -90,6 +90,10 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		itemBasePrice = (*itemMap)["itemBasePrice"].(string)
 	}
 
+	/* 信号量 */
+	helper.AcquireSem((*itemMap)["creator"].(string))
+	defer helper.ReleaseSem((*itemMap)["creator"].(string))
+
 	// 构建lastDate
 	lastDateMap := (*itemMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{

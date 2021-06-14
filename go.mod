@@ -21,6 +21,7 @@ require (
 	github.com/tendermint/tendermint v0.34.9
 	github.com/tendermint/tm-db v0.6.4
 	github.com/valyala/fasthttp v1.23.0
+	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 	google.golang.org/genproto v0.0.0-20210207032614-bba0dbe2a9ea
 	google.golang.org/grpc v1.37.0
 )

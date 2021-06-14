@@ -49,6 +49,10 @@ func BizReviewNew(ctx *fasthttp.RequestCtx) {
 
 	// TODO： 检查 reviewerAddr 合法性
 
+	/* 信号量 */
+	helper.AcquireSem(reviewerAddr)
+	defer helper.ReleaseSem(reviewerAddr)
+
 	// 构建lastDate
 	var lastDateMap []map[string]interface{}
 	lastDateMap = append(lastDateMap, map[string]interface{}{

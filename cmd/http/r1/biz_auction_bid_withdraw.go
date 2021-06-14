@@ -61,6 +61,10 @@ func BizAuctionBidWithdraw(ctx *fasthttp.RequestCtx) {
 		return		
 	}
 
+	/* 信号量 */
+	helper.AcquireSem((*bidMap)["creator"].(string))
+	defer helper.ReleaseSem((*bidMap)["creator"].(string))
+
 	// 构建lastDate
 	lastDateMap := (*bidMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{

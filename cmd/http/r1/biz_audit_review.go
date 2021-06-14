@@ -67,6 +67,10 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 		return		
 	}
 
+	/* 信号量 */
+	helper.AcquireSem((*reviewMap)["creator"].(string))
+	defer helper.ReleaseSem((*reviewMap)["creator"].(string))
+
 	// 构建lastDate
 	lastDateMap := (*reviewMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{

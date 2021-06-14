@@ -11,12 +11,20 @@ import (
 	"strconv"
 	"time"
 	"os"
+	"context"
+
 	"github.com/valyala/fasthttp"
 	"github.com/Ferluci/fast-realip"
 	"github.com/spf13/cobra"
+	"golang.org/x/sync/semaphore"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+const (
+    Limit  = 1 // 同時并行运行的goroutine上限
+    Weight = 1 // 每个goroutine获取信号量资源的权重
 )
 
 var (
@@ -32,13 +40,31 @@ var (
 		"1ff3a3d2c1a8c236423ea3fe7bbdcff6": "ZDlmZjk2YmNlMTEyNDYzN2E4ZGRlMWJhMTYyZDcxZDIxMjRkYTIwZiAgLQo=",
 		"4fcf3871f4a023712bec9ed44ee4b709": "MjdjNGQxNGU3NjA1OWI0MGVmODIyN2FkOTEwYTViNDQzYTNjNTIyNSAgLQo=",
 	}
-)
 
-/* 返回值的 content-type */
-var (
+	/* 返回值的 content-type */
 	strContentType     = []byte("Content-Type")
 	strApplicationJSON = []byte("application/json")
+
+	/* 信号量 */
+	sem = map[string]*semaphore.Weighted{}
 )
+
+/* 获取信号量 */
+func AcquireSem(creator string) {
+	log.Println("Acquire S ...", creator)
+	if _, ok := sem[creator]; !ok {
+		sem[creator] = semaphore.NewWeighted(Limit)
+		log.Println("New S ...", creator, " Length: ", len(sem))
+	}
+	sem[creator].Acquire(context.Background(), Weight)
+	log.Println("Got S ...", creator)
+}
+
+/* 释放信号量 */
+func ReleaseSem(creator string) {
+	log.Println("Release semaphore ...", creator)
+	sem[creator].Release(Weight)
+}
 
 /* 处理返回值，返回json */
 func RespJson(ctx *fasthttp.RequestCtx, data *map[string]interface{}) {

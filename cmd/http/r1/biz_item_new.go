@@ -62,6 +62,9 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 
 	// TODO： 检查 itemOwnerAddr 合法性
 
+	/* 信号量 */
+	helper.AcquireSem(callerAddr)
+	defer helper.ReleaseSem(callerAddr)
 
 	// 构建lastDate
 	var lastDateMap []map[string]interface{}

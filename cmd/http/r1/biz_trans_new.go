@@ -90,6 +90,10 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 		return				
 	}
 
+	/* 信号量 */
+	helper.AcquireSem(buyerAddr)
+	defer helper.ReleaseSem(buyerAddr)
+
 	// 构建lastDate
 	var lastDateMap []map[string]interface{}
 	lastDateMap = append(lastDateMap, map[string]interface{}{
@@ -110,7 +114,7 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, buyerAddr)  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文

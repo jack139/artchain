@@ -99,6 +99,10 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
 	auctionId uint64, auctionHouseId string, reservedPrice string, status string) (*map[string]interface{}, error) {
 
+	/* 信号量 */
+	helper.AcquireSem((*auctionMap)["creator"].(string))
+	defer helper.ReleaseSem((*auctionMap)["creator"].(string))
+
 	// 构建lastDate
 	lastDateMap := (*auctionMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{

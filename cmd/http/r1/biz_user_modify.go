@@ -101,6 +101,9 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	/* 信号量 */
+	helper.AcquireSem((*userMap)["creator"].(string))
+	defer helper.ReleaseSem((*userMap)["creator"].(string))
 
 	// 构建lastDate
 	lastDateMap := (*userMap)["lastDate"].([]map[string]interface{})

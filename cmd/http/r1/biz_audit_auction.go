@@ -69,6 +69,10 @@ func BizAuditAuction(ctx *fasthttp.RequestCtx) {
 		closeDate = (*auctionMap)["closeDate"].(string)
 	}
 
+	/* 信号量 */
+	helper.AcquireSem((*auctionMap)["creator"].(string))
+	defer helper.ReleaseSem((*auctionMap)["creator"].(string))
+
 	// 构建lastDate
 	lastDateMap := (*auctionMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
