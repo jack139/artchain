@@ -2057,6 +2057,7 @@ base64后结果：
             {
                 "auction_id":"1",
                 "buyer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "seller_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
                 "details":"测试测试测试",
                 "hammer_price":"1000",
                 "hammer_time":"2021-01-01",
@@ -2122,7 +2123,8 @@ base64后结果：
     "data":{
         "trans":{
             "auction_id":"1",
-            "buyer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",评价
+            "buyer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+            "seller_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
             "details":"测试测试测试",
             "hammer_price":"1000",
             "hammer_time":"2021-01-01",
@@ -2683,6 +2685,7 @@ base64后结果：
             {
                 "auction_id":"1",
                 "buyer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "seller_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
                 "details":"测试测试测试",
                 "hammer_price":"1000",
                 "hammer_time":"2021-01-01",
