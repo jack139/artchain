@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            'id' : '2',
+            'id' : '1',
 
             #'desc' : '测试物品3',
             #'date' : '1911s',
@@ -72,14 +72,14 @@ if __name__ == '__main__':
             #'hammer_price' : "1000",
             #'details' : "测试测试测试"
 
-            'status' : 'OPEN',
+            'status' : 'INIT',
 
             #'image' : img_data,
 
             #'hash' : 'QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3',
 
             'open_date' : '2021-06-14 10:00',
-            'close_date' : '2021-06-14 11:00',
+            'close_date' : '2021-06-15 10:00',
         }
     }
 

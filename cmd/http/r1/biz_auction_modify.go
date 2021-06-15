@@ -71,17 +71,9 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 		return				
 	}
 
-	// 是否要修改？
-	if len(auctionHouseId)==0 {
-		auctionHouseId = (*auctionMap)["auctionHouseId"].(string)
-	}
-	if len(reservedPrice)==0 {
-		reservedPrice = (*auctionMap)["reservePrice"].(string)
-	}
-
 	// 修改链上数据
 	respData, err := auctionModify(auctionMap, callerAddr, auctionId, 
-		auctionHouseId, reservedPrice, (*auctionMap)["status"].(string))
+		auctionHouseId, reservedPrice, "", "", "", "edit")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return
@@ -96,8 +88,26 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 }
 
 
-func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
-	auctionId uint64, auctionHouseId string, reservedPrice string, status string) (*map[string]interface{}, error) {
+func auctionModify(auctionMap *map[string]interface{}, callerAddr string, 
+	auctionId uint64, auctionHouseId string, reservedPrice string, 
+	openDate string, closeDate string, status string, logText string) (*map[string]interface{}, error) {
+
+	// 为空串用原有值填充
+	if len(auctionHouseId)==0 {
+		auctionHouseId = (*auctionMap)["auctionHouseId"].(string)
+	}
+	if len(reservedPrice)==0 {
+		reservedPrice = (*auctionMap)["reservePrice"].(string)
+	}
+	if len(openDate)==0 {
+		openDate = (*auctionMap)["openDate"].(string)
+	}
+	if len(closeDate)==0 {
+		closeDate = (*auctionMap)["closeDate"].(string)
+	}
+	if len(status)==0 {
+		status = (*auctionMap)["status"].(string)
+	}
 
 	/* 信号量 */
 	helper.AcquireSem((*auctionMap)["creator"].(string))
@@ -107,7 +117,7 @@ func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
 	lastDateMap := (*auctionMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "edit",
+		"act": logText,
 		"date": time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
@@ -140,8 +150,8 @@ func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
 		(*auctionMap)["requestDate"].(string), //requestDate string, 
 		reservedPrice, //reservePrice string, 
 		status, //status string, 
-		(*auctionMap)["openDate"].(string), //openDate string, 
-		(*auctionMap)["closeDate"].(string), //closeDate string,
+		openDate, //openDate string, 
+		closeDate, //closeDate string,
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
