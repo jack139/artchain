@@ -17,6 +17,7 @@ import (
 
 
 /* 查询交易信息清单 */
+// cate取值: seller, buyer, item, status
 func QueryTransListByCondition(ctx *fasthttp.RequestCtx) {
 	log.Println("query_trans_list_by_condition")
 

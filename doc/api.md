@@ -76,7 +76,7 @@
 | 13 | 查询出价清单      | **/query/bid/list**    |
 | 14 | 查询最高出价         | **/query/bid/highest**     |
 | 15 | 查询出价信息       | **/query/bid/info**    |
-| 16 | 查询成交交易         | **/query/trans/list** |
+| 16 | 查询成交交易清单       | **/query/trans/list** |
 | 17 | 查询成交交易信息     | **/query/trans/info** |
 | 18 | 查询指定区块原始数据 | **/query/block/rawdata** |
 | 19 | 查询用户通证 | **/query/user/credit_balance** |
@@ -84,6 +84,7 @@
 | 21 | 指定状态的物品清单 | **/query/item/list_by_status** |
 | 22 | 指定状态的评价清单 | **/query/review/list_by_status** |
 | 23 | 指定状态的拍卖申请清单 | **/query/auction/list_by_status** |
+| 24 | 指定条件查询成交交易 | **/query/trans/list_by_condition** |
 
 
 
@@ -2563,6 +2564,83 @@ base64后结果：
     "msg":"success"
 }
 ```
+
+
+
+##### 3.24 指定条件查询交易清单
+
+请求URL
+
+> http://<host>:<port>/api/<version>/query/trans/list_by_condition
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数       | 类型   | 必填 | 说明              |
+| ---------- | ------ | ---- | ----------------- |
+| cate       | string | Y    | 查询类别          |
+| conditioin | string | Y    | 查询条件          |
+| page       | uint   | Y    | 第几页，最小为1   |
+| limit      | uint   | Y    | 每页数量，最小为1 |
+
+> cate取值： seller, buyer, item, status
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易清单数据                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "cate": "status",
+        "condition": "WAIT|PAID",
+        "page": 1, 
+        "limit": 10
+    }, 
+    "timestamp": 1619955520, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "MjQ5N2YxYjQzNzM1Y2ZmNGU1YjQ3N2U0Njg2NWM1OTEyYmY2ODc3YjAyMjAzZWYwODE1ZjljYjViZGUzMzlkZg=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "trans_list":[
+            {
+                "auction_id":"1",
+                "buyer_addr":"bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004",
+                "details":"测试测试测试",
+                "hammer_price":"1000",
+                "hammer_time":"2021-01-01",
+                "id":"0",
+                "item_id":"2",
+                "last_date":"",
+                "status":"WAIT",
+                "trans_date":"2021-05-02 19:36:05",
+                "trans_type":"BID"
+            }
+        ]
+    },
+    "msg":"success"
+}
+```
+
+
 
 
 
