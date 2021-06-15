@@ -73,7 +73,7 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 
 	// 修改链上数据
 	respData, err := auctionModify(auctionMap, callerAddr, auctionId, 
-		auctionHouseId, reservedPrice, "", "", "", "edit")
+		auctionHouseId, reservedPrice, "\x00", "\x00", "\x00", "edit")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return
@@ -87,25 +87,25 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 	helper.RespJson(ctx, &resp)
 }
 
-
+// string 参数填 "\x00" 表示不修改
 func auctionModify(auctionMap *map[string]interface{}, callerAddr string, 
 	auctionId uint64, auctionHouseId string, reservedPrice string, 
 	openDate string, closeDate string, status string, logText string) (*map[string]interface{}, error) {
 
 	// 为空串用原有值填充
-	if len(auctionHouseId)==0 {
+	if auctionHouseId=="\x00" {
 		auctionHouseId = (*auctionMap)["auctionHouseId"].(string)
 	}
-	if len(reservedPrice)==0 {
+	if reservedPrice=="\x00" {
 		reservedPrice = (*auctionMap)["reservePrice"].(string)
 	}
-	if len(openDate)==0 {
+	if openDate=="\x00" {
 		openDate = (*auctionMap)["openDate"].(string)
 	}
-	if len(closeDate)==0 {
+	if closeDate=="\x00" {
 		closeDate = (*auctionMap)["closeDate"].(string)
 	}
-	if len(status)==0 {
+	if status=="\x00" {
 		status = (*auctionMap)["status"].(string)
 	}
 

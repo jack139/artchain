@@ -64,7 +64,7 @@ func BizAuditAuction(ctx *fasthttp.RequestCtx) {
 
 	// 修改链上数据
 	respData, err := auctionModify(auctionMap, callerAddr, auctionId, 
-		"", "", openDate, closeDate, status, "audit")
+		"\x00", "\x00", openDate, closeDate, status, "audit")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return

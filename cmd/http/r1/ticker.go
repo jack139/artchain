@@ -72,8 +72,8 @@ func CheckAuction() error {
 			}
 
 			// 修改链上数据
-			_, err = auctionModify(&item, item["auctionHouseId"].(string), auctionId, "", "", 
-				"", "", newStatus, "robot")
+			_, err = auctionModify(&item, item["auctionHouseId"].(string), auctionId, 
+				"\x00", "\x00", "\x00", "\x00", newStatus, "robot")
 			if err != nil {
 				log.Println("ERROR: ", err.Error())
 				continue
