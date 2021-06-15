@@ -75,7 +75,7 @@ func RunServer(port string /*, userPath string*/) {
 			if err := release1.CheckAuction(); err!=nil{
 				log.Println(err.Error())
 			}
-			log.Println("--> Ticker")
+			//log.Println("--> Ticker")
 		}
 	}(ticker1)
 
