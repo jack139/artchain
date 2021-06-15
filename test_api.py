@@ -79,7 +79,7 @@ if __name__ == '__main__':
             #'hash' : 'QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3',
 
             'open_date' : '2021-06-14 10:00',
-            'close_date' : '2021-06-15 10:00',
+            'close_date' : '2021-06-15 15:50',
         }
     }
 

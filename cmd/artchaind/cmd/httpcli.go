@@ -35,6 +35,7 @@ func HttpCliCmd() *cobra.Command {
 	cmd.Flags().String(flags.FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")
 	cmd.Flags().BoolP(flags.FlagSkipConfirmation, "y", true, "Skip tx broadcasting prompt confirmation")
 	cmd.Flags().Float64(flags.FlagGasAdjustment, 1.5, "adjustment gas")
+	cmd.Flags().String(flags.FlagGas, "auto", "gas limit to set per-transaction")
 
 	return cmd
 }

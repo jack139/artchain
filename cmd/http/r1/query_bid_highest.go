@@ -38,7 +38,7 @@ func QueryBidHighest(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryBidHighest(ctx, auctionIdStr)
+	respData2, err := queryBidHighest(auctionIdStr)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -76,8 +76,8 @@ func QueryBidHighest(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryBidHighest(ctx *fasthttp.RequestCtx, auctionIdStr string) (*map[string]interface{}, error) {
-	// 获取 ctx 上下文
+func queryBidHighest(auctionIdStr string) (*map[string]interface{}, error) {
+	// 获取 clientCtx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
 	// 准备查询

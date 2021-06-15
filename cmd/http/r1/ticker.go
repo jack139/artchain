@@ -79,6 +79,38 @@ func CheckAuction() error {
 				continue
 			}
 		}
+
+		if newStatus=="CLOSE" {
+			log.Printf("New trans --> %v", item["id"])
+
+			// 从拍卖叫价中获取最高价
+			bidMap, err := queryBidHighest(item["id"].(string))
+			if err!=nil {
+				log.Println("ERROR: ", err.Error())
+				continue
+			}
+
+			if bidMap==nil { // 拍卖结束时没有最高价
+				log.Println("ERROR: ", "NO hammer price!")
+				continue
+			}
+
+			// 生成交易订单
+			_, err = transNew(item["auctionHouseId"].(string), 
+				item["id"].(string), 
+				item["itemId"].(string), 
+				"BID", 
+				(*bidMap)["buyerId"].(string), 
+				item["SellerId"].(string), 
+				(*bidMap)["bidTime"].(string), 
+				(*bidMap)["bidPrice"].(string), 
+				"BID id = "+(*bidMap)["id"].(string),  // 记录出价 id
+				"robot")
+			if err != nil {
+				log.Println("ERROR: ", err.Error())
+				continue
+			}
+		}
 	}
 
 	return nil
