@@ -17,7 +17,9 @@ service Query {
 	rpc TransactionAll(QueryAllTransactionRequest) returns (QueryAllTransactionResponse) {
 		option (google.api.http).get = "/jack139/artchain/trans/transaction";
 	}
-
+	rpc TransactionSome(QuerySomeTransactionRequest) returns (QuerySomeTransactionResponse) {
+		option (google.api.http).get = "/jack139/artchain/trans/transaction/{cate}";
+	}
 }
 
 // this line is used by starport scaffolding # 3
@@ -34,6 +36,17 @@ message QueryAllTransactionRequest {
 }
 
 message QueryAllTransactionResponse {
+	repeated Transaction Transaction = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QuerySomeTransactionRequest {
+	string cate = 1;
+	string condition = 2;
+	cosmos.base.query.v1beta1.PageRequest pagination = 3;
+}
+
+message QuerySomeTransactionResponse {
 	repeated Transaction Transaction = 1;
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
