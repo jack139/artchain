@@ -52,7 +52,7 @@
 | 19 | ~~审核照片~~ | ~~/biz/audit/image~~ |
 | 20 | 审核评价 | **/biz/audit/review** |
 | 21 | 审核拍卖请求 | **/biz/audit/auction** |
-| 22 | 审核成交交易 | /biz/audit/transaction |
+| 22 | 审核成交交易 | **/biz/audit/transaction** |
 | 23 | 撤销出价 | **/biz/auction/bid/withdraw** |
 
 
@@ -1082,6 +1082,65 @@ base64后结果：
     "msg":"success"
 }
 ```
+
+
+
+##### 2.22 审核成交交易
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/audit/transaction
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| id          | string | Y    | 交易id         |
+| status      | string | Y    | 状态           |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "caller_addr": "bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004", 
+        "id": "0", 
+        "status": "ACTIVE", 
+    }, 
+    "timestamp": 1619946339, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "MTBhMDNjNzgzOTNjNjdiNWNlNWI5Mzg1OTc3MTA3ODFlN2FjZDBhN2NkOWZiZGFjZmY2YzVhOGQ5NmQyMDQ4Mg=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "height":"41907"
+    },
+    "msg":"success"
+}
+```
+
+
 
 
 

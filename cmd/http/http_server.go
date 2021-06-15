@@ -34,6 +34,7 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/biz/audit/item", release1.BizAuditItem)
 	r.POST("/api/r1/biz/audit/review", release1.BizAuditReview)
 	r.POST("/api/r1/biz/audit/auction", release1.BizAuditAuction)
+	r.POST("/api/r1/biz/audit/transaction", release1.BizAuditTrans)
 
 	r.POST("/api/r1/query/user/info", release1.QueryUserInfo)
 	r.POST("/api/r1/query/user/list", release1.QueryUserList)
@@ -48,7 +49,6 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/query/auction/list", release1.QueryAuctionList)
 	r.POST("/api/r1/query/trans/info", release1.QueryTransInfo)
 	r.POST("/api/r1/query/trans/list", release1.QueryTransList)
-	r.POST("/api/r1/query/trans/list_by_condition", release1.QueryTransListByCondition)
 	r.POST("/api/r1/query/bid/info", release1.QueryBidInfo)
 	r.POST("/api/r1/query/bid/highest", release1.QueryBidHighest)
 	r.POST("/api/r1/query/bid/list", release1.QueryBidList)
@@ -57,6 +57,7 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/query/item/list_by_status", release1.QueryItemListByStatus)
 	r.POST("/api/r1/query/review/list_by_status", release1.QueryReviewListByStatus)
 	r.POST("/api/r1/query/auction/list_by_status", release1.QueryAuctionListByStatus)
+	r.POST("/api/r1/query/trans/list_by_condition", release1.QueryTransListByCondition)
 
 	r.POST("/api/r1/ipfs/upload/image", release1.IpfsUploadImage)
 	r.POST("/api/r1/ipfs/download", release1.IpfsDownload)

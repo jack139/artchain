@@ -2,7 +2,7 @@ package r1
 
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
-	invtypes "github.com/jack139/artchain/x/inventory/types"
+	transtypes "github.com/jack139/artchain/x/trans/types"
 
 	"log"
 	"strconv"
@@ -15,10 +15,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
-/* 审核物品评价 */
-
-func BizAuditReview(ctx *fasthttp.RequestCtx) {
-	log.Println("biz_audit_review")
+/* 审核交易 （修改交易状态） */
+func BizAuditTrans(ctx *fasthttp.RequestCtx) {
+	log.Println("biz_audit_trans")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -36,15 +35,9 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9101, "need caller_addr")
 		return
 	}
-	reviewIdStr, ok := (*reqData)["id"].(string)
+	transIdStr, ok := (*reqData)["id"].(string)
 	if !ok {
 		helper.RespError(ctx, 9001, "need id")
-		return
-	}
-
-	itemIdStr, ok := (*reqData)["item_id"].(string)
-	if !ok {
-		helper.RespError(ctx, 9002, "need item_id")
 		return
 	}
 
@@ -54,25 +47,25 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	reviewId, err := strconv.ParseUint(reviewIdStr, 10, 64)
+	transId, err := strconv.ParseUint(transIdStr, 10, 64)
 	if err != nil {
 		helper.RespError(ctx, 9007, err.Error())
 		return
 	}
 
 	// 获取当前链上数据
-	reviewMap, err := queryReviewInfoById(ctx, reviewId, itemIdStr)
+	transMap, err := queryTransInfoById(transId)
 	if err!=nil {
 		helper.RespError(ctx, 9005, err.Error())
 		return		
 	}
 
 	/* 信号量 */
-	helper.AcquireSem((*reviewMap)["creator"].(string))
-	defer helper.ReleaseSem((*reviewMap)["creator"].(string))
+	helper.AcquireSem((*transMap)["creator"].(string))
+	defer helper.ReleaseSem((*transMap)["creator"].(string))
 
 	// 构建lastDate
-	lastDateMap := (*reviewMap)["lastDate"].([]map[string]interface{})
+	lastDateMap := (*transMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
 		"act":  "audit",
@@ -90,7 +83,7 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*reviewMap)["creator"].(string))  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*transMap)["creator"].(string))  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
@@ -101,18 +94,21 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 数据上链
-	msg := invtypes.NewMsgUpdateReview(
-		(*reviewMap)["creator"].(string), //creator string, 
-		reviewId, //id uint64, 
-		(*reviewMap)["recType"].(string), //recType string, 
-		(*reviewMap)["itemId"].(string), //itemId string, 
-		(*reviewMap)["reviewerId"].(string), //reviewerId string, 
-		(*reviewMap)["reviewDetail"].(string), //reviewDetail string, 
-		(*reviewMap)["reviewDate"].(string), //reviewDate string, 
-		(*reviewMap)["upCount"].(string), //upCount string, 
-		(*reviewMap)["downCount"].(string), //downCount string,
-		status, // status
-		string(lastDate), // lastDate
+	msg := transtypes.NewMsgUpdateTransaction(
+		(*transMap)["creator"].(string), // creator string, 
+		transId, // id uint64, 
+		(*transMap)["recType"].(string), // recType string, 
+		(*transMap)["auctionId"].(string), // auctionId string, 
+		(*transMap)["itemId"].(string), // itemId string, 
+		(*transMap)["transType"].(string), // transType string, 
+		(*transMap)["buyerId"].(string), // buyerId string, 
+		(*transMap)["sellerId"].(string), // sellerId string, 
+		(*transMap)["transDate"].(string), // transDate string, 
+		(*transMap)["hammerTime"].(string), // hammerTime string, 
+		(*transMap)["hammerPrice"].(string), // hammerPrice string, 
+		(*transMap)["details"].(string), // details string, 
+		status, // status string, 
+		string(lastDate), // lastDate string,
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())

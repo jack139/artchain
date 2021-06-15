@@ -45,7 +45,7 @@ func QueryTransInfo(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryTransInfoById(ctx, transId)
+	respData2, err := queryTransInfoById(transId)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -77,7 +77,7 @@ func QueryTransInfo(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryTransInfoById(ctx *fasthttp.RequestCtx, transId uint64) (*map[string]interface{}, error) {
+func queryTransInfoById(transId uint64) (*map[string]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
