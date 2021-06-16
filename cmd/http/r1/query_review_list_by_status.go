@@ -49,7 +49,7 @@ func QueryReviewListByStatus(ctx *fasthttp.RequestCtx) {
 
 
 	// 查询链上数据
-	respData2, err := queryReviewListByStatusPage(ctx, uint64(page), uint64(limit), status)
+	respData2, err := queryReviewListByStatusPage(uint64(page), uint64(limit), status)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -84,7 +84,7 @@ func QueryReviewListByStatus(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryReviewListByStatusPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64, status string) (*[]interface{}, error) {
+func queryReviewListByStatusPage(page uint64, limit uint64, status string) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 

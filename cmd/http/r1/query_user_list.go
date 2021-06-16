@@ -48,7 +48,7 @@ func QueryUserList(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryUserListPage(ctx, uint64(page), uint64(limit))
+	respData2, err := queryUserListPage(uint64(page), uint64(limit))
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -83,7 +83,7 @@ func QueryUserList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryUserListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (*[]interface{}, error) {
+func queryUserListPage(page uint64, limit uint64) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 

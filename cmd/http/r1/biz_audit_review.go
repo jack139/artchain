@@ -61,7 +61,7 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 获取当前链上数据
-	reviewMap, err := queryReviewInfoById(ctx, reviewId, itemIdStr)
+	reviewMap, err := queryReviewInfoById(reviewId, itemIdStr)
 	if err!=nil {
 		helper.RespError(ctx, 9005, err.Error())
 		return		

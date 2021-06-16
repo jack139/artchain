@@ -45,7 +45,7 @@ func QueryAHList(ctx *fasthttp.RequestCtx) {
 	*/
 
 	// 查询链上数据
-	respData2, err := queryAHListPage(ctx, uint64(1), uint64(1000))
+	respData2, err := queryAHListPage(uint64(1), uint64(1000))
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -80,7 +80,7 @@ func QueryAHList(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryAHListPage(ctx *fasthttp.RequestCtx, page uint64, limit uint64) (*[]interface{}, error) {
+func queryAHListPage(page uint64, limit uint64) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 

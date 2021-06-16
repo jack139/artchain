@@ -50,7 +50,7 @@ func QueryReviewInfo(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryReviewInfoById(ctx, reviewId, itemIdStr)
+	respData2, err := queryReviewInfoById(reviewId, itemIdStr)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -78,7 +78,7 @@ func QueryReviewInfo(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryReviewInfoById(ctx *fasthttp.RequestCtx, reviewId uint64, itemIdStr string) (*map[string]interface{}, error) {
+func queryReviewInfoById(reviewId uint64, itemIdStr string) (*map[string]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 

@@ -50,7 +50,7 @@ func QueryBidInfo(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryBidInfoById(ctx, bidId, auctionIdStr)
+	respData2, err := queryBidInfoById(bidId, auctionIdStr)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -79,7 +79,7 @@ func QueryBidInfo(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryBidInfoById(ctx *fasthttp.RequestCtx, bidId uint64, auctionIdStr string) (*map[string]interface{}, error) {
+func queryBidInfoById(bidId uint64, auctionIdStr string) (*map[string]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 

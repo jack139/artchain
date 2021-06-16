@@ -59,7 +59,7 @@ func QueryTransListByCondition(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryTransListPageByCondition(ctx, cate, condition, uint64(page), uint64(limit))
+	respData2, err := queryTransListPageByCondition(cate, condition, uint64(page), uint64(limit))
 	if err!=nil{
 		helper.RespError(ctx, 9010, err.Error())
 		return
@@ -99,7 +99,7 @@ func QueryTransListByCondition(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryTransListPageByCondition(ctx *fasthttp.RequestCtx, cate string, condition string,
+func queryTransListPageByCondition(cate string, condition string,
 	page uint64, limit uint64) (*[]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)

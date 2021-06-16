@@ -79,7 +79,7 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 获取当前链上数据, 拍卖信息, 进而获取卖家信息
-	auctionMap, err := queryAuctionInfoById(ctx, auctionId)
+	auctionMap, err := queryAuctionInfoById(auctionId)
 	if err!=nil {
 		helper.RespError(ctx, 9009, err.Error())
 		return

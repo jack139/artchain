@@ -55,7 +55,7 @@ func BizAuctionBidWithdraw(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 获取当前链上数据
-	bidMap, err := queryBidInfoById(ctx, bidId, auctionIdStr)
+	bidMap, err := queryBidInfoById(bidId, auctionIdStr)
 	if err!=nil {
 		helper.RespError(ctx, 9005, err.Error())
 		return		

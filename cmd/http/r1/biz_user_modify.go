@@ -50,7 +50,7 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 	email, _ := (*reqData)["email"].(string)
 
 	// 获取当前链上数据
-	userMap, err := queryUserInfoByChainAddr(ctx, chainAddr)
+	userMap, err := queryUserInfoByChainAddr(chainAddr)
 	if err!=nil {
 		helper.RespError(ctx, 9002, err.Error())
 		return		

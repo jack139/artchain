@@ -45,7 +45,7 @@ func QueryAuctionInfo(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryAuctionInfoById(ctx, auctionId)
+	respData2, err := queryAuctionInfoById(auctionId)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -76,7 +76,7 @@ func QueryAuctionInfo(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryAuctionInfoById(ctx *fasthttp.RequestCtx, auctionId uint64) (*map[string]interface{}, error) {
+func queryAuctionInfoById(auctionId uint64) (*map[string]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 
