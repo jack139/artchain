@@ -34,7 +34,7 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/biz/audit/item", release1.BizAuditItem)
 	r.POST("/api/r1/biz/audit/review", release1.BizAuditReview)
 	r.POST("/api/r1/biz/audit/auction", release1.BizAuditAuction)
-	r.POST("/api/r1/biz/audit/transaction", release1.BizAuditTrans)
+	r.POST("/api/r1/biz/audit/trans", release1.BizAuditTrans)
 
 	r.POST("/api/r1/query/user/info", release1.QueryUserInfo)
 	r.POST("/api/r1/query/user/list", release1.QueryUserList)

@@ -47,6 +47,11 @@ func BizAuditTrans(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	logText, ok := (*reqData)["action"].(string)
+	if !ok {
+		logText = "audit"
+	}
+
 	transId, err := strconv.ParseUint(transIdStr, 10, 64)
 	if err != nil {
 		helper.RespError(ctx, 9007, err.Error())
@@ -68,7 +73,7 @@ func BizAuditTrans(ctx *fasthttp.RequestCtx) {
 	lastDateMap := (*transMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "audit",
+		"act":  logText,
 		"date": time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)

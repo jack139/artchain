@@ -52,7 +52,7 @@
 | 19 | ~~审核照片~~ | ~~/biz/audit/image~~ |
 | 20 | 审核评价 | **/biz/audit/review** |
 | 21 | 审核拍卖请求 | **/biz/audit/auction** |
-| 22 | 审核成交交易 | **/biz/audit/transaction** |
+| 22 | 审核成交交易 | **/biz/audit/trans** |
 | 23 | 撤销出价 | **/biz/auction/bid/withdraw** |
 
 
@@ -1089,7 +1089,7 @@ base64后结果：
 
 请求URL
 
-> http://<host>:<port>/api/<version>/biz/audit/transaction
+> http://<host>:<port>/api/<version>/biz/audit/trans
 
 请求方式
 
@@ -1102,6 +1102,7 @@ base64后结果：
 | caller_addr | string | Y    | 调用者的链地址 |
 | id          | string | Y    | 交易id         |
 | status      | string | Y    | 状态           |
+| action      | string |      | 用于操作日志   |
 
 返回结果
 
@@ -1181,8 +1182,6 @@ base64后结果：
 ```json
 
 ```
-
-
 
 
 
