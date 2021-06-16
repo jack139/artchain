@@ -65,18 +65,10 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		return		
 	}
 
-	// 构建 itemImage
-	imageList := (*itemMap)["itemImage"].([]string)
-	imageData, err := json.Marshal(imageList)
-	if err != nil {
-		helper.RespError(ctx, 9005, err.Error())
-		return
-	}
-
 	// 修改链上数据
 	respData, err := itemModify(itemMap, callerAddr, 
 		itemId, itemDesc, itemDetail, itemDate, itemType, 
-		itemSubject, itemMedia, itemSize, string(imageData), "\x00", 
+		itemSubject, itemMedia, itemSize, "\x00", "\x00", 
 		itemBasePrice, "\x00", "WAIT", "edit")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -122,7 +114,13 @@ func itemModify(itemMap *map[string]interface{}, callerAddr string,
 		itemSize = (*itemMap)["itemSize"].(string)
 	}
 	if itemImage=="\x00" {
-		itemImage = (*itemMap)["itemImage"].(string)
+		// 构建 itemImage
+		imageList := (*itemMap)["itemImage"].([]string)
+		imageData, err := json.Marshal(imageList)
+		if err != nil {
+			return nil, err
+		}
+		itemImage = string(imageData)
 	}
 	if AESKey=="\x00" {
 		AESKey = (*itemMap)["AESKey"].(string)
