@@ -5,14 +5,13 @@ import (
 
 	"log"
 	"strconv"
-	"encoding/json"
 	"github.com/valyala/fasthttp"
 )
 
-/* 审核物品（修改状态） */
+/* 修改物品所有人 */
 
-func BizAuditItem(ctx *fasthttp.RequestCtx) {
-	log.Println("biz_audit_item")
+func BizItemChangeOwner(ctx *fasthttp.RequestCtx) {
+	log.Println("biz_item_change_owner")
 
 	// POST 的数据
 	content := ctx.PostBody()
@@ -35,11 +34,14 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9001, "need id")
 		return
 	}
-	status, ok := (*reqData)["status"].(string)
+
+	ownerAddr, ok := (*reqData)["owner_addr"].(string)
 	if !ok {
-		helper.RespError(ctx, 9002, "need status")
+		helper.RespError(ctx, 9002, "need owner_addr")
 		return
 	}
+
+	// TODO：  检查 ownerAddr 合法性
 
 	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
 	if err != nil {
@@ -54,22 +56,16 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 		return		
 	}
 
-	// 构建 itemImage
-	imageList := (*itemMap)["itemImage"].([]string)
-	imageData, err := json.Marshal(imageList)
-	if err != nil {
-		helper.RespError(ctx, 9005, err.Error())
-		return
-	}
 
 	// 修改链上数据
 	respData, err := itemModify(itemMap, callerAddr, 
 		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
-		string(imageData), "\x00", "\x00", "\x00", status, "audit")
+		"\x00", "\x00", "\x00", ownerAddr, "\x00", "change owner")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return
 	}
+
 
 	// 返回区块id
 	resp := map[string]interface{}{

@@ -36,9 +36,9 @@
 | 3       | 恢复已注册用户        | /biz/user/restore              |
 | 4            | 新建物品             | **/biz/item/new**         |
 | 5         | 修改物品信息          | **/biz/item/modify**           |
-| 6 | ~~添加物品照片~~ | ~~/biz/item/new_image~~ |
-| 7 | ~~删除物品照片~~ | ~~/biz/item/remove_image~~ |
-| 8 | 修改物品所有人 | /biz/item/change_owner |
+| 6 | 上传图片到IPFS       | **/ipfs/upload/image**        |
+| 7 | 删除图片             | **/ipfs/remove/image**        |
+| 8 | 修改物品所有人 | **/biz/item/change_owner** |
 | 9         | 生成物品NFT          | /biz/nft/new      |
 | 10        | 添加物品评价          | **/biz/review/new**            |
 | 11        | 修改物品评价          | **/biz/review/modify**         |
@@ -85,16 +85,7 @@
 | 22 | 指定状态的评价清单 | **/query/review/list_by_status** |
 | 23 | 指定状态的拍卖申请清单 | **/query/auction/list_by_status** |
 | 24 | 指定条件查询成交交易 | **/query/trans/list_by_condition** |
-
-
-
-#### IPFS接口
-
-| 序号               | 接口功能                 | URI                        |
-| :------------------: | -------------------------- | -------------------------- |
-| 1 | 上传图片到IPFS | **/ipfs/upload/image** |
-| 2 | 从IPFS下载数据    | **/ipfs/download**       |
-| 3 | 删除图片 | **/ipfs/remove/image** |
+| 25 | 从IPFS下载数据 | **/ipfs/download** |
 
 
 
@@ -456,6 +447,162 @@ base64后结果：
     },"msg":"success"
 }
 ```
+
+
+
+##### 2.6 上传图片到IPFS
+
+请求URL
+
+> http://<host>:<port>/api/ipfs/upload/image
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明                 |
+| ----------- | ------ | ---- | -------------------- |
+| caller_addr | string | Y    | 调用者的链地址       |
+| item_id     | string | Y    | 物品id               |
+| image       | string | Y    | base64编码的图片数据 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | IPFS文件hash值                          |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "caller_addr": "bid1art17qppfv5k29r9txqu8sj3l6vfwtt90rr82r9gt7", 
+        "item_id": "1", 
+        "image": "iVBSUhEUgAABKIAAAXqCAIAAABMelVoAA...AAAAABJRU5ErkJggg=="
+    }, 
+    "timestamp": 1622624546, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "ZmZjY2U5Mjg3OTE3NDc1ODZkYWM2ZjM3OTU1ZmFjODdhNTc2NjExYjNiMTQyNmVjOTI0OTQ0MDcyZDAzZmQzYQ=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "hash":"QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3",
+        "height":"49975"
+    },
+    "msg":"success"
+}
+```
+
+
+
+##### 2.7 从IPFS删除图片
+
+请求URL
+
+> http://<host>:<port>/api/ipfs/remove/image
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| item_id     | string | Y    | 物品id         |
+| hash        | string | Y    | 图片hash       |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | IPFS文件hash值                          |
+
+请求示例
+
+```json
+
+```
+
+返回示例
+
+```json
+
+```
+
+
+
+##### 2.8 修改物品所有人
+
+请求URL
+
+> http://<host>:<port>/api/<version>/biz/item/change_owner
+
+请求方式
+
+> POST
+
+输入参数（data字段下）
+
+| 参数        | 类型   | 必填 | 说明           |
+| ----------- | ------ | ---- | -------------- |
+| caller_addr | string | Y    | 调用者的链地址 |
+| id          | string | Y    | 物品id         |
+| owner_addr  | string | Y    | 新的物品所有人 |
+
+返回结果
+
+| 参数 | 类型   | 说明                                    |
+| ---- | ------ | --------------------------------------- |
+| code | int    | 状态代码，0 表示成功，非0 表示出错      |
+| msg  | string | 成功时返回success；出错时，返回出错信息 |
+| data | json   | 交易区块高度                            |
+
+请求示例
+
+```json
+{
+    "version": "1", 
+    "sign_type": "SHA256", 
+    "data": {
+        "id": "0", 
+        "owner_addr": "bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7", 
+        "caller_addr": "bid1art1jv8z6e3507g2eeanep29dpx5m8qn83023gx3g7"
+    }, 
+    "timestamp": 1619791789, 
+    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
+    "sign_data": "NTA0NzQ3NGQzODkxYjFmMWUyMGIzZjVkMDM5MGM4YzhkYTJkNDAwNmYwMjQ2YTk1ZjI0Y2IwOTUwMmYwNzQyZg=="
+}
+```
+
+返回示例
+
+```json
+{
+    "code":0,
+    "data":{
+        "height":"2576"
+    },"msg":"success"
+}
+```
+
+
 
 
 
@@ -2703,69 +2850,7 @@ base64后结果：
 
 
 
-
-
-#### 4. IPFS接口
-
-##### 4.1 上传图片到IPFS
-
-请求URL
-
-> http://<host>:<port>/api/ipfs/upload/image
-
-请求方式
-
-> POST
-
-输入参数（data字段下）
-
-| 参数        | 类型   | 必填 | 说明                 |
-| ----------- | ------ | ---- | -------------------- |
-| caller_addr | string | Y    | 调用者的链地址       |
-| item_id     | string | Y    | 物品id               |
-| image       | string | Y    | base64编码的图片数据 |
-
-返回结果
-
-| 参数 | 类型   | 说明                                    |
-| ---- | ------ | --------------------------------------- |
-| code | int    | 状态代码，0 表示成功，非0 表示出错      |
-| msg  | string | 成功时返回success；出错时，返回出错信息 |
-| data | json   | IPFS文件hash值                          |
-
-请求示例
-
-```json
-{
-    "version": "1", 
-    "sign_type": "SHA256", 
-    "data": {
-        "caller_addr": "bid1art17qppfv5k29r9txqu8sj3l6vfwtt90rr82r9gt7", 
-        "item_id": "1", 
-        "image": "iVBSUhEUgAABKIAAAXqCAIAAABMelVoAA...AAAAABJRU5ErkJggg=="
-    }, 
-    "timestamp": 1622624546, 
-    "appid": "4fcf3871f4a023712bec9ed44ee4b709", 
-    "sign_data": "ZmZjY2U5Mjg3OTE3NDc1ODZkYWM2ZjM3OTU1ZmFjODdhNTc2NjExYjNiMTQyNmVjOTI0OTQ0MDcyZDAzZmQzYQ=="
-}
-```
-
-返回示例
-
-```json
-{
-    "code":0,
-    "data":{
-        "hash":"QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3",
-        "height":"49975"
-    },
-    "msg":"success"
-}
-```
-
-
-
-##### 4.2 从IPFS下载数据
+##### 3.25 从IPFS下载数据
 
 请求URL
 
@@ -2815,43 +2900,4 @@ base64后结果：
 }
 ```
 
-
-
-##### 4.3 从IPFS删除图片
-
-请求URL
-
-> http://<host>:<port>/api/ipfs/remove/image
-
-请求方式
-
-> POST
-
-输入参数（data字段下）
-
-| 参数        | 类型   | 必填 | 说明           |
-| ----------- | ------ | ---- | -------------- |
-| caller_addr | string | Y    | 调用者的链地址 |
-| item_id     | string | Y    | 物品id         |
-| hash        | string | Y    | 图片hash       |
-
-返回结果
-
-| 参数 | 类型   | 说明                                    |
-| ---- | ------ | --------------------------------------- |
-| code | int    | 状态代码，0 表示成功，非0 表示出错      |
-| msg  | string | 成功时返回success；出错时，返回出错信息 |
-| data | json   | IPFS文件hash值                          |
-
-请求示例
-
-```json
-
-```
-
-返回示例
-
-```json
-
-```
 

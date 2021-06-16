@@ -46,7 +46,7 @@ func QueryItemInfo(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 查询链上数据
-	respData2, err := queryItemInfoById(ctx, itemId)
+	respData2, err := queryItemInfoById(itemId)
 	if err!=nil{
 		helper.RespError(ctx, 9014, err.Error())
 		return
@@ -80,7 +80,7 @@ func QueryItemInfo(ctx *fasthttp.RequestCtx) {
 
 
 // 查询链上数据, 返回 map
-func queryItemInfoById(ctx *fasthttp.RequestCtx, itemId uint64) (*map[string]interface{}, error) {
+func queryItemInfoById(itemId uint64) (*map[string]interface{}, error) {
 	// 获取 ctx 上下文
 	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
 

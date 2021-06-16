@@ -59,7 +59,7 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 获取当前链上数据
-	itemMap, err := queryItemInfoById(ctx, itemId)
+	itemMap, err := queryItemInfoById(itemId)
 	if err!=nil {
 		helper.RespError(ctx, 9002, err.Error())
 		return		
