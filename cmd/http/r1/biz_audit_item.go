@@ -41,6 +41,11 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	logText, ok := (*reqData)["action"].(string)
+	if !ok {
+		logText = "audit"
+	}
+
 	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
 	if err != nil {
 		helper.RespError(ctx, 9007, err.Error())
@@ -65,7 +70,7 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 	// 修改链上数据
 	respData, err := itemModify(itemMap, callerAddr, 
 		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
-		string(imageData), "\x00", "\x00", "\x00", status, "audit")
+		string(imageData), "\x00", "\x00", "\x00", status, logText)
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return
