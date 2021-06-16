@@ -2639,12 +2639,12 @@ base64后结果：
 
 输入参数（data字段下）
 
-| 参数       | 类型   | 必填 | 说明              |
-| ---------- | ------ | ---- | ----------------- |
-| cate       | string | Y    | 查询类别          |
-| conditioin | string | Y    | 查询条件          |
-| page       | uint   | Y    | 第几页，最小为1   |
-| limit      | uint   | Y    | 每页数量，最小为1 |
+| 参数      | 类型   | 必填 | 说明              |
+| --------- | ------ | ---- | ----------------- |
+| cate      | string | Y    | 查询类别          |
+| condition | string | Y    | 查询条件          |
+| page      | uint   | Y    | 第几页，最小为1   |
+| limit     | uint   | Y    | 每页数量，最小为1 |
 
 > cate取值： seller, buyer, item, status
 
