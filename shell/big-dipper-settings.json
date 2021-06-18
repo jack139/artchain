@@ -1,0 +1,70 @@
+{
+    "public":{
+        "chainName": "Artchain",
+        "chainId": "artchain",
+        "gtm": "artchain",
+        "slashingWindow": 10000,
+        "uptimeWindow": 250,
+        "initialPageSize": 30,
+        "secp256k1": false,
+        "bech32PrefixAccAddr": "bid1art",
+        "bech32PrefixAccPub": "bid1artpub",
+        "bech32PrefixValAddr": "bid1artvaloper",
+        "bech32PrefixValPub": "bid1artvaloperpub",
+        "bech32PrefixConsAddr": "bid1artvalcons",
+        "bech32PrefixConsPub": "bid1artvalconspub",
+        "bondDenom": "stake",
+        "powerReduction": 1000000,
+        "coins": [
+            {
+                "denom": "stake",
+                "displayName": "STAKE",
+                "fraction": 1000000
+            },
+            {
+                "denom": "credit",
+                "displayName": "CREDIT",
+                "fraction": 1000000
+            }
+        ],
+        "ledger":{
+            "coinType": 118,
+            "appName": "Artchain",
+            "appVersion": "0.95.0",
+            "gasPrice": 0.02
+        },
+        "modules": {
+            "bank": true,
+            "supply": true,
+            "minting": false,
+            "gov": true,
+            "distribution": false
+        },
+        "coingeckoId": "artchain",
+        "networks": "",
+        "banners": false
+    },
+    "remote":{
+        "rpc":"http://127.0.0.1:26657",
+        "api":"http://127.0.0.1:1317"
+    },
+    "debug": {
+        "startTimer": true
+    },
+    "params":{
+        "startHeight": 0,
+        "defaultBlockTime": 5000,
+        "validatorUpdateWindow": 300,
+        "blockInterval": 15000,
+        "transactionsInterval": 18000,
+        "keybaseFetchingInterval": 18000000,
+        "consensusInterval": 1000,
+        "statusInterval":7500,
+        "signingInfoInterval": 1800000,
+        "proposalInterval": 5000,
+        "missedBlocksInterval": 60000,
+        "delegationInterval": 900000
+    }
+}
+
+

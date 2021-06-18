@@ -27,6 +27,11 @@ artchaind http 8888 --chain-id artchain --home n1 --from user0
 ```
 查看ipfs id，修改bootstrap.txt内容里的id和ip
 
+***ipfs修改gateway默认端口***
+````
+~/.ipfs/config
+```
+
 2. 其他节点
 复制新的bootstrap.txt，然后执行 install.sh
 
