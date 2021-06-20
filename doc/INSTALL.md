@@ -5,12 +5,13 @@
 GOPATH=$HOME/Codes/go starport build
 ```
 
-### 第一次启动
+### 第一次启动准备
 ```bash
-GOPATH=$HOME/Codes/go starport serve --home n1
+bash shell/init_chain.sh
 ```
+修改 n1/config/app.toml 中 api 小节中，enable=true
 
-### 后续启动
+### 启动
 ```bash
 artchaind start --log_level warn --home n1
 ```
@@ -20,17 +21,17 @@ artchaind start --log_level warn --home n1
 artchaind http 8888 --chain-id artchain --home n1 --from user0
 ```
 
+### 使用starport启动
+```bash
+GOPATH=$HOME/Codes/go starport serve --home n1
+```
+
 ### 安装ipfs
 1. 第一个节点
 ```bash
 ./install.sh
 ```
 查看ipfs id，修改bootstrap.txt内容里的id和ip
-
-***ipfs修改gateway默认端口***
-````
-~/.ipfs/config
-```
 
 2. 其他节点
 复制新的bootstrap.txt，然后执行 install.sh
