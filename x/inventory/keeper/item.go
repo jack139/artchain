@@ -93,13 +93,18 @@ func (k Keeper) AppendItem(
 
 // SetItem set a specific item in the store
 func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
+	oldItem := k.GetItem(ctx, item.Id)
+
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
 	b := k.cdc.MustMarshalBinaryBare(&item)
 	store.Set(GetItemIDBytes(item.Id), b)
 
-	// 添加owner到id的索引
-	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+item.CurrentOwnerId))
-	store2.Set(GetItemIDBytes(item.Id), GetItemIDBytes(item.Id))
+	if oldItem.CurrentOwnerId != item.CurrentOwnerId { // 变更所有人，需要变更索引
+		store1 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+oldItem.CurrentOwnerId))
+		store1.Delete(GetItemIDBytes(item.Id))
+		store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+item.CurrentOwnerId))
+		store2.Set(GetItemIDBytes(item.Id), GetItemIDBytes(item.Id))
+	}
 }
 
 // GetItem returns a item from its id

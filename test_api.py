@@ -45,12 +45,12 @@ if __name__ == '__main__':
 
             #'height' : '985',
 
-            'id' : '1',
+            'id' : '0',
 
             #'desc' : '测试物品3',
             #'date' : '1911s',
             #'base_price' : '$2001',
-            #'owner_addr' : 'bid1art18e3jj0yyzvu9vsg5d09fz6tz44kuc0r88uv004',
+            'owner_addr' : 'bid1art1jvlpp6u4gf0lyhquz3kqe7e39jhwnsfapyx2fm',
 
             #'page' : 1,
             #'limit' : 100,
@@ -72,14 +72,14 @@ if __name__ == '__main__':
             #'hammer_price' : "1000",
             #'details' : "测试测试测试"
 
-            'status' : 'INIT',
+            #'status' : 'INIT',
 
             #'image' : img_data,
 
             #'hash' : 'QmbkAewP7KN9VMKwYbx6xj45Yc82dPraRnARFjww4MLBt3',
 
-            'open_date' : '2021-06-14 10:00',
-            'close_date' : '2021-06-15 15:50',
+            #'open_date' : '2021-06-24 14:00',
+            #'close_date' : '2021-06-24 14:30',
         }
     }
 
@@ -116,12 +116,13 @@ if __name__ == '__main__':
     #url = host+'/api/r1/biz/user/modify'
     #url = host+'/api/r1/biz/item/new'
     #url = host+'/api/r1/biz/item/modify'
+    url = host+'/api/r1/biz/item/change_owner'
     #url = host+'/api/r1/biz/review/new'
     #url = host+'/api/r1/biz/review/modify'
     #url = host+'/api/r1/biz/auction/new'
     #url = host+'/api/r1/biz/auction/modify'
     #url = host+'/api/r1/biz/trans/new'
-    url = host+'/api/r1/biz/audit/auction'
+    #url = host+'/api/r1/biz/audit/auction'
 
     #url = host+'/api/r1/query/block/rawdata'
     #url = host+'/api/r1/query/user/credit_balance'
