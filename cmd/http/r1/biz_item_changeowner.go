@@ -49,16 +49,8 @@ func BizItemChangeOwner(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// 获取当前链上数据
-	itemMap, err := queryItemInfoById(itemId)
-	if err!=nil {
-		helper.RespError(ctx, 9002, err.Error())
-		return		
-	}
-
-
 	// 修改链上数据
-	respData, err := itemModify(itemMap, callerAddr, 
+	respData, err := itemModify(callerAddr, 
 		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
 		"\x00", "\x00", "\x00", ownerAddr, "\x00", "change owner")
 	if err != nil {

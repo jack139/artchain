@@ -5,7 +5,6 @@ import (
 
 	"log"
 	"strconv"
-	"encoding/json"
 	"github.com/valyala/fasthttp"
 )
 
@@ -52,25 +51,10 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// 获取当前链上数据
-	itemMap, err := queryItemInfoById(itemId)
-	if err!=nil {
-		helper.RespError(ctx, 9002, err.Error())
-		return		
-	}
-
-	// 构建 itemImage
-	imageList := (*itemMap)["itemImage"].([]string)
-	imageData, err := json.Marshal(imageList)
-	if err != nil {
-		helper.RespError(ctx, 9005, err.Error())
-		return
-	}
-
 	// 修改链上数据
-	respData, err := itemModify(itemMap, callerAddr, 
+	respData, err := itemModify(callerAddr, 
 		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
-		string(imageData), "\x00", "\x00", "\x00", status, logText)
+		"\x00", "\x00", "\x00", "\x00", status, logText)
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return

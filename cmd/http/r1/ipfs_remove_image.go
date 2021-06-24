@@ -72,7 +72,7 @@ func IpfsRemoveImage(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 修改链上数据
-	respData, err := itemModify(itemMap, callerAddr, 
+	respData, err := itemModify(callerAddr, 
 		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
 		string(loadBytes), "\x00", "\x00", "\x00", "WAIT", "remove image")
 	if err != nil {

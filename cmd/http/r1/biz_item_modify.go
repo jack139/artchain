@@ -58,19 +58,8 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// 获取当前链上数据
-	creator, err := queryItemCreatorById(itemId)
-	if err!=nil {
-		helper.RespError(ctx, 9002, err.Error())
-		return		
-	}
-
-	itemMap := map[string]interface{}{
-		"creator" : creator,
-	}
-
 	// 修改链上数据
-	respData, err := itemModify(&itemMap, callerAddr, 
+	respData, err := itemModify(callerAddr, 
 		itemId, itemDesc, itemDetail, itemDate, itemType, 
 		itemSubject, itemMedia, itemSize, "\x00", "\x00", 
 		itemBasePrice, "\x00", "WAIT", "edit")
@@ -89,22 +78,28 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 }
 
 // string 参数填 "\x00" 表示不修改
-func itemModify(itemMap *map[string]interface{}, callerAddr string, 
+func itemModify(callerAddr string, 
 		itemId uint64, itemDesc string, itemDetail string, itemDate string, itemType string, 
 		itemSubject string, itemMedia string, itemSize string, itemImage string, AESKey string, 
 		itemBasePrice string, currentOwnerId string, status string, 
 		logText string ) (*map[string]interface{}, error) {
 
+	// 获取 creator
+	creator, err := queryItemCreatorById(itemId)
+	if err!=nil {
+		return nil, err
+	}
+
 	/* 信号量 */
-	helper.AcquireSem((*itemMap)["creator"].(string))
-	defer helper.ReleaseSem((*itemMap)["creator"].(string))
+	helper.AcquireSem(creator)
+	defer helper.ReleaseSem(creator)
 
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
 		return nil, err
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*itemMap)["creator"].(string))  // 设置 --from 地址
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, creator)  // 设置 --from 地址
 	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
@@ -115,7 +110,7 @@ func itemModify(itemMap *map[string]interface{}, callerAddr string,
 
 	// 数据上链
 	msg := invtypes.NewMsgUpdateItem(
-		(*itemMap)["creator"].(string), //creator string, 
+		creator, //creator string, 
 		itemId, //id uint64, 
 		"\x00", //recType string, 
 		itemDesc, //itemDesc string, 
