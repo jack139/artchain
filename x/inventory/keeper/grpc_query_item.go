@@ -146,3 +146,22 @@ func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusR
 
 	return &types.QueryGetItemByStatusResponse{Item: items, Pagination: pageRes}, nil
 }
+
+// 返回 creator
+func (k Keeper) ItemCreator(c context.Context, req *types.QueryGetItemCreatorRequest) (*types.QueryGetItemCreatorResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	var item types.Item
+	ctx := sdk.UnwrapSDKContext(c)
+
+	if !k.HasItem(ctx, req.Id) {
+		return nil, sdkerrors.ErrKeyNotFound
+	}
+
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
+	k.cdc.MustUnmarshalBinaryBare(store.Get(GetItemIDBytes(req.Id)), &item)
+
+	return &types.QueryGetItemCreatorResponse{Creator: item.Creator}, nil
+}

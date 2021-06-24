@@ -7,8 +7,8 @@ import (
 	"log"
 	"strconv"
 	"bytes"
-	"time"
 	"fmt"
+	"context"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -59,14 +59,18 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 获取当前链上数据
-	itemMap, err := queryItemInfoById(itemId)
+	creator, err := queryItemCreatorById(itemId)
 	if err!=nil {
 		helper.RespError(ctx, 9002, err.Error())
 		return		
 	}
 
+	itemMap := map[string]interface{}{
+		"creator" : creator,
+	}
+
 	// 修改链上数据
-	respData, err := itemModify(itemMap, callerAddr, 
+	respData, err := itemModify(&itemMap, callerAddr, 
 		itemId, itemDesc, itemDetail, itemDate, itemType, 
 		itemSubject, itemMedia, itemSize, "\x00", "\x00", 
 		itemBasePrice, "\x00", "WAIT", "edit")
@@ -91,65 +95,9 @@ func itemModify(itemMap *map[string]interface{}, callerAddr string,
 		itemBasePrice string, currentOwnerId string, status string, 
 		logText string ) (*map[string]interface{}, error) {
 
-	// 为空串用原有值填充
-	if itemDesc=="\x00" {
-		itemDesc = (*itemMap)["itemDesc"].(string)
-	}
-	if itemDetail=="\x00" {
-		itemDetail = (*itemMap)["itemDetail"].(string)
-	}
-	if itemDate=="\x00" {
-		itemDate = (*itemMap)["itemDate"].(string)
-	}
-	if itemType=="\x00" {
-		itemType = (*itemMap)["itemType"].(string)
-	}
-	if itemSubject=="\x00" {
-		itemSubject = (*itemMap)["itemSubject"].(string)
-	}
-	if itemMedia=="\x00" {
-		itemMedia = (*itemMap)["itemMedia"].(string)
-	}
-	if itemSize=="\x00" {
-		itemSize = (*itemMap)["itemSize"].(string)
-	}
-	if itemImage=="\x00" {
-		// 构建 itemImage
-		imageList := (*itemMap)["itemImage"].([]string)
-		imageData, err := json.Marshal(imageList)
-		if err != nil {
-			return nil, err
-		}
-		itemImage = string(imageData)
-	}
-	if AESKey=="\x00" {
-		AESKey = (*itemMap)["AESKey"].(string)
-	}
-	if itemBasePrice=="\x00" {
-		itemBasePrice = (*itemMap)["itemBasePrice"].(string)
-	}
-	if currentOwnerId=="\x00" {
-		currentOwnerId = (*itemMap)["currentOwnerId"].(string)
-	}
-	if status=="\x00" {
-		status = (*itemMap)["status"].(string)
-	}
-
 	/* 信号量 */
 	helper.AcquireSem((*itemMap)["creator"].(string))
 	defer helper.ReleaseSem((*itemMap)["creator"].(string))
-
-	// 构建lastDate
-	lastDateMap := (*itemMap)["lastDate"].([]map[string]interface{})
-	lastDateMap = append(lastDateMap, map[string]interface{}{
-		"caller": callerAddr,
-		"act": logText,
-		"date": time.Now().Format("2006-01-02 15:04:05"),
-	})
-	lastDate, err := json.Marshal(lastDateMap)
-	if err != nil {
-		return nil, err
-	}
 
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
@@ -169,7 +117,7 @@ func itemModify(itemMap *map[string]interface{}, callerAddr string,
 	msg := invtypes.NewMsgUpdateItem(
 		(*itemMap)["creator"].(string), //creator string, 
 		itemId, //id uint64, 
-		(*itemMap)["recType"].(string), //recType string, 
+		"\x00", //recType string, 
 		itemDesc, //itemDesc string, 
 		itemDetail, //itemDetail string, 
 		itemDate, //itemDate string, 
@@ -182,7 +130,7 @@ func itemModify(itemMap *map[string]interface{}, callerAddr string,
 		itemBasePrice, //itemBasePrice string, 
 		currentOwnerId, //currentOwnerId string, 
 		status, // status 修改后状态自动设置为 WAIT
-		string(lastDate), // lastDate
+		callerAddr+"|"+logText, // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
@@ -215,4 +163,46 @@ func itemModify(itemMap *map[string]interface{}, callerAddr string,
 	}
 
 	return &respData, nil
+}
+
+
+// 查询链上数据, 返回 creator
+func queryItemCreatorById(itemId uint64) (string, error) {
+	// 获取 ctx 上下文
+	clientCtx := client.GetClientContextFromCmd(helper.HttpCmd)
+
+	// 准备查询
+	queryClient := invtypes.NewQueryClient(clientCtx)
+
+	params := &invtypes.QueryGetItemCreatorRequest{
+		Id: itemId,
+	}
+
+	res, err := queryClient.ItemCreator(context.Background(), params)
+	if err != nil {
+		return "", err
+	}
+
+	//log.Printf("%T\n", res)
+
+	// 设置 接收输出
+	buf := new(bytes.Buffer)
+	clientCtx.Output = buf
+
+	// 转换输出
+	clientCtx.PrintProto(res)
+
+	// 输出的字节流
+	respBytes := []byte(buf.String())
+
+	//log.Println("output: ", buf.String())
+
+	// 转换成map, 生成返回数据
+	var respData map[string]interface{}
+
+	if err := json.Unmarshal(respBytes, &respData); err != nil {
+		return "", err
+	}
+
+	return respData["creator"].(string), nil
 }

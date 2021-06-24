@@ -93,14 +93,13 @@ func (k Keeper) AppendItem(
 
 // SetItem set a specific item in the store
 func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
-	oldItem := k.GetItem(ctx, item.Id)
-
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
 	b := k.cdc.MustMarshalBinaryBare(&item)
 	store.Set(GetItemIDBytes(item.Id), b)
 
-	if oldItem.CurrentOwnerId != item.CurrentOwnerId { // 变更所有人，需要变更索引
-		store1 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+oldItem.CurrentOwnerId))
+	oldCurrentOwner := k.GetItemCurrentOwnerId(ctx, item.Id)
+	if item.CurrentOwnerId != oldCurrentOwner { // 变更所有人，需要变更索引
+		store1 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+oldCurrentOwner))
 		store1.Delete(GetItemIDBytes(item.Id))
 		store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+item.CurrentOwnerId))
 		store2.Set(GetItemIDBytes(item.Id), GetItemIDBytes(item.Id))
@@ -124,6 +123,11 @@ func (k Keeper) HasItem(ctx sdk.Context, id uint64) bool {
 // GetItemOwner returns the creator of the item
 func (k Keeper) GetItemOwner(ctx sdk.Context, id uint64) string {
 	return k.GetItem(ctx, id).Creator
+}
+
+// GetItemOwner returns the CurrentOwnerId of the item
+func (k Keeper) GetItemCurrentOwnerId(ctx sdk.Context, id uint64) string {
+	return k.GetItem(ctx, id).CurrentOwnerId
 }
 
 // RemoveItem removes a item from the store

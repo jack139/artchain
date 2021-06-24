@@ -28,6 +28,9 @@ service Query {
 	rpc ItemAllByOwner(QueryAllItemByOwnerRequest) returns (QueryAllItemByOwnerResponse) {
 		option (google.api.http).get = "/jack139/artchain/inventory/itembyowner/{currentOwnerId}";
 	}
+	rpc ItemCreator(QueryGetItemCreatorRequest) returns (QueryGetItemCreatorResponse) {
+		option (google.api.http).get = "/jack139/artchain/inventory/itemcreator/{id}";
+	}
 
 	rpc ReviewByStatus(QueryGetReviewByStatusRequest) returns (QueryGetReviewByStatusResponse) {
 		option (google.api.http).get = "/jack139/artchain/inventory/review/{status}";
@@ -64,6 +67,14 @@ message QueryGetItemRequest {
 
 message QueryGetItemResponse {
 	Item Item = 1;
+}
+
+message QueryGetItemCreatorRequest {
+	uint64 id = 1;
+}
+
+message QueryGetItemCreatorResponse {
+	string creator = 1;
 }
 
 message QueryAllItemRequest {
