@@ -26,6 +26,24 @@ artchaind http 8888 --chain-id artchain --home n1 --from user0
 GOPATH=$HOME/Codes/go starport serve --home n1
 ```
 
+### 启动第二个节点(待测试)
+1. 修改```shell/init_node.sh```中相应变量，设置节点名等
+2. 在新节点运行```shell/init_node.sh```
+3. 复制初始节点的创世块```n1/config/genesis.json```覆盖新节点的创世块文件
+4. 修改persistent_peers
+```
+vim n2/config/config.toml
+修改 persistent_peers = "id@first_node_ip:26656"
+```
+获取初始节点id的方法
+```
+artchaind tendermint show-node-id --home n1
+```
+5. 启动第二节点
+```
+artchaind start --log_level warn --home n2
+```
+
 ### 安装ipfs
 1. 第一个节点
 ```bash
