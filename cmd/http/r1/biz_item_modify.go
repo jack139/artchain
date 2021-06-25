@@ -52,6 +52,15 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	itemSize, _ := (*reqData)["size"].(string)
 	itemBasePrice, _ := (*reqData)["base_price"].(string)
 
+	if itemDesc      == "" { itemDesc = "\x00" }
+	if itemDate      == "" { itemDate = "\x00" }
+	if itemDetail    == "" { itemDetail = "\x00" }
+	if itemType      == "" { itemType = "\x00" }
+	if itemSubject   == "" { itemSubject = "\x00" }
+	if itemMedia     == "" { itemMedia = "\x00" }
+	if itemSize      == "" { itemSize = "\x00" }
+	if itemBasePrice == "" { itemBasePrice = "\x00" }
+
 	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
 	if err != nil {
 		helper.RespError(ctx, 9007, err.Error())
