@@ -87,7 +87,7 @@ func QueryBalance(ctx *fasthttp.RequestCtx) {
 		}
 	}
 	resp := map[string]interface{}{
-		"blcok": respData,
+		"balance": respData,
 	}
 
 	helper.RespJson(ctx, &resp)

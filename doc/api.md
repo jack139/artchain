@@ -2451,7 +2451,7 @@ base64后结果：
 {
     "code":0,
     "data":{
-        "blcok":{
+        "balance":{
             "amount":"1",
             "denom":"credit"
         }
