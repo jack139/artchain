@@ -13,6 +13,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
+	"github.com/tendermint/tendermint/crypto"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client/grpc/tmservice"
@@ -100,11 +101,12 @@ import (
 	transkeeper "github.com/jack139/artchain/x/trans/keeper"
 	transtypes "github.com/jack139/artchain/x/trans/types"
 
-	//"github.com/cosmos/modules/incubator/faucet"
-	//"github.com/cosmos/modules/incubator/nft"
 	"github.com/irisnet/irismod/modules/nft"
 	nftkeeper "github.com/irisnet/irismod/modules/nft/keeper"
 	nfttypes "github.com/irisnet/irismod/modules/nft/types"
+	"github.com/irisnet/irismod/modules/token"
+	tokenkeeper "github.com/irisnet/irismod/modules/token/keeper"
+	tokentypes "github.com/irisnet/irismod/modules/token/types"
 )
 
 const Name = "artchain"
@@ -157,7 +159,7 @@ var (
 		inventory.AppModuleBasic{},
 		person.AppModuleBasic{},
 		nft.AppModuleBasic{},
-		//faucet.AppModule{},
+		token.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -169,7 +171,10 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		tokentypes.ModuleName:          {authtypes.Minter, authtypes.Burner},
 	}
+
+	nativeToken tokentypes.Token
 )
 
 var (
@@ -178,12 +183,41 @@ var (
 )
 
 func init() {
+	//address.ConfigureBech32Prefix()
+	nativeToken = tokentypes.Token{
+		Symbol:        "credit",
+		Name:          "Artchain credit token",
+		Scale:         6,
+		MinUnit:       "ucredit",
+		InitialSupply: 2000000000,
+		MaxSupply:     10000000000,
+		Mintable:      true,
+		Owner:         sdk.AccAddress(crypto.AddressHash([]byte(tokentypes.ModuleName))).String(),
+	}
+
 	userHomeDir, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)
 	}
 
 	DefaultNodeHome = filepath.Join(userHomeDir, "."+Name)
+
+	owner, err := sdk.AccAddressFromBech32(nativeToken.Owner)
+	if err != nil {
+		panic(err)
+	}
+
+	tokentypes.SetNativeToken(
+		nativeToken.Symbol,
+		nativeToken.Name,
+		nativeToken.MinUnit,
+		nativeToken.Scale,
+		nativeToken.InitialSupply,
+		nativeToken.MaxSupply,
+		nativeToken.Mintable,
+		owner,
+	)
+
 }
 
 // App extends an ABCI application, but with most of its parameters exported.
@@ -234,8 +268,8 @@ type App struct {
 
 	personKeeper personkeeper.Keeper
 
-	NFTKeeper    nftkeeper.Keeper
-	//faucetKeeper faucet.Keeper
+	nftKeeper    nftkeeper.Keeper
+	tokenKeeper    tokenkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -272,7 +306,7 @@ func New(
 		inventorytypes.StoreKey,
 
 		nfttypes.StoreKey,
-		//faucet.StoreKey,
+		tokentypes.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -368,15 +402,16 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.NFTKeeper = nftkeeper.NewKeeper(appCodec, keys[nfttypes.StoreKey])
+	app.nftKeeper = nftkeeper.NewKeeper(appCodec, keys[nfttypes.StoreKey])
 
-	//app.faucetKeeper = faucet.NewKeeper(
-	//	app.supplyKeeper,
-	//	app.stakingKeeper,
-	//	10*1000000,   // amount for mint
-	//	24*time.Hour, // rate limit by time
-	//	keys[faucet.StoreKey],
-	//	appCodec)
+	app.tokenKeeper = tokenkeeper.NewKeeper(
+		appCodec,
+		keys[tokentypes.StoreKey],
+		app.GetSubspace(tokentypes.ModuleName),
+		app.BankKeeper,
+		app.ModuleAccountAddrs(),
+		authtypes.FeeCollectorName,
+	)
 
 
 	app.transKeeper = *transkeeper.NewKeeper(
@@ -397,9 +432,9 @@ func New(
 		appCodec,
 		keys[inventorytypes.StoreKey],
 		keys[inventorytypes.MemStoreKey],
-		app.NFTKeeper,
+		app.nftKeeper,
 	)
-	inventoryModule := inventory.NewAppModule(appCodec, app.inventoryKeeper, app.NFTKeeper)
+	inventoryModule := inventory.NewAppModule(appCodec, app.inventoryKeeper, app.nftKeeper)
 
 	app.personKeeper = *personkeeper.NewKeeper(
 		appCodec,
@@ -455,8 +490,8 @@ func New(
 		inventoryModule,
 		personModule,
 
-		nft.NewAppModule(appCodec, app.NFTKeeper, app.AccountKeeper, app.BankKeeper),
-		//faucet.NewAppModule(app.faucetKeeper),
+		nft.NewAppModule(appCodec, app.nftKeeper, app.AccountKeeper, app.BankKeeper),
+		token.NewAppModule(appCodec, app.tokenKeeper, app.AccountKeeper, app.BankKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -497,6 +532,7 @@ func New(
 		persontypes.ModuleName,
 
 		nfttypes.ModuleName,
+		tokentypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -512,8 +548,10 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetAnteHandler(
-		ante.NewAnteHandler(
-			app.AccountKeeper, app.BankKeeper, ante.DefaultSigVerificationGasConsumer,
+		//ante.NewAnteHandler(
+		NewAnteHandler(
+			app.AccountKeeper, app.BankKeeper, app.tokenKeeper, 
+			ante.DefaultSigVerificationGasConsumer,
 			encodingConfig.TxConfig.SignModeHandler(),
 		),
 	)
@@ -677,6 +715,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govtypes.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
+	paramsKeeper.Subspace(tokentypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 	paramsKeeper.Subspace(persontypes.ModuleName)
