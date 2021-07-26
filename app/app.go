@@ -188,7 +188,7 @@ func init() {
 		Symbol:        "credit",
 		Name:          "Artchain credit token",
 		Scale:         6,
-		MinUnit:       "ucredit",
+		MinUnit:       "credit",
 		InitialSupply: 2000000000,
 		MaxSupply:     10000000000,
 		Mintable:      true,
@@ -548,15 +548,15 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetAnteHandler(
-		ante.NewAnteHandler(
-			app.AccountKeeper, app.BankKeeper, ante.DefaultSigVerificationGasConsumer,
-			encodingConfig.TxConfig.SignModeHandler(),
-		),
-		//NewAnteHandler(
-		//	app.AccountKeeper, app.BankKeeper, app.tokenKeeper, 
-		//	ante.DefaultSigVerificationGasConsumer,
+		//ante.NewAnteHandler(
+		//	app.AccountKeeper, app.BankKeeper, ante.DefaultSigVerificationGasConsumer,
 		//	encodingConfig.TxConfig.SignModeHandler(),
 		//),
+		NewAnteHandler(
+			app.AccountKeeper, app.BankKeeper, app.tokenKeeper, 
+			ante.DefaultSigVerificationGasConsumer,
+			encodingConfig.TxConfig.SignModeHandler(),
+		),
 	)
 	app.SetEndBlocker(app.EndBlocker)
 
