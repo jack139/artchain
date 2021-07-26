@@ -183,7 +183,7 @@ var (
 )
 
 func init() {
-	//address.ConfigureBech32Prefix()
+	SetConfig()
 	nativeToken = tokentypes.Token{
 		Symbol:        "credit",
 		Name:          "Artchain credit token",
@@ -548,12 +548,15 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetAnteHandler(
-		//ante.NewAnteHandler(
-		NewAnteHandler(
-			app.AccountKeeper, app.BankKeeper, app.tokenKeeper, 
-			ante.DefaultSigVerificationGasConsumer,
+		ante.NewAnteHandler(
+			app.AccountKeeper, app.BankKeeper, ante.DefaultSigVerificationGasConsumer,
 			encodingConfig.TxConfig.SignModeHandler(),
 		),
+		//NewAnteHandler(
+		//	app.AccountKeeper, app.BankKeeper, app.tokenKeeper, 
+		//	ante.DefaultSigVerificationGasConsumer,
+		//	encodingConfig.TxConfig.SignModeHandler(),
+		//),
 	)
 	app.SetEndBlocker(app.EndBlocker)
 
