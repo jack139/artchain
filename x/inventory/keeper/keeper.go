@@ -9,7 +9,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/jack139/artchain/x/inventory/types"
 	// this line is used by starport scaffolding # ibc/keeper/import
-	//"github.com/cosmos/modules/incubator/nft"
 	nft "github.com/irisnet/irismod/modules/nft/keeper"
 )
 
