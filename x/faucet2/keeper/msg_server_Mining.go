@@ -69,7 +69,7 @@ func (k msgServer) DeleteMining(goCtx context.Context, msg *types.MsgDeleteMinin
 func (k msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.MsgMintResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	k.Logger(ctx).Info("Mint in keeper")
+	k.Logger(ctx).Error("Mint in keeper")
 
 	return &types.MsgMintResponse{}, nil
 }

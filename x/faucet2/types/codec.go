@@ -12,6 +12,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateMining{}, "faucet2/CreateMining", nil)
 	cdc.RegisterConcrete(&MsgUpdateMining{}, "faucet2/UpdateMining", nil)
 	cdc.RegisterConcrete(&MsgDeleteMining{}, "faucet2/DeleteMining", nil)
+	cdc.RegisterConcrete(&MsgMint{}, "faucet2/Mint", nil)
 
 }
 
@@ -21,6 +22,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateMining{},
 		&MsgUpdateMining{},
 		&MsgDeleteMining{},
+		&MsgMint{},
 	)
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)

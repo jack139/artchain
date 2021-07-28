@@ -3,6 +3,7 @@ package cli
 import (
 	"github.com/spf13/cobra"
 	"strconv"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -88,6 +89,32 @@ func CmdDeleteMining() *cobra.Command {
 			}
 
 			msg := types.NewMsgDeleteMining(clientCtx.GetFromAddress().String(), id)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdMint() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "mint",
+		Short: "Mint coin to sender address",
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgMint(clientCtx.GetFromAddress().String(),
+				clientCtx.GetFromAddress().String(),
+				uint64(time.Now().Unix()))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
