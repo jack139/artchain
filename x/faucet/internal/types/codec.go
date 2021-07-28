@@ -17,6 +17,6 @@ func init() {
 
 // RegisterCodec registers concrete types on the Amino codec
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(MsgMint{}, "faucet/Mint", nil)
-	cdc.RegisterConcrete(MsgFaucetKey{}, "faucet/FaucetKey", nil)
+	cdc.RegisterConcrete(&MsgMint{}, "faucet/Mint", nil)
+	cdc.RegisterConcrete(&MsgFaucetKey{}, "faucet/FaucetKey", nil)
 }

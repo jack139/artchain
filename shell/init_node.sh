@@ -9,8 +9,12 @@ rm -rf ./$NODE_HOME
 artchaind init $NODE_NAME --home $NODE_HOME --chain-id artchain
 
 artchaind keys add $NODE_USER --home $NODE_HOME
-
 artchaind add-genesis-account $(artchaind keys show $NODE_USER -a --home $NODE_HOME) 100000000stake,1credit --home $NODE_HOME
+
+# for test ######
+artchaind keys add faucet --home $NODE_HOME
+artchaind add-genesis-account $(artchaind keys show faucet -a --home $NODE_HOME) 100credit --home $NODE_HOME
+#################
 
 artchaind gentx $NODE_USER 100000000stake --chain-id artchain --home $NODE_HOME
 

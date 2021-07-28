@@ -117,12 +117,9 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 }
 
 func (am AppModule) NewHandler() sdk.Handler {
-	if profile == TESTNET {
-		return NewHandler(am.keeper)
-	} else {
-		return nil
-	}
+	return NewHandler(am.keeper)
 }
+
 func (am AppModule) QuerierRoute() string {
 	return ModuleName
 }

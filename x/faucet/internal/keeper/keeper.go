@@ -47,6 +47,8 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 // MintAndSend mint coins and send to minter.
 func (k Keeper) MintAndSend(ctx sdk.Context, minter sdk.AccAddress, mintTime int64) error {
 
+	k.Logger(ctx).Error("here")
+
 	mining := k.getMining(ctx, minter)
 
 	// refuse mint in 24 hours

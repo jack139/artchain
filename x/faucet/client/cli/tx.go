@@ -50,7 +50,7 @@ func GetTxCmd() *cobra.Command {
 
 // GetCmdWithdraw is the CLI command for mining coin
 func GetCmdMint() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "mint",
 		Short: "mint coin to sender address",
 		Args:  cobra.ExactArgs(0),
@@ -82,11 +82,19 @@ func GetCmdMint() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
+
+	cmd.Flags().String(flags.FlagChainID, "", "network chain ID")
+	cmd.Flags().String(flags.FlagKeyringDir, "", "The client Keyring directory; if omitted, the default 'home' directory will be used")
+	cmd.Flags().String(flags.FlagKeyringBackend, flags.DefaultKeyringBackend, "Select keyring's backend (os|file|kwallet|pass|test|memory)")
+	cmd.Flags().String(flags.FlagFrom, "", "Name or address of private key with which to sign")
+	cmd.Flags().String(flags.FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")
+
+	return cmd
 }
 
 // GetCmdWithdraw is the CLI command for mining coin
 func GetCmdMintFor() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "mintfor [address]",
 		Short: "mint coin for new address",
 		Args:  cobra.ExactArgs(1),
@@ -123,10 +131,18 @@ func GetCmdMintFor() *cobra.Command {
 
 		},
 	}
+
+	cmd.Flags().String(flags.FlagChainID, "", "network chain ID")
+	cmd.Flags().String(flags.FlagKeyringDir, "", "The client Keyring directory; if omitted, the default 'home' directory will be used")
+	cmd.Flags().String(flags.FlagKeyringBackend, flags.DefaultKeyringBackend, "Select keyring's backend (os|file|kwallet|pass|test|memory)")
+	cmd.Flags().String(flags.FlagFrom, "", "Name or address of private key with which to sign")
+	cmd.Flags().String(flags.FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")
+
+	return cmd
 }
 
 func GetPublishKey() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "publish",
 		Short: "Publish current account as an public faucet. Do NOT add many coins in this account",
 		Args:  cobra.ExactArgs(0),
@@ -172,10 +188,18 @@ func GetPublishKey() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
+
+	cmd.Flags().String(flags.FlagChainID, "", "network chain ID")
+	cmd.Flags().String(flags.FlagKeyringDir, "", "The client Keyring directory; if omitted, the default 'home' directory will be used")
+	cmd.Flags().String(flags.FlagKeyringBackend, flags.DefaultKeyringBackend, "Select keyring's backend (os|file|kwallet|pass|test|memory)")
+	cmd.Flags().String(flags.FlagFrom, "", "Name or address of private key with which to sign")
+	cmd.Flags().String(flags.FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")
+
+	return cmd
 }
 
 func GetCmdInitial() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "init",
 		Short: "Initialize mint key for faucet",
 		Args:  cobra.ExactArgs(0),
@@ -232,4 +256,12 @@ func GetCmdInitial() *cobra.Command {
 
 		},
 	}
+
+	cmd.Flags().String(flags.FlagChainID, "", "network chain ID")
+	cmd.Flags().String(flags.FlagKeyringDir, "", "The client Keyring directory; if omitted, the default 'home' directory will be used")
+	cmd.Flags().String(flags.FlagKeyringBackend, flags.DefaultKeyringBackend, "Select keyring's backend (os|file|kwallet|pass|test|memory)")
+	cmd.Flags().String(flags.FlagFrom, "", "Name or address of private key with which to sign")
+	cmd.Flags().String(flags.FlagNode, "tcp://localhost:26657", "<host>:<port> to tendermint rpc interface for this chain")
+
+	return cmd
 }
