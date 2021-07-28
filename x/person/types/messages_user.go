@@ -7,7 +7,7 @@ import (
 
 var _ sdk.Msg = &MsgCreateUser{}
 
-func NewMsgCreateUser(creator string, recType string, name string, userType string, userInfo string, 
+func NewMsgCreateUser(creator string, recType string, name string, userType string, userInfo string,
 	status string, regDate string, chainAddr string, lastDate string) *MsgCreateUser {
 	return &MsgCreateUser{
 		Creator:   creator,
@@ -53,7 +53,7 @@ func (msg *MsgCreateUser) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateUser{}
 
-func NewMsgUpdateUser(creator string, id uint64, recType string, name string, userType string, 
+func NewMsgUpdateUser(creator string, id uint64, recType string, name string, userType string,
 	userInfo string, status string, regDate string, chainAddr string, lastDate string) *MsgUpdateUser {
 	return &MsgUpdateUser{
 		Id:        id,

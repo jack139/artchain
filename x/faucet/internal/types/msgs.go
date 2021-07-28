@@ -9,7 +9,6 @@ import (
 // RouterKey is the module name router key
 const RouterKey = ModuleName // this was defined in your key.go file
 
-
 // MsgMint defines a mint message
 type MsgMint struct {
 	Sender sdk.AccAddress
@@ -54,7 +53,6 @@ func (msg MsgMint) GetSignBytes() []byte {
 func (msg MsgMint) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Sender}
 }
-
 
 // MsgMint defines a mint message
 type MsgFaucetKey struct {

@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	imageKeyPrefix  = "image_"
+	imageKeyPrefix = "image_"
 )
 
 var (
@@ -19,10 +19,10 @@ func InitRDB() error {
 	rdb = redis.NewClient(&redis.Options{
 		Addr:     "localhost:7480",
 		Password: "e18ffb7484f4d69c2acb40008471a71c",
-		DB:       0,  // use default DB
+		DB:       0, // use default DB
 	})
 
-	if _, err := rdb.Ping(ctx).Result(); err!=nil {
+	if _, err := rdb.Ping(ctx).Result(); err != nil {
 		return err
 	}
 
@@ -39,7 +39,7 @@ func CacheImage(key string, data []byte) error {
 
 func GetImage(key string) ([]byte, error) {
 	val, err := rdb.Get(ctx, imageKeyPrefix+key).Result()
-	if err == redis.Nil{
+	if err == redis.Nil {
 		return nil, nil
 	} else if err != nil {
 		return nil, err

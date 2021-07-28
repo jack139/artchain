@@ -8,7 +8,6 @@ import (
 	"log"
 )
 
-
 /* 从ipfs下载数据 */
 func IpfsDownload(ctx *fasthttp.RequestCtx) {
 	log.Println("ipfs_download")
@@ -30,7 +29,7 @@ func IpfsDownload(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	if len(hash)==0 {
+	if len(hash) == 0 {
 		helper.RespError(ctx, 9002, "need hash")
 		return
 	}
@@ -39,22 +38,22 @@ func IpfsDownload(ctx *fasthttp.RequestCtx) {
 
 	// 检查redis
 	image_data, err = helper.GetImage(hash)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9004, err.Error())
 		return
 	}
 
-	if image_data==nil {
+	if image_data == nil {
 		// 从ipfs读取
 		image_data, err = ipfs.Get(hash)
-		if err!=nil {
+		if err != nil {
 			helper.RespError(ctx, 9005, err.Error())
 			return
 		}
 
 		// 缓存到 redis
 		err = helper.CacheImage(hash, image_data)
-		if err!=nil {
+		if err != nil {
 			helper.RespError(ctx, 9006, err.Error())
 			return
 		}

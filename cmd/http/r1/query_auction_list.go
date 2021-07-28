@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询拍卖信息清单 */
 func QueryAuctionList(ctx *fasthttp.RequestCtx) {
 	log.Println("query_auction_list")
@@ -45,46 +43,45 @@ func QueryAuctionList(ctx *fasthttp.RequestCtx) {
 
 	if page < 1 || limit < 1 {
 		helper.RespError(ctx, 9003, "page and limit need begin from 1")
-		return		
+		return
 	}
 
 	// 查询链上数据
 	respData2, err := queryAuctionListPage(uint64(page), uint64(limit), sellerAddr)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"               : item["id"],
-			"item_id"          : item["itemId"],
-			"auction_house_id" : item["auctionHouseId"],
-			"seller_addr"      : item["SellerId"],
-			"req_date"         : item["requestDate"],
-			"reserved_price"   : item["reservePrice"],
-			"status"           : item["status"],
-			"open_date"        : item["openDate"],
-			"close_date"       : item["closeDate"],
+		newItem := map[string]interface{}{
+			"id":               item["id"],
+			"item_id":          item["itemId"],
+			"auction_house_id": item["auctionHouseId"],
+			"seller_addr":      item["SellerId"],
+			"req_date":         item["requestDate"],
+			"reserved_price":   item["reservePrice"],
+			"status":           item["status"],
+			"open_date":        item["openDate"],
+			"close_date":       item["closeDate"],
 			//"last_date"        : item["lastDate"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"auction_list" : respData,
+	resp := map[string]interface{}{
+		"auction_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryAuctionListPage(page uint64, limit uint64, sellerAddr string) (*[]interface{}, error) {
@@ -105,7 +102,7 @@ func queryAuctionListPage(page uint64, limit uint64, sellerAddr string) (*[]inte
 	buf := new(bytes.Buffer)
 	clientCtx.Output = buf
 
-	if len(sellerAddr)==0 { // 查所有的
+	if len(sellerAddr) == 0 { // 查所有的
 		params := &auctiontypes.QueryAllRequestRequest{
 			Pagination: &pageReq,
 		}
@@ -119,8 +116,8 @@ func queryAuctionListPage(page uint64, limit uint64, sellerAddr string) (*[]inte
 		clientCtx.PrintProto(res)
 	} else { // 查指定seller_addr的
 		params := &auctiontypes.QueryGetRequestByChainAddrRequest{
-			ChainAddr  : sellerAddr,
-			Pagination : &pageReq,
+			ChainAddr:  sellerAddr,
+			Pagination: &pageReq,
 		}
 
 		res, err := queryClient.RequestByChainAddr(context.Background(), params)

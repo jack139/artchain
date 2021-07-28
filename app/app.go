@@ -3,8 +3,8 @@ package app
 import (
 	"io"
 	"os"
-	"time"
 	"path/filepath"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec/types"
@@ -90,6 +90,9 @@ import (
 	"github.com/jack139/artchain/x/auction"
 	auctionkeeper "github.com/jack139/artchain/x/auction/keeper"
 	auctiontypes "github.com/jack139/artchain/x/auction/types"
+	"github.com/jack139/artchain/x/faucet2"
+	faucet2keeper "github.com/jack139/artchain/x/faucet2/keeper"
+	faucet2types "github.com/jack139/artchain/x/faucet2/types"
 	"github.com/jack139/artchain/x/inventory"
 	inventorykeeper "github.com/jack139/artchain/x/inventory/keeper"
 	inventorytypes "github.com/jack139/artchain/x/inventory/types"
@@ -153,6 +156,7 @@ var (
 		vesting.AppModuleBasic{},
 		artchain.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
+		faucet2.AppModuleBasic{},
 		trans.AppModuleBasic{},
 		auction.AppModuleBasic{},
 		inventory.AppModuleBasic{},
@@ -228,6 +232,8 @@ type App struct {
 	artchainKeeper artchainkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
+	faucet2Keeper faucet2keeper.Keeper
+
 	transKeeper transkeeper.Keeper
 
 	auctionKeeper auctionkeeper.Keeper
@@ -268,6 +274,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		artchaintypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
+		faucet2types.StoreKey,
 		persontypes.StoreKey,
 		transtypes.StoreKey,
 		auctiontypes.StoreKey,
@@ -370,16 +377,22 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
+	app.faucet2Keeper = *faucet2keeper.NewKeeper(
+		appCodec,
+		keys[faucet2types.StoreKey],
+		keys[faucet2types.MemStoreKey],
+	)
+	faucet2Module := faucet2.NewAppModule(appCodec, app.faucet2Keeper)
+
 	app.NFTKeeper = nftkeeper.NewKeeper(appCodec, keys[nfttypes.StoreKey])
 
 	app.faucetKeeper = faucet.NewKeeper(
 		app.BankKeeper,
 		app.StakingKeeper,
-		1000 * 1000000,   // amount for mint
-		24 * time.Hour, // rate limit by time
+		1000*1000000, // amount for mint
+		24*time.Hour, // rate limit by time
 		keys[faucet.StoreKey],
 		cdc)
-
 
 	app.transKeeper = *transkeeper.NewKeeper(
 		appCodec,
@@ -452,6 +465,7 @@ func New(
 		transferModule,
 		artchain.NewAppModule(appCodec, app.artchainKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
+		faucet2Module,
 		transModule,
 		auctionModule,
 		inventoryModule,
@@ -493,6 +507,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		artchaintypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
+		faucet2types.ModuleName,
 		transtypes.ModuleName,
 		auctiontypes.ModuleName,
 		inventorytypes.ModuleName,
@@ -681,6 +696,7 @@ func initParamsKeeper(appCodec codec.BinaryMarshaler, legacyAmino *codec.LegacyA
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
+	paramsKeeper.Subspace(faucet2types.ModuleName)
 	paramsKeeper.Subspace(persontypes.ModuleName)
 	paramsKeeper.Subspace(transtypes.ModuleName)
 	paramsKeeper.Subspace(auctiontypes.ModuleName)

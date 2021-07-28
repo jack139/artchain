@@ -4,16 +4,16 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	persontypes "github.com/jack139/artchain/x/person/types"
 
+	"bytes"
+	"encoding/json"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"bytes"
-	"time"
 	"strings"
-	"encoding/json"
-	"github.com/valyala/fasthttp"
-	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/client/flags"
+	"time"
 )
 
 /* 修改用户信息 */
@@ -51,9 +51,9 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	userMap, err := queryUserInfoByChainAddr(chainAddr)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9002, err.Error())
-		return		
+		return
 	}
 
 	// 初始化用户状态
@@ -66,32 +66,32 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 
 	// 构建userInfo
 	userInfoMap := map[string]interface{}{
-		"bank_acc_name": userInfoOld["bank_acc_name"],
-		"bank_name":  userInfoOld["bank_name"],
-		"bank_acc_no": userInfoOld["bank_acc_no"],
+		"bank_acc_name":   userInfoOld["bank_acc_name"],
+		"bank_name":       userInfoOld["bank_name"],
+		"bank_acc_no":     userInfoOld["bank_acc_no"],
 		"contact_address": userInfoOld["contact_address"],
-		"phone": userInfoOld["phone"],
-		"email": userInfoOld["email"],
-		"referrer": userInfoOld["referrer"],
+		"phone":           userInfoOld["phone"],
+		"email":           userInfoOld["email"],
+		"referrer":        userInfoOld["referrer"],
 	}
 
 	// 是否要修改？
-	if len(bank_acc_name)>0 {
+	if len(bank_acc_name) > 0 {
 		userInfoMap["bank_acc_name"] = bank_acc_name
 	}
-	if len(bank_name)>0 {
+	if len(bank_name) > 0 {
 		userInfoMap["bank_name"] = bank_name
 	}
-	if len(bank_acc_no)>0 {
+	if len(bank_acc_no) > 0 {
 		userInfoMap["bank_acc_no"] = bank_acc_no
 	}
-	if len(contact_address)>0 {
+	if len(contact_address) > 0 {
 		userInfoMap["contact_address"] = contact_address
 	}
-	if len(phone)>0 {
+	if len(phone) > 0 {
 		userInfoMap["phone"] = phone
 	}
-	if len(email)>0 {
+	if len(email) > 0 {
 		userInfoMap["email"] = email
 	}
 
@@ -109,8 +109,8 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 	lastDateMap := (*userMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "edit",
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    "edit",
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
@@ -118,16 +118,14 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-
-
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, chainAddr)  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, chainAddr)            // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom) // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -144,14 +142,14 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 
 	// 数据上链
 	msg := persontypes.NewMsgUpdateUser(
-		(*userMap)["creator"].(string), 
-		userId, 
-		(*userMap)["recType"].(string), 
-		(*userMap)["name"].(string), 
-		(*userMap)["userType"].(string), 
-		string(userInfo), 
-		userStatus, 
-		(*userMap)["regDate"].(string), 
+		(*userMap)["creator"].(string),
+		userId,
+		(*userMap)["recType"].(string),
+		(*userMap)["name"].(string),
+		(*userMap)["userType"].(string),
+		string(userInfo),
+		userStatus,
+		(*userMap)["regDate"].(string),
 		chainAddr,
 		string(lastDate),
 	)
@@ -167,7 +165,7 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 	err = tx.GenerateOrBroadcastTxCLI(clientCtx, helper.HttpCmd.Flags(), msg)
 	if err != nil {
 		helper.RespError(ctx, 9011, err.Error())
-		return		
+		return
 	}
 
 	// 结果输出
@@ -184,14 +182,14 @@ func BizUserModify(ctx *fasthttp.RequestCtx) {
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
-		helper.RespError(ctx, 9099, buf.String())  ///  提交失败
+	if respData["code"].(float64) != 0 {
+		helper.RespError(ctx, 9099, buf.String()) ///  提交失败
 		return
 	}
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : respData["height"].(string),  // 区块高度
+		"height": respData["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)

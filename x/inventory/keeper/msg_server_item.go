@@ -2,10 +2,10 @@ package keeper
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
-	"encoding/json"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -131,20 +131,48 @@ func (k msgServer) UpdateItem(goCtx context.Context, msg *types.MsgUpdateItem) (
 	oldItem := k.GetItem(ctx, item.Id)
 
 	// 填充
-	if item.Creator        == "\x00" { item.Creator        = oldItem.Creator }
-	if item.RecType        == "\x00" { item.RecType        = oldItem.RecType }
-	if item.ItemDesc       == "\x00" { item.ItemDesc       = oldItem.ItemDesc }
-	if item.ItemDetail     == "\x00" { item.ItemDetail     = oldItem.ItemDetail }
-	if item.ItemDate       == "\x00" { item.ItemDate       = oldItem.ItemDate }
-	if item.ItemType       == "\x00" { item.ItemType       = oldItem.ItemType }
-	if item.ItemSubject    == "\x00" { item.ItemSubject    = oldItem.ItemSubject }
-	if item.ItemMedia      == "\x00" { item.ItemMedia      = oldItem.ItemMedia }
-	if item.ItemSize       == "\x00" { item.ItemSize       = oldItem.ItemSize }
-	if item.ItemImage      == "\x00" { item.ItemImage      = oldItem.ItemImage }
-	if item.AESKey         == "\x00" { item.AESKey         = oldItem.AESKey }
-	if item.ItemBasePrice  == "\x00" { item.ItemBasePrice  = oldItem.ItemBasePrice }
-	if item.CurrentOwnerId == "\x00" { item.CurrentOwnerId = oldItem.CurrentOwnerId }
-	if item.Status         == "\x00" { item.Status         = oldItem.Status }
+	if item.Creator == "\x00" {
+		item.Creator = oldItem.Creator
+	}
+	if item.RecType == "\x00" {
+		item.RecType = oldItem.RecType
+	}
+	if item.ItemDesc == "\x00" {
+		item.ItemDesc = oldItem.ItemDesc
+	}
+	if item.ItemDetail == "\x00" {
+		item.ItemDetail = oldItem.ItemDetail
+	}
+	if item.ItemDate == "\x00" {
+		item.ItemDate = oldItem.ItemDate
+	}
+	if item.ItemType == "\x00" {
+		item.ItemType = oldItem.ItemType
+	}
+	if item.ItemSubject == "\x00" {
+		item.ItemSubject = oldItem.ItemSubject
+	}
+	if item.ItemMedia == "\x00" {
+		item.ItemMedia = oldItem.ItemMedia
+	}
+	if item.ItemSize == "\x00" {
+		item.ItemSize = oldItem.ItemSize
+	}
+	if item.ItemImage == "\x00" {
+		item.ItemImage = oldItem.ItemImage
+	}
+	if item.AESKey == "\x00" {
+		item.AESKey = oldItem.AESKey
+	}
+	if item.ItemBasePrice == "\x00" {
+		item.ItemBasePrice = oldItem.ItemBasePrice
+	}
+	if item.CurrentOwnerId == "\x00" {
+		item.CurrentOwnerId = oldItem.CurrentOwnerId
+	}
+	if item.Status == "\x00" {
+		item.Status = oldItem.Status
+	}
 
 	// lastDate 反序列化
 	var lastDateMap []map[string]interface{}
@@ -156,8 +184,8 @@ func (k msgServer) UpdateItem(goCtx context.Context, msg *types.MsgUpdateItem) (
 	s := strings.Split(item.LastDate, "|") // 格式：caller|text
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": s[0],
-		"act": s[1],
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    s[1],
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {

@@ -186,7 +186,7 @@ func (k Keeper) GetItemByStatus(ctx sdk.Context, status string) (list []types.It
 		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
 		if val.Status==status {
 			list = append(list, val)
-		} 
+		}
 	}
 	return
 }

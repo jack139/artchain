@@ -3,10 +3,10 @@ package r1
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
 
-	"log"
-	"strconv"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
+	"log"
+	"strconv"
 )
 
 /* 删除物品图片 - 并为实际从ipfs删除，只是从链上数据中删除 */
@@ -50,16 +50,16 @@ func IpfsRemoveImage(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	itemMap, err := queryItemInfoById(itemId)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9002, err.Error())
-		return		
+		return
 	}
 
 	// 准备数据
-	loadData := (*itemMap)["itemImage"].([]string)	
+	loadData := (*itemMap)["itemImage"].([]string)
 	//log.Printf("1: %v", loadData)
-	for i, h := range loadData{
-		if h==hash { // 删除 图片的  hash
+	for i, h := range loadData {
+		if h == hash { // 删除 图片的  hash
 			loadData = append(loadData[:i], loadData[i+1:]...)
 			break
 		}
@@ -72,18 +72,17 @@ func IpfsRemoveImage(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 修改链上数据
-	respData, err := itemModify(callerAddr, 
-		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
+	respData, err := itemModify(callerAddr,
+		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00",
 		string(loadBytes), "\x00", "\x00", "\x00", "WAIT", "remove image")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return
 	}
 
-
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : (*respData)["height"].(string),  // 区块高度
+		"height": (*respData)["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)

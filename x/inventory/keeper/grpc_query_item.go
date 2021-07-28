@@ -59,7 +59,6 @@ func (k Keeper) Item(c context.Context, req *types.QueryGetItemRequest) (*types.
 	return &types.QueryGetItemResponse{Item: &item}, nil
 }
 
-
 func (k Keeper) ItemAllByOwner(c context.Context, req *types.QueryAllItemByOwnerRequest) (*types.QueryAllItemByOwnerResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -81,7 +80,7 @@ func (k Keeper) ItemAllByOwner(c context.Context, req *types.QueryAllItemByOwner
 		}
 
 		items = append(items, &item)
-		
+
 		return nil
 	})
 
@@ -129,8 +128,8 @@ func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusR
 			return false, err
 		}
 
-		// filter 
-		if strings.Contains(req.Status, item.Status){ // 状态可以多个
+		// filter
+		if strings.Contains(req.Status, item.Status) { // 状态可以多个
 			if accumulate {
 				items = append(items, &item)
 			}

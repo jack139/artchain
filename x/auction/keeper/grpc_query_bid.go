@@ -4,8 +4,8 @@ import (
 	"github.com/jack139/artchain/x/auction/types"
 
 	"context"
-	"strings"
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -32,8 +32,8 @@ func (k Keeper) BidAll(c context.Context, req *types.QueryAllBidRequest) (*types
 			return false, err
 		}
 
-		// filter 
-		if strings.Contains(req.Status, bid.Status){ // 状态可以多个
+		// filter
+		if strings.Contains(req.Status, bid.Status) { // 状态可以多个
 			if accumulate {
 				bids = append(bids, &bid)
 			}
@@ -68,7 +68,6 @@ func (k Keeper) Bid(c context.Context, req *types.QueryGetBidRequest) (*types.Qu
 	return &types.QueryGetBidResponse{Bid: &bid}, nil
 }
 
-
 // 获取最高出价
 func (k Keeper) BidHigh(c context.Context, req *types.QueryGetHighBidRequest) (*types.QueryGetHighBidResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
@@ -85,14 +84,14 @@ func (k Keeper) BidHigh(c context.Context, req *types.QueryGetHighBidRequest) (*
 		var val types.Bid
 		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
 
-		if bidHigh==nil {
+		if bidHigh == nil {
 			bidHigh = &val
 			continue
 		}
 
 		if s1, err := strconv.ParseFloat(val.BidPrice, 64); err == nil {
 			if s2, err := strconv.ParseFloat(bidHigh.BidPrice, 64); err == nil {
-				if s1>s2 {
+				if s1 > s2 {
 					bidHigh = &val
 				}
 			}

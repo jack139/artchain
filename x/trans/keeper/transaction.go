@@ -64,7 +64,7 @@ func (k Keeper) AppendTransaction(
 		ItemId:      itemId,
 		TransType:   transType,
 		BuyerId:     buyerId,
-		SellerId:     sellerId,
+		SellerId:    sellerId,
 		TransDate:   transDate,
 		HammerTime:  hammerTime,
 		HammerPrice: hammerPrice,

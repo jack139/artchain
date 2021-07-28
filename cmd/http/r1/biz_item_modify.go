@@ -4,16 +4,16 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	invtypes "github.com/jack139/artchain/x/inventory/types"
 
-	"log"
-	"strconv"
 	"bytes"
-	"fmt"
 	"context"
 	"encoding/json"
-	"github.com/valyala/fasthttp"
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
+	"log"
+	"strconv"
 )
 
 /* 修改物品信息 */
@@ -52,14 +52,30 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	itemSize, _ := (*reqData)["size"].(string)
 	itemBasePrice, _ := (*reqData)["base_price"].(string)
 
-	if itemDesc      == "" { itemDesc = "\x00" }
-	if itemDate      == "" { itemDate = "\x00" }
-	if itemDetail    == "" { itemDetail = "\x00" }
-	if itemType      == "" { itemType = "\x00" }
-	if itemSubject   == "" { itemSubject = "\x00" }
-	if itemMedia     == "" { itemMedia = "\x00" }
-	if itemSize      == "" { itemSize = "\x00" }
-	if itemBasePrice == "" { itemBasePrice = "\x00" }
+	if itemDesc == "" {
+		itemDesc = "\x00"
+	}
+	if itemDate == "" {
+		itemDate = "\x00"
+	}
+	if itemDetail == "" {
+		itemDetail = "\x00"
+	}
+	if itemType == "" {
+		itemType = "\x00"
+	}
+	if itemSubject == "" {
+		itemSubject = "\x00"
+	}
+	if itemMedia == "" {
+		itemMedia = "\x00"
+	}
+	if itemSize == "" {
+		itemSize = "\x00"
+	}
+	if itemBasePrice == "" {
+		itemBasePrice = "\x00"
+	}
 
 	itemId, err := strconv.ParseUint(itemIdStr, 10, 64)
 	if err != nil {
@@ -68,34 +84,33 @@ func BizItemModify(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 修改链上数据
-	respData, err := itemModify(callerAddr, 
-		itemId, itemDesc, itemDetail, itemDate, itemType, 
-		itemSubject, itemMedia, itemSize, "\x00", "\x00", 
+	respData, err := itemModify(callerAddr,
+		itemId, itemDesc, itemDetail, itemDate, itemType,
+		itemSubject, itemMedia, itemSize, "\x00", "\x00",
 		itemBasePrice, "\x00", "WAIT", "edit")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return
 	}
 
-
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : (*respData)["height"].(string),  // 区块高度
+		"height": (*respData)["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)
 }
 
 // string 参数填 "\x00" 表示不修改
-func itemModify(callerAddr string, 
-		itemId uint64, itemDesc string, itemDetail string, itemDate string, itemType string, 
-		itemSubject string, itemMedia string, itemSize string, itemImage string, AESKey string, 
-		itemBasePrice string, currentOwnerId string, status string, 
-		logText string ) (*map[string]interface{}, error) {
+func itemModify(callerAddr string,
+	itemId uint64, itemDesc string, itemDetail string, itemDate string, itemType string,
+	itemSubject string, itemMedia string, itemSize string, itemImage string, AESKey string,
+	itemBasePrice string, currentOwnerId string, status string,
+	logText string) (*map[string]interface{}, error) {
 
 	// 获取 creator
 	creator, err := queryItemCreatorById(itemId)
-	if err!=nil {
+	if err != nil {
 		return nil, err
 	}
 
@@ -108,8 +123,8 @@ func itemModify(callerAddr string,
 	if err != nil {
 		return nil, err
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, creator)  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, creator)              // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom) // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -119,21 +134,21 @@ func itemModify(callerAddr string,
 
 	// 数据上链
 	msg := invtypes.NewMsgUpdateItem(
-		creator, //creator string, 
-		itemId, //id uint64, 
-		"\x00", //recType string, 
-		itemDesc, //itemDesc string, 
-		itemDetail, //itemDetail string, 
-		itemDate, //itemDate string, 
-		itemType, //itemType string, 
-		itemSubject, //itemSubject string, 
-		itemMedia, //itemMedia string, 
-		itemSize, //itemSize string, 
-		itemImage, //itemImage string, 
-		AESKey, //AESKey string, 
-		itemBasePrice, //itemBasePrice string, 
-		currentOwnerId, //currentOwnerId string, 
-		status, // status 修改后状态自动设置为 WAIT
+		creator,                //creator string,
+		itemId,                 //id uint64,
+		"\x00",                 //recType string,
+		itemDesc,               //itemDesc string,
+		itemDetail,             //itemDetail string,
+		itemDate,               //itemDate string,
+		itemType,               //itemType string,
+		itemSubject,            //itemSubject string,
+		itemMedia,              //itemMedia string,
+		itemSize,               //itemSize string,
+		itemImage,              //itemImage string,
+		AESKey,                 //AESKey string,
+		itemBasePrice,          //itemBasePrice string,
+		currentOwnerId,         //currentOwnerId string,
+		status,                 // status 修改后状态自动设置为 WAIT
 		callerAddr+"|"+logText, // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
@@ -162,13 +177,12 @@ func itemModify(callerAddr string,
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
+	if respData["code"].(float64) != 0 {
 		return nil, fmt.Errorf("Tx fail: %s", buf.String())
 	}
 
 	return &respData, nil
 }
-
 
 // 查询链上数据, 返回 creator
 func queryItemCreatorById(itemId uint64) (string, error) {

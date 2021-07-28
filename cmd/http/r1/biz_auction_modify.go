@@ -4,16 +4,16 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	auctiontypes "github.com/jack139/artchain/x/auction/types"
 
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"bytes"
 	"time"
-	"fmt"
-	"encoding/json"
-	"github.com/valyala/fasthttp"
-	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
 /* 修改拍卖 */
@@ -60,19 +60,19 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	auctionMap, err := queryAuctionInfoById(auctionId)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9002, err.Error())
-		return		
+		return
 	}
 
 	// 检查拍卖状态是否是 WAIT， 其他状态不能修改
-	if (*auctionMap)["status"].(string)!="WAIT" {
+	if (*auctionMap)["status"].(string) != "WAIT" {
 		helper.RespError(ctx, 9003, "cannot modify, status is not WAIT")
-		return				
+		return
 	}
 
 	// 修改链上数据
-	respData, err := auctionModify(auctionMap, callerAddr, auctionId, 
+	respData, err := auctionModify(auctionMap, callerAddr, auctionId,
 		auctionHouseId, reservedPrice, "\x00", "\x00", "\x00", "edit")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -81,31 +81,31 @@ func BizAuctionModify(ctx *fasthttp.RequestCtx) {
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : (*respData)["height"].(string),  // 区块高度
+		"height": (*respData)["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)
 }
 
 // string 参数填 "\x00" 表示不修改
-func auctionModify(auctionMap *map[string]interface{}, callerAddr string, 
-	auctionId uint64, auctionHouseId string, reservedPrice string, 
+func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
+	auctionId uint64, auctionHouseId string, reservedPrice string,
 	openDate string, closeDate string, status string, logText string) (*map[string]interface{}, error) {
 
 	// 为空串用原有值填充
-	if auctionHouseId=="\x00" {
+	if auctionHouseId == "\x00" {
 		auctionHouseId = (*auctionMap)["auctionHouseId"].(string)
 	}
-	if reservedPrice=="\x00" {
+	if reservedPrice == "\x00" {
 		reservedPrice = (*auctionMap)["reservePrice"].(string)
 	}
-	if openDate=="\x00" {
+	if openDate == "\x00" {
 		openDate = (*auctionMap)["openDate"].(string)
 	}
-	if closeDate=="\x00" {
+	if closeDate == "\x00" {
 		closeDate = (*auctionMap)["closeDate"].(string)
 	}
-	if status=="\x00" {
+	if status == "\x00" {
 		status = (*auctionMap)["status"].(string)
 	}
 
@@ -117,8 +117,8 @@ func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
 	lastDateMap := (*auctionMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act": logText,
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    logText,
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
@@ -130,8 +130,8 @@ func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
 	if err != nil {
 		return nil, err
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*auctionMap)["creator"].(string))  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*auctionMap)["creator"].(string)) // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)              // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -141,18 +141,18 @@ func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
 
 	// 数据上链
 	msg := auctiontypes.NewMsgUpdateRequest(
-		(*auctionMap)["creator"].(string), //creator string, 
-		auctionId, //id uint64, 
-		(*auctionMap)["recType"].(string), //recType string, 
-		(*auctionMap)["itemId"].(string), //itemId string, 
-		auctionHouseId, //auctionHouseId string, 
-		(*auctionMap)["SellerId"].(string), //SellerId string, 
-		(*auctionMap)["requestDate"].(string), //requestDate string, 
-		reservedPrice, //reservePrice string, 
-		status, //status string, 
-		openDate, //openDate string, 
-		closeDate, //closeDate string,
-		string(lastDate), // lastDate
+		(*auctionMap)["creator"].(string),     //creator string,
+		auctionId,                             //id uint64,
+		(*auctionMap)["recType"].(string),     //recType string,
+		(*auctionMap)["itemId"].(string),      //itemId string,
+		auctionHouseId,                        //auctionHouseId string,
+		(*auctionMap)["SellerId"].(string),    //SellerId string,
+		(*auctionMap)["requestDate"].(string), //requestDate string,
+		reservedPrice,                         //reservePrice string,
+		status,                                //status string,
+		openDate,                              //openDate string,
+		closeDate,                             //closeDate string,
+		string(lastDate),                      // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		return nil, err
@@ -180,7 +180,7 @@ func auctionModify(auctionMap *map[string]interface{}, callerAddr string,
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
+	if respData["code"].(float64) != 0 {
 		return nil, fmt.Errorf("Tx fail: %s", buf.String())
 	}
 

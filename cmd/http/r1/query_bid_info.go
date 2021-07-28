@@ -6,16 +6,15 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"fmt"
-	"strings"
 	"bytes"
 	"context"
-	"strconv"
 	"encoding/json"
+	"fmt"
 	"github.com/valyala/fasthttp"
 	"log"
+	"strconv"
+	"strings"
 )
-
 
 /* 查询出价信息 */
 func QueryBidInfo(ctx *fasthttp.RequestCtx) {
@@ -51,32 +50,31 @@ func QueryBidInfo(ctx *fasthttp.RequestCtx) {
 
 	// 查询链上数据
 	respData2, err := queryBidInfoById(bidId, auctionIdStr)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	reviewMap := *respData2
 
 	// 构建返回结构
-	respData := map[string]interface{} {
-		"id"         : reviewMap["id"],
-		"auction_id" : reviewMap["auctionId"],
-		"bid_no"     : reviewMap["bidNo"],
-		"buyer_addr" : reviewMap["buyerId"],
-		"bid_price"  : reviewMap["bidPrice"],
-		"bid_time"   : reviewMap["bidTime"],
-		"last_date"  : reviewMap["lastDate"],
-		"status"     : reviewMap["status"],
+	respData := map[string]interface{}{
+		"id":         reviewMap["id"],
+		"auction_id": reviewMap["auctionId"],
+		"bid_no":     reviewMap["bidNo"],
+		"buyer_addr": reviewMap["buyerId"],
+		"bid_price":  reviewMap["bidPrice"],
+		"bid_time":   reviewMap["bidTime"],
+		"last_date":  reviewMap["lastDate"],
+		"status":     reviewMap["status"],
 	}
 
-	resp := map[string] interface{} {
-		"bid" : respData,
+	resp := map[string]interface{}{
+		"bid": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryBidInfoById(bidId uint64, auctionIdStr string) (*map[string]interface{}, error) {
@@ -87,7 +85,7 @@ func queryBidInfoById(bidId uint64, auctionIdStr string) (*map[string]interface{
 	queryClient := auctypes.NewQueryClient(clientCtx)
 
 	params := &auctypes.QueryGetBidRequest{
-		Id: bidId,
+		Id:        bidId,
 		AuctionId: auctionIdStr,
 	}
 

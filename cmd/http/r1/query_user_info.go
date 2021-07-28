@@ -6,16 +6,14 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"fmt"
 	"bytes"
-	"strings"
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/valyala/fasthttp"
 	"log"
+	"strings"
 )
-
-
 
 /* 查询用户信息 */
 func QueryUserInfo(ctx *fasthttp.RequestCtx) {
@@ -38,41 +36,39 @@ func QueryUserInfo(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-
 	// 查询链上数据
 	respData2, err := queryUserInfoByChainAddr(chainAddr)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	userMap := *respData2
 	userInfo := userMap["userInfo"].(map[string]interface{})
 
 	// 构建返回结构
-	respData := map[string] interface{} {
-		"chain_addr"    : userMap["chainAddr"],
-		"login_name"    : userMap["name"],
-		"user_type"     : userMap["userType"],
-		"bank_acc_name" : userInfo["bank_acc_name"],
-		"bank_name"     : userInfo["bank_name"],
-		"bank_acc_no"   : userInfo["bank_acc_no"],
-		"address"       : userInfo["contact_address"],
-		"phone"         : userInfo["phone"],
-		"email"         : userInfo["email"],
-		"referrer"      : userInfo["referrer"],
-		"reg_date"      : userMap["regDate"],
-		"last_date"     : userMap["lastDate"],
-		"status"        : userMap["status"],
+	respData := map[string]interface{}{
+		"chain_addr":    userMap["chainAddr"],
+		"login_name":    userMap["name"],
+		"user_type":     userMap["userType"],
+		"bank_acc_name": userInfo["bank_acc_name"],
+		"bank_name":     userInfo["bank_name"],
+		"bank_acc_no":   userInfo["bank_acc_no"],
+		"address":       userInfo["contact_address"],
+		"phone":         userInfo["phone"],
+		"email":         userInfo["email"],
+		"referrer":      userInfo["referrer"],
+		"reg_date":      userMap["regDate"],
+		"last_date":     userMap["lastDate"],
+		"status":        userMap["status"],
 	}
 
-	resp := map[string] interface{} {
-		"user" : respData,
+	resp := map[string]interface{}{
+		"user": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 User map
 func queryUserInfoByChainAddr(chainAddr string) (*map[string]interface{}, error) {
@@ -120,13 +116,12 @@ func queryUserInfoByChainAddr(chainAddr string) (*map[string]interface{}, error)
 
 	// 处理data字段
 	respData2, err := unmarshalUser(&respData)
-	if err!=nil{
+	if err != nil {
 		return nil, err
 	}
 
 	return respData2, nil
 }
-
 
 /* userInfo字段是已序列化的json串，反序列化一下，针对数据列表 */
 func unmarshalUser(reqData *map[string]interface{}) (*map[string]interface{}, error) {
@@ -147,7 +142,6 @@ func unmarshalUser(reqData *map[string]interface{}) (*map[string]interface{}, er
 	}
 	item["userInfo"] = data
 
-
 	// 检查 lastDate 字段是否正常
 	if _, ok := item["lastDate"]; !ok {
 		return nil, fmt.Errorf("lastDate empty") // 不应该发生
@@ -165,4 +159,3 @@ func unmarshalUser(reqData *map[string]interface{}) (*map[string]interface{}, er
 
 	return &item, nil
 }
-

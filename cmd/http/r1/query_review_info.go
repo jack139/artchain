@@ -6,16 +6,15 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"fmt"
-	"strings"
 	"bytes"
 	"context"
-	"strconv"
 	"encoding/json"
+	"fmt"
 	"github.com/valyala/fasthttp"
 	"log"
+	"strconv"
+	"strings"
 )
-
 
 /* 查询评论信息 */
 func QueryReviewInfo(ctx *fasthttp.RequestCtx) {
@@ -51,31 +50,30 @@ func QueryReviewInfo(ctx *fasthttp.RequestCtx) {
 
 	// 查询链上数据
 	respData2, err := queryReviewInfoById(reviewId, itemIdStr)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	reviewMap := *respData2
 
 	// 构建返回结构
-	respData := map[string]interface{} {
-		"id"            : reviewMap["id"],
-		"item_id"       : reviewMap["itemId"],
-		"detail"        : reviewMap["reviewDetail"],
-		"reviewer_addr" : reviewMap["reviewerId"],
-		"review_date"   : reviewMap["reviewDate"],
-		"last_date"     : reviewMap["lastDate"],
-		"status"        : reviewMap["status"],
+	respData := map[string]interface{}{
+		"id":            reviewMap["id"],
+		"item_id":       reviewMap["itemId"],
+		"detail":        reviewMap["reviewDetail"],
+		"reviewer_addr": reviewMap["reviewerId"],
+		"review_date":   reviewMap["reviewDate"],
+		"last_date":     reviewMap["lastDate"],
+		"status":        reviewMap["status"],
 	}
 
-	resp := map[string] interface{} {
-		"review" : respData,
+	resp := map[string]interface{}{
+		"review": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryReviewInfoById(reviewId uint64, itemIdStr string) (*map[string]interface{}, error) {
@@ -86,7 +84,7 @@ func queryReviewInfoById(reviewId uint64, itemIdStr string) (*map[string]interfa
 	queryClient := invtypes.NewQueryClient(clientCtx)
 
 	params := &invtypes.QueryGetReviewRequest{
-		Id: reviewId,
+		Id:     reviewId,
 		ItemId: itemIdStr,
 	}
 

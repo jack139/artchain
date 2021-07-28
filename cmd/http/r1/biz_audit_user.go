@@ -4,15 +4,15 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	persontypes "github.com/jack139/artchain/x/person/types"
 
+	"bytes"
+	"encoding/json"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"bytes"
 	"time"
-	"encoding/json"
-	"github.com/valyala/fasthttp"
-	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
 /* 审核用户（修改用户状态） */
@@ -49,11 +49,10 @@ func BizAuditUser(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	userMap, err := queryUserInfoByChainAddr(chainAddr)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9002, err.Error())
-		return		
+		return
 	}
-
 
 	userInfoMap := (*userMap)["userInfo"].(map[string]interface{})
 	userInfo, err := json.Marshal(userInfoMap)
@@ -70,8 +69,8 @@ func BizAuditUser(ctx *fasthttp.RequestCtx) {
 	lastDateMap := (*userMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "audit",
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    "audit",
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
@@ -85,8 +84,8 @@ func BizAuditUser(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, chainAddr)  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, chainAddr)            // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom) // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -103,14 +102,14 @@ func BizAuditUser(ctx *fasthttp.RequestCtx) {
 
 	// 数据上链
 	msg := persontypes.NewMsgUpdateUser(
-		(*userMap)["creator"].(string), 
-		userId, 
-		(*userMap)["recType"].(string), 
-		(*userMap)["name"].(string), 
-		(*userMap)["userType"].(string), 
-		string(userInfo), 
+		(*userMap)["creator"].(string),
+		userId,
+		(*userMap)["recType"].(string),
+		(*userMap)["name"].(string),
+		(*userMap)["userType"].(string),
+		string(userInfo),
 		status, // 其实 只修改了这里
-		(*userMap)["regDate"].(string), 
+		(*userMap)["regDate"].(string),
 		chainAddr,
 		string(lastDate), // 和， 修改了这里
 	)
@@ -126,7 +125,7 @@ func BizAuditUser(ctx *fasthttp.RequestCtx) {
 	err = tx.GenerateOrBroadcastTxCLI(clientCtx, helper.HttpCmd.Flags(), msg)
 	if err != nil {
 		helper.RespError(ctx, 9011, err.Error())
-		return		
+		return
 	}
 
 	// 结果输出
@@ -143,14 +142,14 @@ func BizAuditUser(ctx *fasthttp.RequestCtx) {
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
-		helper.RespError(ctx, 9099, buf.String())  ///  提交失败
+	if respData["code"].(float64) != 0 {
+		helper.RespError(ctx, 9099, buf.String()) ///  提交失败
 		return
 	}
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : respData["height"].(string),  // 区块高度
+		"height": respData["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)

@@ -30,8 +30,8 @@ func (k Keeper) ReviewAll(c context.Context, req *types.QueryAllReviewRequest) (
 			return false, err
 		}
 
-		// filter 
-		if strings.Contains(req.Status, review.Status){ // 状态可以多个
+		// filter
+		if strings.Contains(req.Status, review.Status) { // 状态可以多个
 			if accumulate {
 				reviews = append(reviews, &review)
 			}
@@ -66,7 +66,6 @@ func (k Keeper) Review(c context.Context, req *types.QueryGetReviewRequest) (*ty
 	return &types.QueryGetReviewResponse{Review: &review}, nil
 }
 
-
 // 使用 FilteredPaginate 版本
 func (k Keeper) ReviewByStatus(c context.Context, req *types.QueryGetReviewByStatusRequest) (*types.QueryGetReviewByStatusResponse, error) {
 	if req == nil {
@@ -85,8 +84,8 @@ func (k Keeper) ReviewByStatus(c context.Context, req *types.QueryGetReviewBySta
 			return false, err
 		}
 
-		// filter 
-		if strings.Contains(req.Status, review.Status){ // 状态可以多个
+		// filter
+		if strings.Contains(req.Status, review.Status) { // 状态可以多个
 			if accumulate {
 				reviews = append(reviews, &review)
 			}

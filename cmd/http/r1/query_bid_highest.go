@@ -6,15 +6,14 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"fmt"
-	"strings"
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/valyala/fasthttp"
 	"log"
+	"strings"
 )
-
 
 /* 查询最高出价信息 */
 func QueryBidHighest(ctx *fasthttp.RequestCtx) {
@@ -39,41 +38,40 @@ func QueryBidHighest(ctx *fasthttp.RequestCtx) {
 
 	// 查询链上数据
 	respData2, err := queryBidHighest(auctionIdStr)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	var resp map[string]interface{}
 
-	if respData2==nil { // 无数据返回的情况
-		resp = map[string] interface{} {
-			"bid" : nil,
+	if respData2 == nil { // 无数据返回的情况
+		resp = map[string]interface{}{
+			"bid": nil,
 		}
 	} else {
 		reviewMap := *respData2
 
 		// 构建返回结构
-		respData := map[string]interface{} {
-			"id"         : reviewMap["id"],
-			"auction_id" : reviewMap["auctionId"],
-			"bid_no"     : reviewMap["bidNo"],
-			"buyer_addr" : reviewMap["buyerId"],
-			"bid_price"  : reviewMap["bidPrice"],
-			"bid_time"   : reviewMap["bidTime"],
-			"last_date"  : reviewMap["lastDate"],
-			"status"     : reviewMap["status"],
+		respData := map[string]interface{}{
+			"id":         reviewMap["id"],
+			"auction_id": reviewMap["auctionId"],
+			"bid_no":     reviewMap["bidNo"],
+			"buyer_addr": reviewMap["buyerId"],
+			"bid_price":  reviewMap["bidPrice"],
+			"bid_time":   reviewMap["bidTime"],
+			"last_date":  reviewMap["lastDate"],
+			"status":     reviewMap["status"],
 		}
 
-		resp = map[string] interface{} {
-			"bid" : respData,
+		resp = map[string]interface{}{
+			"bid": respData,
 		}
 
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryBidHighest(auctionIdStr string) (*map[string]interface{}, error) {
@@ -113,7 +111,7 @@ func queryBidHighest(auctionIdStr string) (*map[string]interface{}, error) {
 		return nil, err
 	}
 
-	if respData["Bid"]==nil { // 没有返回数据的情况
+	if respData["Bid"] == nil { // 没有返回数据的情况
 		return nil, nil
 	}
 

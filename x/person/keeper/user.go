@@ -151,7 +151,6 @@ func GetUserIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
 
-
 // 使用chainAddr取得用户，使用索引 ChainAddr --> Id
 func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) types.User {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))

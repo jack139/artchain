@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询物品清单 by status */
 func QueryItemListByStatus(ctx *fasthttp.RequestCtx) {
 	log.Println("query_audit_item_list_by_status")
@@ -49,43 +47,42 @@ func QueryItemListByStatus(ctx *fasthttp.RequestCtx) {
 
 	// 查询链上数据
 	respData2, err := queryItemListByStatusPage(uint64(page), uint64(limit), status)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"         : item["id"],
-			"desc"       : item["itemDesc"],
-			"detail"     : item["itemDetail"],
-			"date"       : item["itemDate"],
-			"type"       : item["itemType"],
-			"subject"    : item["itemSubject"],
-			"media"      : item["itemMedia"],
-			"size"       : item["itemSize"],
-			"base_price" : item["itemBasePrice"],
-			"owner_addr" : item["currentOwnerId"],
-			"image"      : item["itemImage"],
-			"status"     : item["status"],
+		newItem := map[string]interface{}{
+			"id":         item["id"],
+			"desc":       item["itemDesc"],
+			"detail":     item["itemDetail"],
+			"date":       item["itemDate"],
+			"type":       item["itemType"],
+			"subject":    item["itemSubject"],
+			"media":      item["itemMedia"],
+			"size":       item["itemSize"],
+			"base_price": item["itemBasePrice"],
+			"owner_addr": item["currentOwnerId"],
+			"image":      item["itemImage"],
+			"status":     item["status"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"item_list" : respData,
+	resp := map[string]interface{}{
+		"item_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryItemListByStatusPage(page uint64, limit uint64, status string) (*[]interface{}, error) {
@@ -106,10 +103,9 @@ func queryItemListByStatusPage(page uint64, limit uint64, status string) (*[]int
 	buf := new(bytes.Buffer)
 	clientCtx.Output = buf
 
-
 	params := &invtypes.QueryGetItemByStatusRequest{
 		Pagination: &pageReq,
-		Status: status,
+		Status:     status,
 	}
 
 	res, err := queryClient.ItemByStatus(context.Background(), params)

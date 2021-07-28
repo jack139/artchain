@@ -3,9 +3,9 @@ package r1
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
 
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"github.com/valyala/fasthttp"
 )
 
 /* 修改物品所有人 */
@@ -50,18 +50,17 @@ func BizItemChangeOwner(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 修改链上数据
-	respData, err := itemModify(callerAddr, 
-		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
+	respData, err := itemModify(callerAddr,
+		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00",
 		"\x00", "\x00", "\x00", ownerAddr, "\x00", "change owner")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
 		return
 	}
 
-
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : (*respData)["height"].(string),  // 区块高度
+		"height": (*respData)["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)

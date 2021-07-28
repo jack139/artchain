@@ -59,7 +59,6 @@ func (k Keeper) User(c context.Context, req *types.QueryGetUserRequest) (*types.
 	return &types.QueryGetUserResponse{User: &user}, nil
 }
 
-
 func (k Keeper) UserByChainAddr(c context.Context, req *types.QueryGetUserByChainAddrRequest) (*types.QueryGetUserByChainAddrResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -91,7 +90,7 @@ func (k Keeper) UserByUserType(c context.Context, req *types.QueryGetUserByUserT
 			return false, err
 		}
 
-		// filter 
+		// filter
 		if strings.HasPrefix(user.UserType, req.UserType) {
 			if accumulate {
 				users = append(users, &user)
@@ -127,8 +126,8 @@ func (k Keeper) UserByStatus(c context.Context, req *types.QueryGetUserByStatusR
 			return false, err
 		}
 
-		// filter 
-		if strings.Contains(req.Status, user.Status){ // 状态可以多个
+		// filter
+		if strings.Contains(req.Status, user.Status) { // 状态可以多个
 			if accumulate {
 				users = append(users, &user)
 			}

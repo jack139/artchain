@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询出价清单 */
 func QueryBidList(ctx *fasthttp.RequestCtx) {
 	log.Println("query_bid_list")
@@ -54,44 +52,43 @@ func QueryBidList(ctx *fasthttp.RequestCtx) {
 
 	if page < 1 || limit < 1 {
 		helper.RespError(ctx, 9005, "page and limit need begin from 1")
-		return		
+		return
 	}
 
 	// 查询链上数据
 	respData2, err := queryBidListPage(auctionIdStr, uint64(page), uint64(limit), status)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"         : item["id"],
-			"auction_id" : item["auctionId"],
-			"bid_no"     : item["bidNo"],
-			"buyer_addr" : item["buyerId"],
-			"bid_price"  : item["bidPrice"],
-			"bid_time"   : item["bidTime"],
-			"last_date"  : item["lastDate"],
-			"status"     : item["status"],
+		newItem := map[string]interface{}{
+			"id":         item["id"],
+			"auction_id": item["auctionId"],
+			"bid_no":     item["bidNo"],
+			"buyer_addr": item["buyerId"],
+			"bid_price":  item["bidPrice"],
+			"bid_time":   item["bidTime"],
+			"last_date":  item["lastDate"],
+			"status":     item["status"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"bid_list" : respData,
+	resp := map[string]interface{}{
+		"bid_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryBidListPage(auctionId string, page uint64, limit uint64, status string) (*[]interface{}, error) {
@@ -109,8 +106,8 @@ func queryBidListPage(auctionId string, page uint64, limit uint64, status string
 	}
 
 	params := &auctypes.QueryAllBidRequest{
-		AuctionId: auctionId,
-		Status: status,
+		AuctionId:  auctionId,
+		Status:     status,
 		Pagination: &pageReq,
 	}
 

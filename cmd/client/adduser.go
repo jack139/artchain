@@ -2,8 +2,8 @@ package client
 
 import (
 	"bufio"
-	"log"
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 
@@ -30,9 +30,9 @@ func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, str
 	log.Println("FlagFrom:", originFlagFrom)
 
 	// 设置 faucet 地址，用于转账
-	cmd.Flags().Set(flags.FlagFrom, types.FaucetAddress) 
+	cmd.Flags().Set(flags.FlagFrom, types.FaucetAddress)
 	// 结束时恢复 --from 设置
-	defer cmd.Flags().Set(flags.FlagFrom, originFlagFrom) 
+	defer cmd.Flags().Set(flags.FlagFrom, originFlagFrom)
 
 	clientCtx, err := client.GetClientTxContext(cmd)
 	if err != nil {
@@ -109,8 +109,7 @@ func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, str
 
 }
 
-
-// 比对用户 user， 
+// 比对用户 user，
 // 返回： bool
 func VerifyUserAccount(cmd *cobra.Command, userAddr string, mnemonic string) (bool, error) {
 	clientCtx, err := client.GetClientTxContext(cmd)
@@ -155,9 +154,8 @@ func VerifyUserAccount(cmd *cobra.Command, userAddr string, mnemonic string) (bo
 	accAddr := sdk.AccAddress(privKey.PubKey().Address().Bytes())
 	//fmt.Println(accAddr.String())
 
-	return accAddr.String()==userAddr, nil
+	return accAddr.String() == userAddr, nil
 }
-
 
 /* 通过key name获取地址 */
 func GetAddrStr(cmd *cobra.Command, keyref string) (string, error) {

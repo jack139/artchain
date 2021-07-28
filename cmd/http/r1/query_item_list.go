@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询物品清单 */
 func QueryItemList(ctx *fasthttp.RequestCtx) {
 	log.Println("query_item_list")
@@ -45,49 +43,48 @@ func QueryItemList(ctx *fasthttp.RequestCtx) {
 
 	if page < 1 || limit < 1 {
 		helper.RespError(ctx, 9003, "page and limit need begin from 1")
-		return		
+		return
 	}
 
 	// 查询链上数据
 	respData2, err := queryItemListPage(uint64(page), uint64(limit), ownerAddr)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"         : item["id"],
-			"desc"       : item["itemDesc"],
-			"detail"     : item["itemDetail"],
-			"date"       : item["itemDate"],
-			"type"       : item["itemType"],
-			"subject"    : item["itemSubject"],
-			"media"      : item["itemMedia"],
-			"size"       : item["itemSize"],
-			"base_price" : item["itemBasePrice"],
-			"owner_addr" : item["currentOwnerId"],
-			"image"      : item["itemImage"],
+		newItem := map[string]interface{}{
+			"id":         item["id"],
+			"desc":       item["itemDesc"],
+			"detail":     item["itemDetail"],
+			"date":       item["itemDate"],
+			"type":       item["itemType"],
+			"subject":    item["itemSubject"],
+			"media":      item["itemMedia"],
+			"size":       item["itemSize"],
+			"base_price": item["itemBasePrice"],
+			"owner_addr": item["currentOwnerId"],
+			"image":      item["itemImage"],
 			//"last_date"  : item["lastDate"],
-			"status"     : item["status"],
+			"status": item["status"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"item_list" : respData,
+	resp := map[string]interface{}{
+		"item_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryItemListPage(page uint64, limit uint64, ownerAddr string) (*[]interface{}, error) {
@@ -108,7 +105,7 @@ func queryItemListPage(page uint64, limit uint64, ownerAddr string) (*[]interfac
 	buf := new(bytes.Buffer)
 	clientCtx.Output = buf
 
-	if len(ownerAddr)==0 { // 查所有的
+	if len(ownerAddr) == 0 { // 查所有的
 		params := &invtypes.QueryAllItemRequest{
 			Pagination: &pageReq,
 		}
@@ -124,8 +121,8 @@ func queryItemListPage(page uint64, limit uint64, ownerAddr string) (*[]interfac
 	} else { // 查指定owner_addr的
 		params := &invtypes.QueryAllItemByOwnerRequest{
 			CurrentOwnerId: ownerAddr,
-			Pagination: &pageReq,
-		}		
+			Pagination:     &pageReq,
+		}
 
 		res, err := queryClient.ItemAllByOwner(context.Background(), params)
 		if err != nil {

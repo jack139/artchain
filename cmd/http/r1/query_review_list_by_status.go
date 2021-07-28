@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询物品评论清单 by status */
 func QueryReviewListByStatus(ctx *fasthttp.RequestCtx) {
 	log.Println("query_review_list_by_status")
@@ -47,41 +45,39 @@ func QueryReviewListByStatus(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-
 	// 查询链上数据
 	respData2, err := queryReviewListByStatusPage(uint64(page), uint64(limit), status)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"            : item["id"],
-			"item_id"       : item["itemId"],
-			"detail"        : item["reviewDetail"],
-			"reviewer_addr" : item["reviewerId"],
-			"review_date"   : item["reviewDate"],
-			"last_date"     : item["lastDate"],
-			"status"        : item["status"],
+		newItem := map[string]interface{}{
+			"id":            item["id"],
+			"item_id":       item["itemId"],
+			"detail":        item["reviewDetail"],
+			"reviewer_addr": item["reviewerId"],
+			"review_date":   item["reviewDate"],
+			"last_date":     item["lastDate"],
+			"status":        item["status"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"review_list" : respData,
+	resp := map[string]interface{}{
+		"review_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryReviewListByStatusPage(page uint64, limit uint64, status string) (*[]interface{}, error) {
@@ -100,7 +96,7 @@ func queryReviewListByStatusPage(page uint64, limit uint64, status string) (*[]i
 
 	params := &invtypes.QueryGetReviewByStatusRequest{
 		Pagination: &pageReq,
-		Status: status,
+		Status:     status,
 	}
 
 	res, err := queryClient.ReviewByStatus(context.Background(), params)

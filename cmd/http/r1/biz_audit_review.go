@@ -4,15 +4,15 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	invtypes "github.com/jack139/artchain/x/inventory/types"
 
+	"bytes"
+	"encoding/json"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"bytes"
 	"time"
-	"encoding/json"
-	"github.com/valyala/fasthttp"
-	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
 /* 审核物品评价 */
@@ -62,9 +62,9 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	reviewMap, err := queryReviewInfoById(reviewId, itemIdStr)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9005, err.Error())
-		return		
+		return
 	}
 
 	/* 信号量 */
@@ -75,8 +75,8 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 	lastDateMap := (*reviewMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "audit",
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    "audit",
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
@@ -90,8 +90,8 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*reviewMap)["creator"].(string))  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*reviewMap)["creator"].(string)) // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)             // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -102,17 +102,17 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 
 	// 数据上链
 	msg := invtypes.NewMsgUpdateReview(
-		(*reviewMap)["creator"].(string), //creator string, 
-		reviewId, //id uint64, 
-		(*reviewMap)["recType"].(string), //recType string, 
-		(*reviewMap)["itemId"].(string), //itemId string, 
-		(*reviewMap)["reviewerId"].(string), //reviewerId string, 
-		(*reviewMap)["reviewDetail"].(string), //reviewDetail string, 
-		(*reviewMap)["reviewDate"].(string), //reviewDate string, 
-		(*reviewMap)["upCount"].(string), //upCount string, 
-		(*reviewMap)["downCount"].(string), //downCount string,
-		status, // status
-		string(lastDate), // lastDate
+		(*reviewMap)["creator"].(string),      //creator string,
+		reviewId,                              //id uint64,
+		(*reviewMap)["recType"].(string),      //recType string,
+		(*reviewMap)["itemId"].(string),       //itemId string,
+		(*reviewMap)["reviewerId"].(string),   //reviewerId string,
+		(*reviewMap)["reviewDetail"].(string), //reviewDetail string,
+		(*reviewMap)["reviewDate"].(string),   //reviewDate string,
+		(*reviewMap)["upCount"].(string),      //upCount string,
+		(*reviewMap)["downCount"].(string),    //downCount string,
+		status,                                // status
+		string(lastDate),                      // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -126,7 +126,7 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 	err = tx.GenerateOrBroadcastTxCLI(clientCtx, helper.HttpCmd.Flags(), msg)
 	if err != nil {
 		helper.RespError(ctx, 9011, err.Error())
-		return		
+		return
 	}
 
 	// 结果输出
@@ -143,17 +143,15 @@ func BizAuditReview(ctx *fasthttp.RequestCtx) {
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
-		helper.RespError(ctx, 9099, buf.String())  ///  提交失败
+	if respData["code"].(float64) != 0 {
+		helper.RespError(ctx, 9099, buf.String()) ///  提交失败
 		return
 	}
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : respData["height"].(string),  // 区块高度
+		"height": respData["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
-

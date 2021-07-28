@@ -77,7 +77,7 @@ func (k Keeper) RequestByChainAddr(c context.Context, req *types.QueryGetRequest
 			return false, err
 		}
 
-		// filter 
+		// filter
 		if request.SellerId == req.ChainAddr {
 			if accumulate {
 				requests = append(requests, &request)
@@ -113,8 +113,8 @@ func (k Keeper) RequestByStatus(c context.Context, req *types.QueryGetRequestByS
 			return false, err
 		}
 
-		// filter 
-		if strings.Contains(req.Status, request.Status){ // 状态可以多个
+		// filter
+		if strings.Contains(req.Status, request.Status) { // 状态可以多个
 			if accumulate {
 				requests = append(requests, &request)
 			}

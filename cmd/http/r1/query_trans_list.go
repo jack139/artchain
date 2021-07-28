@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询交易信息清单 */
 func QueryTransList(ctx *fasthttp.RequestCtx) {
 	log.Println("query_trans_list")
@@ -44,48 +42,47 @@ func QueryTransList(ctx *fasthttp.RequestCtx) {
 
 	if page < 1 || limit < 1 {
 		helper.RespError(ctx, 9003, "page and limit need begin from 1")
-		return		
+		return
 	}
 
 	// 查询链上数据
 	respData2, err := queryTransListPage(uint64(page), uint64(limit))
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"           : item["id"],
-			"auction_id"   : item["auctionId"],
-			"item_id"      : item["itemId"],
-			"trans_type"   : item["transType"],
-			"buyer_addr"   : item["buyerId"],
-			"seller_addr"  : item["sellerId"],
-			"trans_date"   : item["transDate"],
-			"hammer_time"  : item["hammerTime"],
-			"hammer_price" : item["hammerPrice"],
-			"details"      : item["details"],
-			"status"       : item["status"],
+		newItem := map[string]interface{}{
+			"id":           item["id"],
+			"auction_id":   item["auctionId"],
+			"item_id":      item["itemId"],
+			"trans_type":   item["transType"],
+			"buyer_addr":   item["buyerId"],
+			"seller_addr":  item["sellerId"],
+			"trans_date":   item["transDate"],
+			"hammer_time":  item["hammerTime"],
+			"hammer_price": item["hammerPrice"],
+			"details":      item["details"],
+			"status":       item["status"],
 			//"last_date"    : item["lastDate"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"trans_list" : respData,
+	resp := map[string]interface{}{
+		"trans_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryTransListPage(page uint64, limit uint64) (*[]interface{}, error) {

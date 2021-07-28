@@ -7,8 +7,8 @@ import (
 
 var _ sdk.Msg = &MsgCreateTransaction{}
 
-func NewMsgCreateTransaction(creator string, recType string, auctionId string, itemId string, transType string, 
-	buyerId string, sellerId string, transDate string, hammerTime string, hammerPrice string, details string, 
+func NewMsgCreateTransaction(creator string, recType string, auctionId string, itemId string, transType string,
+	buyerId string, sellerId string, transDate string, hammerTime string, hammerPrice string, details string,
 	status string, lastDate string) *MsgCreateTransaction {
 	return &MsgCreateTransaction{
 		Creator:     creator,
@@ -58,8 +58,8 @@ func (msg *MsgCreateTransaction) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateTransaction{}
 
-func NewMsgUpdateTransaction(creator string, id uint64, recType string, auctionId string, 
-	itemId string, transType string, buyerId string, sellerId string, transDate string, hammerTime string, 
+func NewMsgUpdateTransaction(creator string, id uint64, recType string, auctionId string,
+	itemId string, transType string, buyerId string, sellerId string, transDate string, hammerTime string,
 	hammerPrice string, details string, status string, lastDate string) *MsgUpdateTransaction {
 	return &MsgUpdateTransaction{
 		Id:          id,

@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询用户清单 */
 func QueryUserList(ctx *fasthttp.RequestCtx) {
 	log.Println("query_user_list")
@@ -44,43 +42,42 @@ func QueryUserList(ctx *fasthttp.RequestCtx) {
 
 	if page < 1 || limit < 1 {
 		helper.RespError(ctx, 9003, "page and limit need begin from 1")
-		return		
+		return
 	}
 
 	// 查询链上数据
 	respData2, err := queryUserListPage(uint64(page), uint64(limit))
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"         : item["id"],
-			"chain_addr" : item["chainAddr"],
-			"login_name" : item["name"],
-			"user_type"  : item["userType"],
-			"reg_date"   : item["regDate"],
+		newItem := map[string]interface{}{
+			"id":         item["id"],
+			"chain_addr": item["chainAddr"],
+			"login_name": item["name"],
+			"user_type":  item["userType"],
+			"reg_date":   item["regDate"],
 			//"last_date"  : item["lastDate"], // lastDate 只在user_info里返回
-			"status"     : item["status"],
+			"status": item["status"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"user_list" : respData,
+	resp := map[string]interface{}{
+		"user_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryUserListPage(page uint64, limit uint64) (*[]interface{}, error) {

@@ -1,13 +1,12 @@
 package r1
 
 import (
-	"log"
-	"time"
-	"strings"
-	"strconv"
 	"encoding/json"
+	"log"
+	"strconv"
+	"strings"
+	"time"
 )
-
 
 // 检查拍卖时间进行状态转换
 func CheckAuction() error {
@@ -16,7 +15,7 @@ func CheckAuction() error {
 
 	// 查询拍卖信息, 一次处理1000个
 	respData2, err := queryAuctionListByStatusPage(1, uint64(limit), "INIT|OPEN")
-	if err!=nil{
+	if err != nil {
 		return err
 	}
 
@@ -30,12 +29,12 @@ func CheckAuction() error {
 
 		//log.Printf("%v", item)
 
-		if item["status"]=="INIT" { 
+		if item["status"] == "INIT" {
 			if item["openDate"].(string) < nowTime { // 开始拍卖
 				newStatus = "OPEN"
 				log.Printf("auction --> OPEN: %v", item["id"])
 			}
-		} else if item["status"]=="OPEN" {
+		} else if item["status"] == "OPEN" {
 			if item["closeDate"].(string) < nowTime { // 停止拍卖
 				newStatus = "CLOSE"
 				log.Printf("auction --> CLOSE: %v", item["id"])
@@ -45,7 +44,7 @@ func CheckAuction() error {
 		}
 
 		// 修改 拍卖状态
-		if newStatus!="" {
+		if newStatus != "" {
 
 			// 检查 lastDate 字段是否正常
 			if _, ok := item["lastDate"]; !ok {
@@ -72,7 +71,7 @@ func CheckAuction() error {
 			}
 
 			// 修改链上数据
-			_, err = auctionModify(&item, item["auctionHouseId"].(string), auctionId, 
+			_, err = auctionModify(&item, item["auctionHouseId"].(string), auctionId,
 				"\x00", "\x00", "\x00", "\x00", newStatus, "robot")
 			if err != nil {
 				log.Println("ERROR: ", err.Error())
@@ -80,31 +79,31 @@ func CheckAuction() error {
 			}
 		}
 
-		if newStatus=="CLOSE" {
+		if newStatus == "CLOSE" {
 			log.Printf("New trans --> %v", item["id"])
 
 			// 从拍卖叫价中获取最高价
 			bidMap, err := queryBidHighest(item["id"].(string))
-			if err!=nil {
+			if err != nil {
 				log.Println("ERROR: ", err.Error())
 				continue
 			}
 
-			if bidMap==nil { // 拍卖结束时没有最高价
+			if bidMap == nil { // 拍卖结束时没有最高价
 				log.Println("ERROR: ", "NO hammer price!")
 				continue
 			}
 
 			// 生成交易订单
-			_, err = transNew(item["auctionHouseId"].(string), 
-				item["id"].(string), 
-				item["itemId"].(string), 
-				"BID", 
-				(*bidMap)["buyerId"].(string), 
-				item["SellerId"].(string), 
-				(*bidMap)["bidTime"].(string), 
-				(*bidMap)["bidPrice"].(string), 
-				"BID id = "+(*bidMap)["id"].(string),  // 记录出价 id
+			_, err = transNew(item["auctionHouseId"].(string),
+				item["id"].(string),
+				item["itemId"].(string),
+				"BID",
+				(*bidMap)["buyerId"].(string),
+				item["SellerId"].(string),
+				(*bidMap)["bidTime"].(string),
+				(*bidMap)["bidPrice"].(string),
+				"BID id = "+(*bidMap)["id"].(string), // 记录出价 id
 				"robot")
 			if err != nil {
 				log.Println("ERROR: ", err.Error())

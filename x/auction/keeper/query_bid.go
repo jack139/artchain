@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func listBid(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino, auctionId string,) ([]byte, error) {
+func listBid(ctx sdk.Context, keeper Keeper, legacyQuerierCdc *codec.LegacyAmino, auctionId string) ([]byte, error) {
 	msgs := keeper.GetAllBid(ctx, auctionId)
 
 	bz, err := codec.MarshalJSONIndent(legacyQuerierCdc, msgs)

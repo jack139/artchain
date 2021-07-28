@@ -4,8 +4,8 @@ import (
 	cmdclient "github.com/jack139/artchain/cmd/client"
 	"github.com/jack139/artchain/cmd/http/helper"
 
-	"log"
 	"github.com/valyala/fasthttp"
+	"log"
 )
 
 /* 用户验证 */
@@ -44,7 +44,7 @@ func QueryUserVerify(ctx *fasthttp.RequestCtx) {
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"verified" : verified,  // 是否验证通过
+		"verified": verified, // 是否验证通过
 	}
 
 	helper.RespJson(ctx, &resp)

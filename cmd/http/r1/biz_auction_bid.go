@@ -4,14 +4,14 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	auctiontypes "github.com/jack139/artchain/x/auction/types"
 
-	"log"
 	"bytes"
-	"time"
 	"encoding/json"
-	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
+	"log"
+	"time"
 )
 
 /* 新建出价 */
@@ -50,7 +50,7 @@ func BizAuctionBid(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	// TODO： 检查 buyerAddr 合法性, 
+	// TODO： 检查 buyerAddr 合法性,
 	//       检查 auction_id 合法性, 状态
 	//       检查 buyerAddr 不是是 itemId 物品的所有人
 
@@ -62,8 +62,8 @@ func BizAuctionBid(ctx *fasthttp.RequestCtx) {
 	var lastDateMap []map[string]interface{}
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "new",
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    "new",
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
@@ -77,9 +77,8 @@ func BizAuctionBid(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, buyerAddr)  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
-
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, buyerAddr)            // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom) // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -93,15 +92,15 @@ func BizAuctionBid(ctx *fasthttp.RequestCtx) {
 
 	// 数据上链
 	msg := auctiontypes.NewMsgCreateBid(
-		buyerAddr, //creator string, 
-		"BID", //recType string, 
-		auctionIdStr, //auctionId string, 
-		"", //bidNo string, 
-		"ACTIVE", //Status string, 
-		buyerAddr, //buyerId string, 
-		bidPrice, //bidPrice string, 
-		time.Now().Format("2006-01-02 15:04:05"), //bidTime string, 
-		string(lastDate), //lastDate string,
+		buyerAddr,                                //creator string,
+		"BID",                                    //recType string,
+		auctionIdStr,                             //auctionId string,
+		"",                                       //bidNo string,
+		"ACTIVE",                                 //Status string,
+		buyerAddr,                                //buyerId string,
+		bidPrice,                                 //bidPrice string,
+		time.Now().Format("2006-01-02 15:04:05"), //bidTime string,
+		string(lastDate),                         //lastDate string,
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -115,7 +114,7 @@ func BizAuctionBid(ctx *fasthttp.RequestCtx) {
 	err = tx.GenerateOrBroadcastTxCLI(clientCtx, helper.HttpCmd.Flags(), msg)
 	if err != nil {
 		helper.RespError(ctx, 9011, err.Error())
-		return		
+		return
 	}
 
 	// 结果输出
@@ -132,15 +131,14 @@ func BizAuctionBid(ctx *fasthttp.RequestCtx) {
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
-		helper.RespError(ctx, 9099, buf.String())  ///  提交失败
+	if respData["code"].(float64) != 0 {
+		helper.RespError(ctx, 9099, buf.String()) ///  提交失败
 		return
 	}
 
-
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : respData["height"].(string),  // 区块高度
+		"height": respData["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)

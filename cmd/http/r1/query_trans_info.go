@@ -6,16 +6,15 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"fmt"
-	"strings"
 	"bytes"
 	"context"
-	"strconv"
 	"encoding/json"
+	"fmt"
 	"github.com/valyala/fasthttp"
 	"log"
+	"strconv"
+	"strings"
 )
-
 
 /* 查询交易信息 */
 func QueryTransInfo(ctx *fasthttp.RequestCtx) {
@@ -46,36 +45,35 @@ func QueryTransInfo(ctx *fasthttp.RequestCtx) {
 
 	// 查询链上数据
 	respData2, err := queryTransInfoById(transId)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	transMap := *respData2
 
 	// 构建返回结构
-	respData := map[string]interface{} {
-		"id"           : transMap["id"],
-		"auction_id"   : transMap["auctionId"],
-		"item_id"      : transMap["itemId"],
-		"trans_type"   : transMap["transType"],
-		"buyer_addr"   : transMap["buyerId"],
-		"seller_addr"  : transMap["sellerId"],
-		"trans_date"   : transMap["transDate"],
-		"hammer_time"  : transMap["hammerTime"],
-		"hammer_price" : transMap["hammerPrice"],
-		"details"      : transMap["details"],
-		"status"       : transMap["status"],
-		"last_date"    : transMap["lastDate"],
+	respData := map[string]interface{}{
+		"id":           transMap["id"],
+		"auction_id":   transMap["auctionId"],
+		"item_id":      transMap["itemId"],
+		"trans_type":   transMap["transType"],
+		"buyer_addr":   transMap["buyerId"],
+		"seller_addr":  transMap["sellerId"],
+		"trans_date":   transMap["transDate"],
+		"hammer_time":  transMap["hammerTime"],
+		"hammer_price": transMap["hammerPrice"],
+		"details":      transMap["details"],
+		"status":       transMap["status"],
+		"last_date":    transMap["lastDate"],
 	}
 
-	resp := map[string] interface{} {
-		"trans" : respData,
+	resp := map[string]interface{}{
+		"trans": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryTransInfoById(transId uint64) (*map[string]interface{}, error) {
@@ -117,7 +115,6 @@ func queryTransInfoById(transId uint64) (*map[string]interface{}, error) {
 
 	transMap := respData["Transaction"].(map[string]interface{})
 
-
 	// 检查 lastDate 字段是否正常
 	if _, ok := transMap["lastDate"]; !ok {
 		return nil, fmt.Errorf("lastDate empty") // 不应该发生
@@ -132,7 +129,6 @@ func queryTransInfoById(transId uint64) (*map[string]interface{}, error) {
 		return nil, err
 	}
 	transMap["lastDate"] = data2
-
 
 	return &(transMap), nil
 }

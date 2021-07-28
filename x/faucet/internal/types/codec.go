@@ -6,6 +6,7 @@ import (
 
 // ModuleCdc is the codec for the module
 var ModuleCdc = codec.NewLegacyAmino()
+
 //var (
 //	amino     = codec.NewLegacyAmino()
 //	ModuleCdc = codec.NewAminoCodec(amino)

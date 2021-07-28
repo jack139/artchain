@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询拍卖行清单 */
 func QueryAHList(ctx *fasthttp.RequestCtx) {
 	log.Println("query_user_list")
@@ -32,52 +30,51 @@ func QueryAHList(ctx *fasthttp.RequestCtx) {
 
 	// 检查参数
 	/*
-	page, ok := (*reqData)["page"].(float64)
-	if !ok {
-		helper.RespError(ctx, 9001, "need page")
-		return
-	}
-	limit, ok := (*reqData)["limit"].(float64)
-	if !ok {
-		helper.RespError(ctx, 9002, "need limit")
-		return
-	}
+		page, ok := (*reqData)["page"].(float64)
+		if !ok {
+			helper.RespError(ctx, 9001, "need page")
+			return
+		}
+		limit, ok := (*reqData)["limit"].(float64)
+		if !ok {
+			helper.RespError(ctx, 9002, "need limit")
+			return
+		}
 	*/
 
 	// 查询链上数据
 	respData2, err := queryAHListPage(uint64(1), uint64(1000))
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"         : item["id"],
-			"chain_addr" : item["chainAddr"],
-			"login_name" : item["name"],
-			"user_type"  : item["userType"],
-			"reg_date"   : item["regDate"],
+		newItem := map[string]interface{}{
+			"id":         item["id"],
+			"chain_addr": item["chainAddr"],
+			"login_name": item["name"],
+			"user_type":  item["userType"],
+			"reg_date":   item["regDate"],
 			//"last_date"  : item["lastDate"],
-			"status"     : item["status"],
+			"status": item["status"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"ah_list" : respData,
+	resp := map[string]interface{}{
+		"ah_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryAHListPage(page uint64, limit uint64) (*[]interface{}, error) {
@@ -96,7 +93,7 @@ func queryAHListPage(page uint64, limit uint64) (*[]interface{}, error) {
 
 	params := &persontypes.QueryGetUserByUserTypeRequest{
 		Pagination: &pageReq,
-		UserType: "AH",
+		UserType:   "AH",
 	}
 
 	res, err := queryClient.UserByUserType(context.Background(), params)

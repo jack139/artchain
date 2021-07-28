@@ -4,17 +4,17 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	transtypes "github.com/jack139/artchain/x/trans/types"
 
-	"log"
 	"bytes"
-	"time"
 	"encoding/json"
-	"strconv"
 	"fmt"
+	"log"
+	"strconv"
+	"time"
 
-	"github.com/valyala/fasthttp"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
 )
 
 /* 新建成交交易 */
@@ -70,7 +70,7 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 
 	details, _ := (*reqData)["details"].(string)
 
-	// TODO： 检查 buyerAddr 合法性, 
+	// TODO： 检查 buyerAddr 合法性,
 
 	auctionId, err := strconv.ParseUint(auctionIdStr, 10, 64)
 	if err != nil {
@@ -80,13 +80,13 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据, 拍卖信息, 进而获取卖家信息
 	auctionMap, err := queryAuctionInfoById(auctionId)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9009, err.Error())
 		return
 	}
 
 	// 检查拍卖状态是否是 WAIT， 其他状态不能修改
-	if (*auctionMap)["status"].(string)!="CLOSE" {
+	if (*auctionMap)["status"].(string) != "CLOSE" {
 		helper.RespError(ctx, 9010, "cannot create new transaction, status is not CLOSE")
 		return
 	}
@@ -101,15 +101,14 @@ func BizTransNew(ctx *fasthttp.RequestCtx) {
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : (*respData)["height"].(string),  // 区块高度
+		"height": (*respData)["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)
 }
 
-
-func transNew(callerAddr string, auctionId string, itemId string, transType string, 
-	buyerAddr string, sellerId string, hammerTime string, hammerPrice string, details string, 
+func transNew(callerAddr string, auctionId string, itemId string, transType string,
+	buyerAddr string, sellerId string, hammerTime string, hammerPrice string, details string,
 	logText string) (*map[string]interface{}, error) {
 
 	/* 信号量 */
@@ -120,22 +119,21 @@ func transNew(callerAddr string, auctionId string, itemId string, transType stri
 	var lastDateMap []map[string]interface{}
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  logText,
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    logText,
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
 		return nil, err
 	}
 
-
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
 		return nil, err
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, buyerAddr)  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, buyerAddr)            // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom) // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -145,18 +143,18 @@ func transNew(callerAddr string, auctionId string, itemId string, transType stri
 
 	// 数据上链
 	msg := transtypes.NewMsgCreateTransaction(
-		buyerAddr, //creator string, 
-		"POSTTRAN", //recType string, 
-		auctionId, //auctionId string, 
-		itemId, //itemId string, 
-		transType, //transType string, 
-		buyerAddr, //buyerId string, 
-		sellerId, //sellerId string, 
-		time.Now().Format("2006-01-02 15:04:05"), //transDate string, 
-		hammerTime, //hammerTime string, 
-		hammerPrice, //hammerPrice string, 
-		details, //details string, 
-		"WAIT", //status string,
+		buyerAddr,                                //creator string,
+		"POSTTRAN",                               //recType string,
+		auctionId,                                //auctionId string,
+		itemId,                                   //itemId string,
+		transType,                                //transType string,
+		buyerAddr,                                //buyerId string,
+		sellerId,                                 //sellerId string,
+		time.Now().Format("2006-01-02 15:04:05"), //transDate string,
+		hammerTime,                               //hammerTime string,
+		hammerPrice,                              //hammerPrice string,
+		details,                                  //details string,
+		"WAIT",                                   //status string,
 		string(lastDate),
 	)
 	if err := msg.ValidateBasic(); err != nil {
@@ -185,7 +183,7 @@ func transNew(callerAddr string, auctionId string, itemId string, transType stri
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
+	if respData["code"].(float64) != 0 {
 		return nil, fmt.Errorf("Tx fail: %s", buf.String())
 	}
 

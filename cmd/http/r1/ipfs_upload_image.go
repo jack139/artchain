@@ -4,10 +4,10 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	"github.com/jack139/artchain/cmd/ipfs"
 
-	"log"
-	"strconv"
 	"encoding/json"
 	"github.com/valyala/fasthttp"
+	"log"
+	"strconv"
 )
 
 /* 上传物品图片 */
@@ -43,7 +43,7 @@ func IpfsUploadImage(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	if len(image)>5242880 {
+	if len(image) > 5242880 {
 		helper.RespError(ctx, 90011, "image too large: over 5M")
 		return
 	}
@@ -56,17 +56,16 @@ func IpfsUploadImage(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	itemMap, err := queryItemInfoById(itemId)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9002, err.Error())
-		return		
+		return
 	}
-
 
 	// 图片 存 ipfs
 	var cid string
-	if len(image)>0 {
+	if len(image) > 0 {
 		cid, err = ipfs.Add([]byte(image))
-		if err!=nil {
+		if err != nil {
 			helper.RespError(ctx, 9012, err.Error())
 			return
 		}
@@ -75,7 +74,7 @@ func IpfsUploadImage(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 准备数据
-	loadData := (*itemMap)["itemImage"].([]string)	
+	loadData := (*itemMap)["itemImage"].([]string)
 	loadData = append(loadData, cid)
 	loadBytes, err := json.Marshal(loadData)
 	if err != nil {
@@ -84,8 +83,8 @@ func IpfsUploadImage(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 修改链上数据
-	respData, err := itemModify(callerAddr, 
-		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
+	respData, err := itemModify(callerAddr,
+		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00",
 		string(loadBytes), "\x00", "\x00", "\x00", "WAIT", "upload image")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -94,8 +93,8 @@ func IpfsUploadImage(ctx *fasthttp.RequestCtx) {
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : (*respData)["height"].(string),  // 区块高度
-		"hash"   : cid, // ipfs hash
+		"height": (*respData)["height"].(string), // 区块高度
+		"hash":   cid,                            // ipfs hash
 	}
 
 	helper.RespJson(ctx, &resp)

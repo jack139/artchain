@@ -13,7 +13,6 @@ import (
 	"strconv"
 )
 
-
 /* 获取区块数据 */
 func getBlock(clientCtx client.Context, height *int64) ([]byte, error) {
 	// get the node
@@ -102,4 +101,3 @@ func QueryRawBlock(ctx *fasthttp.RequestCtx) {
 
 	helper.RespJson(ctx, &resp)
 }
-

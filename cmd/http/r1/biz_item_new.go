@@ -7,18 +7,18 @@ import (
 	"github.com/gogo/protobuf/proto"
 	//abci "github.com/tendermint/tendermint/abci/types"
 
-	"log"
 	"bytes"
+	"log"
 	"time"
 	//"strings"
-	"strconv"
-	"encoding/json"
 	"encoding/hex"
-	"github.com/valyala/fasthttp"
+	"encoding/json"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/valyala/fasthttp"
+	"strconv"
 )
 
 /* 新建物品 */
@@ -70,8 +70,8 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	var lastDateMap []map[string]interface{}
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "new",
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    "new",
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
@@ -79,15 +79,14 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-
 	// 设置 caller_addr
 	originFlagFrom, err := helper.HttpCmd.Flags().GetString(flags.FlagFrom) // 保存 --from 设置
 	if err != nil {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, callerAddr)           // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom) // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -99,23 +98,22 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	// 创建者地址
 	//creatorAddr := clientCtx.GetFromAddress().String()
 
-
 	// 数据上链
 	msg := invtypes.NewMsgCreateItem(
-		callerAddr, //creator string, 
-		"ARTINV", //recType string, 
-		itemDesc, //itemDesc string, 
-		itemDetail, //itemDetail string, 
-		itemDate, //itemDate string, 
-		itemType, //itemType string, 
-		itemSubject, //itemSubject string, 
-		itemMedia, //itemMedia string, 
-		itemSize, //itemSize string, 
-		"[]", //itemImage string, 
-		"", //AESKey string, 
-		itemBasePrice, //itemBasePrice string, 
-		itemOwnerAddr, //currentOwnerId string, 
-		"WAIT", //status string
+		callerAddr,       //creator string,
+		"ARTINV",         //recType string,
+		itemDesc,         //itemDesc string,
+		itemDetail,       //itemDetail string,
+		itemDate,         //itemDate string,
+		itemType,         //itemType string,
+		itemSubject,      //itemSubject string,
+		itemMedia,        //itemMedia string,
+		itemSize,         //itemSize string,
+		"[]",             //itemImage string,
+		"",               //AESKey string,
+		itemBasePrice,    //itemBasePrice string,
+		itemOwnerAddr,    //currentOwnerId string,
+		"WAIT",           //status string
 		string(lastDate), // lastDate
 	)
 	if err := msg.ValidateBasic(); err != nil {
@@ -130,7 +128,7 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	err = tx.GenerateOrBroadcastTxCLI(clientCtx, helper.HttpCmd.Flags(), msg)
 	if err != nil {
 		helper.RespError(ctx, 9011, err.Error())
-		return		
+		return
 	}
 
 	// 结果输出
@@ -147,8 +145,8 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
-		helper.RespError(ctx, 9099, buf.String())  ///  提交失败
+	if respData["code"].(float64) != 0 {
+		helper.RespError(ctx, 9099, buf.String()) ///  提交失败
 		return
 	}
 
@@ -161,7 +159,7 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 
 	// 转义消息结果， 见 cosmos-sdk/baseapp/baseapp.go BaseApp.runMsgs()
 	var msgData sdk.TxMsgData
-	if err := proto.Unmarshal(bs, &msgData); err != nil{
+	if err := proto.Unmarshal(bs, &msgData); err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
 	}
@@ -169,7 +167,7 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 
 	// 提取 特定返回结果
 	var msgResponse invtypes.MsgCreateItemResponse
-	if err := proto.Unmarshal(msgData.Data[0].Data, &msgResponse); err != nil{
+	if err := proto.Unmarshal(msgData.Data[0].Data, &msgResponse); err != nil {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
@@ -177,8 +175,8 @@ func BizItemNew(ctx *fasthttp.RequestCtx) {
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : respData["height"].(string),  // 区块高度
-		"id" : strconv.FormatUint(msgResponse.Id, 10), // item_id
+		"height": respData["height"].(string),            // 区块高度
+		"id":     strconv.FormatUint(msgResponse.Id, 10), // item_id
 	}
 
 	helper.RespJson(ctx, &resp)

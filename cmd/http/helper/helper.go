@@ -1,21 +1,21 @@
 package helper
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"sort"
 	"strconv"
 	"time"
-	"os"
-	"context"
 
-	"github.com/valyala/fasthttp"
 	"github.com/Ferluci/fast-realip"
 	"github.com/spf13/cobra"
+	"github.com/valyala/fasthttp"
 	"golang.org/x/sync/semaphore"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -23,8 +23,8 @@ import (
 )
 
 const (
-    Limit  = 1 // 同時并行运行的goroutine上限
-    Weight = 1 // 每个goroutine获取信号量资源的权重
+	Limit  = 1 // 同時并行运行的goroutine上限
+	Weight = 1 // 每个goroutine获取信号量资源的权重
 )
 
 var (
@@ -32,7 +32,7 @@ var (
 	HttpCmd *cobra.Command
 
 	/* 日志输出使用 */
-	output  = log.New(os.Stdout, "", 0)
+	output = log.New(os.Stdout, "", 0)
 
 	/* 接口验签使用 appid : appsecret (md5sum : sha1sum|base64) */
 	APPID_SECRET = map[string]string{
@@ -190,7 +190,6 @@ func CheckSign(content []byte) (*map[string]interface{}, error) {
 	return &data, nil
 }
 
-
 // 日志格式处理
 
 // "github.com/AubSs/fasthttplogger"
@@ -222,7 +221,6 @@ func Combined(req fasthttp.RequestHandler) fasthttp.RequestHandler {
 		)
 	})
 }
-
 
 // 返回 map 所有 key
 func getMapKeys(m map[string]interface{}) *[]string {

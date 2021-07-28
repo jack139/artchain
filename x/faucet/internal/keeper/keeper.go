@@ -15,10 +15,10 @@ const FaucetStoreKey = "DefaultFaucetStoreKey"
 type Keeper struct {
 	SupplyKeeper  types.SupplyKeeper
 	StakingKeeper types.StakingKeeper
-	amount        int64         // set default amount for each mint.
-	Limit         time.Duration // rate limiting for mint, etc 24 * time.Hours
-	storeKey      sdk.StoreKey  // Unexposed key to access store from sdk.Context
-	cdc           *codec.LegacyAmino  // The wire codec for binary encoding/decoding.
+	amount        int64              // set default amount for each mint.
+	Limit         time.Duration      // rate limiting for mint, etc 24 * time.Hours
+	storeKey      sdk.StoreKey       // Unexposed key to access store from sdk.Context
+	cdc           *codec.LegacyAmino // The wire codec for binary encoding/decoding.
 }
 
 // NewKeeper creates new instances of the Faucet Keeper

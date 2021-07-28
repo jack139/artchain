@@ -10,13 +10,12 @@ import (
 	release1 "github.com/jack139/artchain/cmd/http/r1"
 )
 
-
 /* 入口 */
 func RunServer(port string /*, userPath string*/) {
 
 	/* redis */
 	err := helper.InitRDB()
-	if err!=nil {
+	if err != nil {
 		log.Fatal("Redis FAIL: ", err)
 	}
 
@@ -70,8 +69,6 @@ func RunServer(port string /*, userPath string*/) {
 	r.POST("/api/r1/ipfs/download", release1.IpfsDownload)
 	r.POST("/api/r1/ipfs/remove/image", release1.IpfsRemoveImage)
 
-
-
 	// 设置定时任务 : 15 秒 一次
 	ticker1 := time.NewTicker(5 * time.Second)
 	// 一定要调用Stop()，回收资源
@@ -81,13 +78,12 @@ func RunServer(port string /*, userPath string*/) {
 			// 每5秒中从chan t.C 中读取一次
 			<-t.C
 			// 检查拍卖时间，进行状态转换
-			if err := release1.CheckAuction(); err!=nil{
+			if err := release1.CheckAuction(); err != nil {
 				log.Println(err.Error())
 			}
 			//log.Println("--> Ticker")
 		}
 	}(ticker1)
-
 
 	log.Printf("start HTTP server at 0.0.0.0:%s\n", port)
 

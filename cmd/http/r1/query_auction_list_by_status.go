@@ -14,8 +14,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询拍卖信息清单 by status */
 func QueryAuctionListByStatus(ctx *fasthttp.RequestCtx) {
 	log.Println("query_auction_list_by_status")
@@ -49,40 +47,39 @@ func QueryAuctionListByStatus(ctx *fasthttp.RequestCtx) {
 
 	// 查询链上数据
 	respData2, err := queryAuctionListByStatusPage(uint64(page), uint64(limit), status)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	dataList := *respData2
 
 	// 构建返回结构
-	respData := make([]map[string]interface{}, 0) 
+	respData := make([]map[string]interface{}, 0)
 
 	for _, item0 := range dataList {
 		item := item0.(map[string]interface{})
 
-		newItem := map[string]interface{} {
-			"id"               : item["id"],
-			"item_id"          : item["itemId"],
-			"auction_house_id" : item["auctionHouseId"],
-			"seller_addr"      : item["SellerId"],
-			"req_date"         : item["requestDate"],
-			"reserved_price"   : item["reservePrice"],
-			"status"           : item["status"],
-			"open_date"        : item["openDate"],
-			"close_date"       : item["closeDate"],
+		newItem := map[string]interface{}{
+			"id":               item["id"],
+			"item_id":          item["itemId"],
+			"auction_house_id": item["auctionHouseId"],
+			"seller_addr":      item["SellerId"],
+			"req_date":         item["requestDate"],
+			"reserved_price":   item["reservePrice"],
+			"status":           item["status"],
+			"open_date":        item["openDate"],
+			"close_date":       item["closeDate"],
 		}
 		respData = append(respData, newItem)
 	}
 
-	resp := map[string] interface{} {
-		"auction_list" : respData,
+	resp := map[string]interface{}{
+		"auction_list": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryAuctionListByStatusPage(page uint64, limit uint64, status string) (*[]interface{}, error) {
@@ -103,10 +100,9 @@ func queryAuctionListByStatusPage(page uint64, limit uint64, status string) (*[]
 	buf := new(bytes.Buffer)
 	clientCtx.Output = buf
 
-
 	params := &auctiontypes.QueryGetRequestByStatusRequest{
 		Pagination: &pageReq,
-		Status: status,
+		Status:     status,
 	}
 
 	res, err := queryClient.RequestByStatus(context.Background(), params)
@@ -116,7 +112,6 @@ func queryAuctionListByStatusPage(page uint64, limit uint64, status string) (*[]
 
 	// 转换输出
 	clientCtx.PrintProto(res)
-
 
 	// 输出的字节流
 	respBytes := []byte(buf.String())

@@ -56,18 +56,18 @@ func GetCmdMint() *cobra.Command {
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			/*
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-			cliCtx := context.NewCLIContext().WithCodec(cdc)
+				inBuf := bufio.NewReader(cmd.InOrStdin())
+				cliCtx := context.NewCLIContext().WithCodec(cdc)
 
-			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 
-			msg := types.NewMsgMint(cliCtx.GetFromAddress(), cliCtx.GetFromAddress(), time.Now().Unix())
-			err := msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
+				msg := types.NewMsgMint(cliCtx.GetFromAddress(), cliCtx.GetFromAddress(), time.Now().Unix())
+				err := msg.ValidateBasic()
+				if err != nil {
+					return err
+				}
 
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+				return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 			*/
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -100,20 +100,20 @@ func GetCmdMintFor() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			/*
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-			cliCtx := context.NewCLIContext().WithCodec(cdc)
+				inBuf := bufio.NewReader(cmd.InOrStdin())
+				cliCtx := context.NewCLIContext().WithCodec(cdc)
 
-			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+				txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 
-			address, _ := sdk.AccAddressFromBech32(args[0])
+				address, _ := sdk.AccAddressFromBech32(args[0])
 
-			msg := types.NewMsgMint(cliCtx.GetFromAddress(), address, time.Now().Unix())
-			err := msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
+				msg := types.NewMsgMint(cliCtx.GetFromAddress(), address, time.Now().Unix())
+				err := msg.ValidateBasic()
+				if err != nil {
+					return err
+				}
 
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+				return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 			*/
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -228,7 +228,6 @@ func GetCmdInitial() *cobra.Command {
 				return err
 			}
 			kb, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.KeyringDir, buf)
-
 
 			// check local key
 			//_, err = kb.Get(types.ModuleName)

@@ -78,10 +78,10 @@ func (k Keeper) TransactionSome(c context.Context, req *types.QuerySomeTransacti
 			return false, err
 		}
 
-		// filter 
+		// filter
 		switch req.Cate {
 		case "status":
-			if strings.Contains(req.Condition, transaction.Status){ // 状态可以多个
+			if strings.Contains(req.Condition, transaction.Status) { // 状态可以多个
 				if accumulate {
 					transactions = append(transactions, &transaction)
 				}

@@ -7,9 +7,9 @@ import (
 
 var _ sdk.Msg = &MsgCreateItem{}
 
-func NewMsgCreateItem(creator string, recType string, itemDesc string, itemDetail string, 
-	itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string, 
-	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string, 
+func NewMsgCreateItem(creator string, recType string, itemDesc string, itemDetail string,
+	itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string,
+	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string,
 	lastDate string) *MsgCreateItem {
 	return &MsgCreateItem{
 		Creator:        creator,
@@ -61,8 +61,8 @@ func (msg *MsgCreateItem) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateItem{}
 
-func NewMsgUpdateItem(creator string, id uint64, recType string, itemDesc string, itemDetail string, 
-	itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string, 
+func NewMsgUpdateItem(creator string, id uint64, recType string, itemDesc string, itemDetail string,
+	itemDate string, itemType string, itemSubject string, itemMedia string, itemSize string,
 	itemImage string, AESKey string, itemBasePrice string, currentOwnerId string, status string,
 	lastDate string) *MsgUpdateItem {
 	return &MsgUpdateItem{

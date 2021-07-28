@@ -103,7 +103,7 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper keeper.Keeper
+	keeper    keeper.Keeper
 	NFTKeeper nft.Keeper
 }
 
@@ -111,7 +111,7 @@ func NewAppModule(cdc codec.Marshaler, keeper keeper.Keeper, nftKeeper nft.Keepe
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
-		NFTKeeper: nftKeeper,
+		NFTKeeper:      nftKeeper,
 	}
 }
 

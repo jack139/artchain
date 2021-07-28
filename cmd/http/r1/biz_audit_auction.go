@@ -3,9 +3,9 @@ package r1
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
 
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"github.com/valyala/fasthttp"
 )
 
 /* 审核拍卖 */
@@ -49,21 +49,21 @@ func BizAuditAuction(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	auctionMap, err := queryAuctionInfoById(auctionId)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9002, err.Error())
-		return		
+		return
 	}
 
 	// 检查是否修改拍卖时间
-	if len(openDate)==0 {
+	if len(openDate) == 0 {
 		openDate = (*auctionMap)["openDate"].(string)
 	}
-	if len(closeDate)==0 {
+	if len(closeDate) == 0 {
 		closeDate = (*auctionMap)["closeDate"].(string)
 	}
 
 	// 修改链上数据
-	respData, err := auctionModify(auctionMap, callerAddr, auctionId, 
+	respData, err := auctionModify(auctionMap, callerAddr, auctionId,
 		"\x00", "\x00", openDate, closeDate, status, "audit")
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -72,7 +72,7 @@ func BizAuditAuction(ctx *fasthttp.RequestCtx) {
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : (*respData)["height"].(string),  // 区块高度
+		"height": (*respData)["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)

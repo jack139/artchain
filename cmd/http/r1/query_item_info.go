@@ -6,17 +6,15 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"fmt"
-	"strings"
 	"bytes"
 	"context"
-	"strconv"
 	"encoding/json"
+	"fmt"
 	"github.com/valyala/fasthttp"
 	"log"
+	"strconv"
+	"strings"
 )
-
-
 
 /* 查询物品信息 */
 func QueryItemInfo(ctx *fasthttp.RequestCtx) {
@@ -47,37 +45,36 @@ func QueryItemInfo(ctx *fasthttp.RequestCtx) {
 
 	// 查询链上数据
 	respData2, err := queryItemInfoById(itemId)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	itemMap := *respData2
 
 	// 构建返回结构
-	respData := map[string]interface{} {
-		"id"         : itemMap["id"],
-		"desc"       : itemMap["itemDesc"],
-		"detail"     : itemMap["itemDetail"],
-		"date"       : itemMap["itemDate"],
-		"type"       : itemMap["itemType"],
-		"subject"    : itemMap["itemSubject"],
-		"media"      : itemMap["itemMedia"],
-		"size"       : itemMap["itemSize"],
-		"base_price" : itemMap["itemBasePrice"],
-		"owner_addr" : itemMap["currentOwnerId"],
-		"image"      : itemMap["itemImage"],
-		"last_date"  : itemMap["lastDate"],
-		"status"     : itemMap["status"],
+	respData := map[string]interface{}{
+		"id":         itemMap["id"],
+		"desc":       itemMap["itemDesc"],
+		"detail":     itemMap["itemDetail"],
+		"date":       itemMap["itemDate"],
+		"type":       itemMap["itemType"],
+		"subject":    itemMap["itemSubject"],
+		"media":      itemMap["itemMedia"],
+		"size":       itemMap["itemSize"],
+		"base_price": itemMap["itemBasePrice"],
+		"owner_addr": itemMap["currentOwnerId"],
+		"image":      itemMap["itemImage"],
+		"last_date":  itemMap["lastDate"],
+		"status":     itemMap["status"],
 	}
 
-	resp := map[string] interface{} {
-		"item" : respData,
+	resp := map[string]interface{}{
+		"item": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryItemInfoById(itemId uint64) (*map[string]interface{}, error) {
@@ -124,7 +121,7 @@ func queryItemInfoById(itemId uint64) (*map[string]interface{}, error) {
 		return nil, fmt.Errorf("itemImage empty") // 不应该发生
 	}
 	if !strings.HasPrefix(itemMap["itemImage"].(string), "[") {
-		itemMap["itemImage"]= "[]" // 不应该发生
+		itemMap["itemImage"] = "[]" // 不应该发生
 	}
 
 	// 反序列化
@@ -133,7 +130,6 @@ func queryItemInfoById(itemId uint64) (*map[string]interface{}, error) {
 		return nil, err
 	}
 	itemMap["itemImage"] = data1
-
 
 	// 检查 lastDate 字段是否正常
 	if _, ok := itemMap["lastDate"]; !ok {

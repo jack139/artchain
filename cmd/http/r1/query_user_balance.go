@@ -13,8 +13,6 @@ import (
 	"log"
 )
 
-
-
 /* 查询用户余额 */
 func QueryBalance(ctx *fasthttp.RequestCtx) {
 	log.Println("query_user_credit_balance")

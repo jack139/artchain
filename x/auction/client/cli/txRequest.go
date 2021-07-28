@@ -31,8 +31,8 @@ func CmdCreateRequest() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateRequest(clientCtx.GetFromAddress().String(), string(argsRecType), 
-				string(argsItemId), string(argsAuctionHouseId), string(argsSellerId), string(argsRequestDate), 
+			msg := types.NewMsgCreateRequest(clientCtx.GetFromAddress().String(), string(argsRecType),
+				string(argsItemId), string(argsAuctionHouseId), string(argsSellerId), string(argsRequestDate),
 				string(argsReservePrice), string(argsStatus), string(argsOpenDate), string(argsCloseDate), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -72,8 +72,8 @@ func CmdUpdateRequest() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgUpdateRequest(clientCtx.GetFromAddress().String(), id, string(argsRecType), 
-				string(argsItemId), string(argsAuctionHouseId), string(argsSellerId), string(argsRequestDate), 
+			msg := types.NewMsgUpdateRequest(clientCtx.GetFromAddress().String(), id, string(argsRecType),
+				string(argsItemId), string(argsAuctionHouseId), string(argsSellerId), string(argsRequestDate),
 				string(argsReservePrice), string(argsStatus), string(argsOpenDate), string(argsCloseDate), "")
 			if err := msg.ValidateBasic(); err != nil {
 				return err

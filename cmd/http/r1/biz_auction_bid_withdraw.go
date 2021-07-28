@@ -4,15 +4,15 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	auctypes "github.com/jack139/artchain/x/auction/types"
 
+	"bytes"
+	"encoding/json"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"bytes"
 	"time"
-	"encoding/json"
-	"github.com/valyala/fasthttp"
-	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
 /* 撤销出价 */
@@ -56,9 +56,9 @@ func BizAuctionBidWithdraw(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	bidMap, err := queryBidInfoById(bidId, auctionIdStr)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9005, err.Error())
-		return		
+		return
 	}
 
 	/* 信号量 */
@@ -69,8 +69,8 @@ func BizAuctionBidWithdraw(ctx *fasthttp.RequestCtx) {
 	lastDateMap := (*bidMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  "withdraw",
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    "withdraw",
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
@@ -84,8 +84,8 @@ func BizAuctionBidWithdraw(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*bidMap)["creator"].(string))  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*bidMap)["creator"].(string)) // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)          // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -96,16 +96,16 @@ func BizAuctionBidWithdraw(ctx *fasthttp.RequestCtx) {
 
 	// 数据上链
 	msg := auctypes.NewMsgUpdateBid(
-		(*bidMap)["creator"].(string), //creator string, 
-		bidId, //id uint64, 
-		(*bidMap)["recType"].(string), //recType string, 
-		(*bidMap)["auctionId"].(string), //auctionId string, 
-		(*bidMap)["bidNo"].(string), //bidNo string, 
-		"WITHDRAW", //status string, 
-		(*bidMap)["buyerId"].(string), //buyerId string, 
-		(*bidMap)["bidPrice"].(string), //bidPrice string, 
-		(*bidMap)["bidTime"].(string), //bidTime string, 
-		string(lastDate), //lastDate string
+		(*bidMap)["creator"].(string),   //creator string,
+		bidId,                           //id uint64,
+		(*bidMap)["recType"].(string),   //recType string,
+		(*bidMap)["auctionId"].(string), //auctionId string,
+		(*bidMap)["bidNo"].(string),     //bidNo string,
+		"WITHDRAW",                      //status string,
+		(*bidMap)["buyerId"].(string),   //buyerId string,
+		(*bidMap)["bidPrice"].(string),  //bidPrice string,
+		(*bidMap)["bidTime"].(string),   //bidTime string,
+		string(lastDate),                //lastDate string
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -119,7 +119,7 @@ func BizAuctionBidWithdraw(ctx *fasthttp.RequestCtx) {
 	err = tx.GenerateOrBroadcastTxCLI(clientCtx, helper.HttpCmd.Flags(), msg)
 	if err != nil {
 		helper.RespError(ctx, 9011, err.Error())
-		return		
+		return
 	}
 
 	// 结果输出
@@ -136,17 +136,15 @@ func BizAuctionBidWithdraw(ctx *fasthttp.RequestCtx) {
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
-		helper.RespError(ctx, 9099, buf.String())  ///  提交失败
+	if respData["code"].(float64) != 0 {
+		helper.RespError(ctx, 9099, buf.String()) ///  提交失败
 		return
 	}
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : respData["height"].(string),  // 区块高度
+		"height": respData["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
-

@@ -4,15 +4,15 @@ import (
 	"github.com/jack139/artchain/cmd/http/helper"
 	transtypes "github.com/jack139/artchain/x/trans/types"
 
+	"bytes"
+	"encoding/json"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"bytes"
 	"time"
-	"encoding/json"
-	"github.com/valyala/fasthttp"
-	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 )
 
 /* 审核交易 （修改交易状态） */
@@ -60,9 +60,9 @@ func BizAuditTrans(ctx *fasthttp.RequestCtx) {
 
 	// 获取当前链上数据
 	transMap, err := queryTransInfoById(transId)
-	if err!=nil {
+	if err != nil {
 		helper.RespError(ctx, 9005, err.Error())
-		return		
+		return
 	}
 
 	/* 信号量 */
@@ -73,8 +73,8 @@ func BizAuditTrans(ctx *fasthttp.RequestCtx) {
 	lastDateMap := (*transMap)["lastDate"].([]map[string]interface{})
 	lastDateMap = append(lastDateMap, map[string]interface{}{
 		"caller": callerAddr,
-		"act":  logText,
-		"date": time.Now().Format("2006-01-02 15:04:05"),
+		"act":    logText,
+		"date":   time.Now().Format("2006-01-02 15:04:05"),
 	})
 	lastDate, err := json.Marshal(lastDateMap)
 	if err != nil {
@@ -88,8 +88,8 @@ func BizAuditTrans(ctx *fasthttp.RequestCtx) {
 		helper.RespError(ctx, 9015, err.Error())
 		return
 	}
-	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*transMap)["creator"].(string))  // 设置 --from 地址
-	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)  // 结束时恢复 --from 设置
+	helper.HttpCmd.Flags().Set(flags.FlagFrom, (*transMap)["creator"].(string)) // 设置 --from 地址
+	defer helper.HttpCmd.Flags().Set(flags.FlagFrom, originFlagFrom)            // 结束时恢复 --from 设置
 
 	// 获取 ctx 上下文
 	clientCtx, err := client.GetClientTxContext(helper.HttpCmd)
@@ -100,20 +100,20 @@ func BizAuditTrans(ctx *fasthttp.RequestCtx) {
 
 	// 数据上链
 	msg := transtypes.NewMsgUpdateTransaction(
-		(*transMap)["creator"].(string), // creator string, 
-		transId, // id uint64, 
-		(*transMap)["recType"].(string), // recType string, 
-		(*transMap)["auctionId"].(string), // auctionId string, 
-		(*transMap)["itemId"].(string), // itemId string, 
-		(*transMap)["transType"].(string), // transType string, 
-		(*transMap)["buyerId"].(string), // buyerId string, 
-		(*transMap)["sellerId"].(string), // sellerId string, 
-		(*transMap)["transDate"].(string), // transDate string, 
-		(*transMap)["hammerTime"].(string), // hammerTime string, 
-		(*transMap)["hammerPrice"].(string), // hammerPrice string, 
-		(*transMap)["details"].(string), // details string, 
-		status, // status string, 
-		string(lastDate), // lastDate string,
+		(*transMap)["creator"].(string),     // creator string,
+		transId,                             // id uint64,
+		(*transMap)["recType"].(string),     // recType string,
+		(*transMap)["auctionId"].(string),   // auctionId string,
+		(*transMap)["itemId"].(string),      // itemId string,
+		(*transMap)["transType"].(string),   // transType string,
+		(*transMap)["buyerId"].(string),     // buyerId string,
+		(*transMap)["sellerId"].(string),    // sellerId string,
+		(*transMap)["transDate"].(string),   // transDate string,
+		(*transMap)["hammerTime"].(string),  // hammerTime string,
+		(*transMap)["hammerPrice"].(string), // hammerPrice string,
+		(*transMap)["details"].(string),     // details string,
+		status,                              // status string,
+		string(lastDate),                    // lastDate string,
 	)
 	if err := msg.ValidateBasic(); err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -127,7 +127,7 @@ func BizAuditTrans(ctx *fasthttp.RequestCtx) {
 	err = tx.GenerateOrBroadcastTxCLI(clientCtx, helper.HttpCmd.Flags(), msg)
 	if err != nil {
 		helper.RespError(ctx, 9011, err.Error())
-		return		
+		return
 	}
 
 	// 结果输出
@@ -144,17 +144,15 @@ func BizAuditTrans(ctx *fasthttp.RequestCtx) {
 	}
 
 	// code==0 提交成功
-	if respData["code"].(float64)!=0 { 
-		helper.RespError(ctx, 9099, buf.String())  ///  提交失败
+	if respData["code"].(float64) != 0 {
+		helper.RespError(ctx, 9099, buf.String()) ///  提交失败
 		return
 	}
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : respData["height"].(string),  // 区块高度
+		"height": respData["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
-

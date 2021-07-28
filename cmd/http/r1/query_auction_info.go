@@ -6,16 +6,15 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"fmt"
-	"strings"
 	"bytes"
 	"context"
-	"strconv"
 	"encoding/json"
+	"fmt"
 	"github.com/valyala/fasthttp"
 	"log"
+	"strconv"
+	"strings"
 )
-
 
 /* 查询拍卖信息 */
 func QueryAuctionInfo(ctx *fasthttp.RequestCtx) {
@@ -46,34 +45,33 @@ func QueryAuctionInfo(ctx *fasthttp.RequestCtx) {
 
 	// 查询链上数据
 	respData2, err := queryAuctionInfoById(auctionId)
-	if err!=nil{
+	if err != nil {
 		helper.RespError(ctx, 9014, err.Error())
 		return
-	}	
+	}
 
 	auctionMap := *respData2
 
 	// 构建返回结构
-	respData := map[string]interface{} {
-		"id"               : auctionMap["id"],
-		"item_id"          : auctionMap["itemId"],
-		"auction_house_id" : auctionMap["auctionHouseId"],
-		"seller_addr"      : auctionMap["SellerId"],
-		"req_date"         : auctionMap["requestDate"],
-		"reserved_price"   : auctionMap["reservePrice"],
-		"status"           : auctionMap["status"],
-		"open_date"        : auctionMap["openDate"],
-		"close_date"       : auctionMap["closeDate"],
-		"last_date"        : auctionMap["lastDate"],
+	respData := map[string]interface{}{
+		"id":               auctionMap["id"],
+		"item_id":          auctionMap["itemId"],
+		"auction_house_id": auctionMap["auctionHouseId"],
+		"seller_addr":      auctionMap["SellerId"],
+		"req_date":         auctionMap["requestDate"],
+		"reserved_price":   auctionMap["reservePrice"],
+		"status":           auctionMap["status"],
+		"open_date":        auctionMap["openDate"],
+		"close_date":       auctionMap["closeDate"],
+		"last_date":        auctionMap["lastDate"],
 	}
 
-	resp := map[string] interface{} {
-		"auction" : respData,
+	resp := map[string]interface{}{
+		"auction": respData,
 	}
 
 	helper.RespJson(ctx, &resp)
 }
-
 
 // 查询链上数据, 返回 map
 func queryAuctionInfoById(auctionId uint64) (*map[string]interface{}, error) {
@@ -115,7 +113,6 @@ func queryAuctionInfoById(auctionId uint64) (*map[string]interface{}, error) {
 
 	auctionMap := respData["Request"].(map[string]interface{})
 
-
 	// 检查 lastDate 字段是否正常
 	if _, ok := auctionMap["lastDate"]; !ok {
 		return nil, fmt.Errorf("lastDate empty") // 不应该发生
@@ -130,7 +127,6 @@ func queryAuctionInfoById(auctionId uint64) (*map[string]interface{}, error) {
 		return nil, err
 	}
 	auctionMap["lastDate"] = data2
-
 
 	return &(auctionMap), nil
 }

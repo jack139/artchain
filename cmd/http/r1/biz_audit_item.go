@@ -3,9 +3,9 @@ package r1
 import (
 	"github.com/jack139/artchain/cmd/http/helper"
 
+	"github.com/valyala/fasthttp"
 	"log"
 	"strconv"
-	"github.com/valyala/fasthttp"
 )
 
 /* 审核物品（修改状态） */
@@ -52,8 +52,8 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 	}
 
 	// 修改链上数据
-	respData, err := itemModify(callerAddr, 
-		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", 
+	respData, err := itemModify(callerAddr,
+		itemId, "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00",
 		"\x00", "\x00", "\x00", "\x00", status, logText)
 	if err != nil {
 		helper.RespError(ctx, 9010, err.Error())
@@ -62,7 +62,7 @@ func BizAuditItem(ctx *fasthttp.RequestCtx) {
 
 	// 返回区块id
 	resp := map[string]interface{}{
-		"height" : (*respData)["height"].(string),  // 区块高度
+		"height": (*respData)["height"].(string), // 区块高度
 	}
 
 	helper.RespJson(ctx, &resp)
