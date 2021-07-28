@@ -3,6 +3,7 @@ package app
 import (
 	"io"
 	"os"
+	"time"
 	"path/filepath"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -169,7 +170,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		faucet.ModuleName:              {supply.Minter}, // add permissions for faucet
+		faucet.ModuleName:              {authtypes.Minter}, // add permissions for faucet
 	}
 )
 
@@ -372,12 +373,12 @@ func New(
 	app.NFTKeeper = nftkeeper.NewKeeper(appCodec, keys[nfttypes.StoreKey])
 
 	app.faucetKeeper = faucet.NewKeeper(
-		app.supplyKeeper,
-		app.stakingKeeper,
+		app.BankKeeper,
+		app.StakingKeeper,
 		1000 * 1000000,   // amount for mint
 		24 * time.Hour, // rate limit by time
 		keys[faucet.StoreKey],
-		appCodec)
+		cdc)
 
 
 	app.transKeeper = *transkeeper.NewKeeper(

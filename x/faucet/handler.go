@@ -12,9 +12,9 @@ import (
 func NewHandler(keeper Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
 		switch msg := msg.(type) {
-		case types.MsgMint:
+		case *types.MsgMint:
 			return handleMsgMint(ctx, keeper, msg)
-		case types.MsgFaucetKey:
+		case *types.MsgFaucetKey:
 			return handleMsgFaucetKey(ctx, keeper, msg)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized faucet Msg type: %v", msg.Type()))
@@ -23,7 +23,7 @@ func NewHandler(keeper Keeper) sdk.Handler {
 }
 
 // Handle a message to Mint
-func handleMsgMint(ctx sdk.Context, keeper Keeper, msg types.MsgMint) (*sdk.Result, error) {
+func handleMsgMint(ctx sdk.Context, keeper Keeper, msg *types.MsgMint) (*sdk.Result, error) {
 
 	keeper.Logger(ctx).Info("received mint message: %s", msg)
 	err := keeper.MintAndSend(ctx, msg.Minter, msg.Time)
@@ -35,9 +35,9 @@ func handleMsgMint(ctx sdk.Context, keeper Keeper, msg types.MsgMint) (*sdk.Resu
 }
 
 // Handle a message to Mint
-func handleMsgFaucetKey(ctx sdk.Context, keeper Keeper, msg types.MsgFaucetKey) (*sdk.Result, error) {
+func handleMsgFaucetKey(ctx sdk.Context, keeper Keeper, msg *types.MsgFaucetKey) (*sdk.Result, error) {
 
-	keeper.Logger(ctx).Info("received faucet message: %s", msg)
+	keeper.Logger(ctx).Info("received faucet message: %s", *msg)
 	if keeper.HasFaucetKey(ctx) {
 		return nil, types.ErrFaucetKeyExisted
 	}

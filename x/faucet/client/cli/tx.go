@@ -15,7 +15,7 @@ import (
 	//"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/cosmos/cosmos-sdk/codec"
+	//"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	//"github.com/cosmos/cosmos-sdk/x/auth"
 	//"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
@@ -24,7 +24,7 @@ import (
 )
 
 // GetTxCmd return faucet sub-command for tx
-func GetTxCmd(cdc *codec.LegacyAmino) *cobra.Command {
+func GetTxCmd() *cobra.Command {
 	faucetTxCmd := &cobra.Command{
 		Use:                        types.ModuleName,
 		Short:                      "faucet transaction subcommands",
@@ -42,7 +42,7 @@ func GetTxCmd(cdc *codec.LegacyAmino) *cobra.Command {
 
 	faucetTxCmd.AddCommand(GetCmdMint())
 	faucetTxCmd.AddCommand(GetCmdMintFor())
-	faucetTxCmd.AddCommand(GetCmdInitial(cdc))
+	faucetTxCmd.AddCommand(GetCmdInitial())
 	faucetTxCmd.AddCommand(GetPublishKey())
 
 	return faucetTxCmd
@@ -174,7 +174,7 @@ func GetPublishKey() *cobra.Command {
 	}
 }
 
-func GetCmdInitial(cdc *codec.LegacyAmino) *cobra.Command {
+func GetCmdInitial() *cobra.Command {
 	return &cobra.Command{
 		Use:   "init",
 		Short: "Initialize mint key for faucet",
@@ -219,7 +219,8 @@ func GetCmdInitial(cdc *codec.LegacyAmino) *cobra.Command {
 				return nil
 			}
 			var rkey types.FaucetKey
-			cdc.MustUnmarshalJSON(res, &rkey)
+			//cdc.MustUnmarshalJSON(res, &rkey)
+			clientCtx.LegacyAmino.MustUnmarshalJSON(res, &rkey)
 
 			if len(rkey.Armor) == 0 {
 				return errors.New("Faucet key has not published")
