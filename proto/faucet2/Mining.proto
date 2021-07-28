@@ -1,0 +1,14 @@
+syntax = "proto3";
+package jack139.artchain.faucet2;
+
+option go_package = "github.com/jack139/artchain/x/faucet2/types";
+
+import "gogoproto/gogo.proto";
+
+message Mining {
+  string creator = 1;
+  uint64 id = 2;
+  string Minter = 3; 
+  string LastTime = 4; 
+  string Total = 5; 
+}

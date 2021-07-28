@@ -4,12 +4,36 @@ package jack139.artchain.faucet2;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
+import "faucet2/Mining.proto";
 
 option go_package = "github.com/jack139/artchain/x/faucet2/types";
 
 // Query defines the gRPC querier service.
 service Query {
     // this line is used by starport scaffolding # 2
+	rpc Mining(QueryGetMiningRequest) returns (QueryGetMiningResponse) {
+		option (google.api.http).get = "/jack139/artchain/faucet2/Mining/{id}";
+	}
+	rpc MiningAll(QueryAllMiningRequest) returns (QueryAllMiningResponse) {
+		option (google.api.http).get = "/jack139/artchain/faucet2/Mining";
+	}
+
 }
 
 // this line is used by starport scaffolding # 3
+message QueryGetMiningRequest {
+	uint64 id = 1;
+}
+
+message QueryGetMiningResponse {
+	Mining Mining = 1;
+}
+
+message QueryAllMiningRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllMiningResponse {
+	repeated Mining Mining = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

@@ -2,11 +2,13 @@ syntax = "proto3";
 package jack139.artchain.faucet2;
 
 // this line is used by starport scaffolding # genesis/proto/import
+import "faucet2/Mining.proto";
 
 option go_package = "github.com/jack139/artchain/x/faucet2/types";
 
 // GenesisState defines the faucet2 module's genesis state.
 message GenesisState {
     // this line is used by starport scaffolding # genesis/proto/state
+		repeated Mining MiningList = 1; // this line is used by starport scaffolding # genesis/proto/stateField
     // this line is used by starport scaffolding # ibc/genesis/proto
 }
