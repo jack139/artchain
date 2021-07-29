@@ -9,6 +9,6 @@ message Mining {
   string creator = 1;
   uint64 id = 2;
   string Minter = 3; 
-  string LastTime = 4; 
+  int64  LastTime = 4; 
   string Total = 5; 
 }

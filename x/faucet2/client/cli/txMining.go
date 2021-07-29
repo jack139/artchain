@@ -13,20 +13,19 @@ import (
 
 func CmdCreateMining() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-Mining [Minter] [LastTime] [Total]",
+		Use:   "create-Mining [Minter] [Total]",
 		Short: "Creates a new Mining",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsMinter := string(args[0])
-			argsLastTime := string(args[1])
-			argsTotal := string(args[2])
+			argsTotal := string(args[1])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreateMining(clientCtx.GetFromAddress().String(), string(argsMinter), string(argsLastTime), string(argsTotal))
+			msg := types.NewMsgCreateMining(clientCtx.GetFromAddress().String(), string(argsMinter), time.Now().Unix(), string(argsTotal))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -41,7 +40,7 @@ func CmdCreateMining() *cobra.Command {
 
 func CmdUpdateMining() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-Mining [id] [Minter] [LastTime] [Total]",
+		Use:   "update-Mining [id] [Minter] [Total]",
 		Short: "Update a Mining",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -51,15 +50,14 @@ func CmdUpdateMining() *cobra.Command {
 			}
 
 			argsMinter := string(args[1])
-			argsLastTime := string(args[2])
-			argsTotal := string(args[3])
+			argsTotal := string(args[2])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgUpdateMining(clientCtx.GetFromAddress().String(), id, string(argsMinter), string(argsLastTime), string(argsTotal))
+			msg := types.NewMsgUpdateMining(clientCtx.GetFromAddress().String(), id, string(argsMinter), time.Now().Unix(), string(argsTotal))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -114,7 +112,7 @@ func CmdMint() *cobra.Command {
 
 			msg := types.NewMsgMint(clientCtx.GetFromAddress().String(),
 				clientCtx.GetFromAddress().String(),
-				uint64(time.Now().Unix()))
+				time.Now().Unix())
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

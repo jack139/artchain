@@ -16,7 +16,7 @@ type createMiningRequest struct {
 	BaseReq  rest.BaseReq `json:"base_req"`
 	Creator  string       `json:"creator"`
 	Minter   string       `json:"Minter"`
-	LastTime string       `json:"LastTime"`
+	LastTime int64       `json:"LastTime"`
 	Total    string       `json:"Total"`
 }
 
@@ -60,7 +60,7 @@ type updateMiningRequest struct {
 	BaseReq  rest.BaseReq `json:"base_req"`
 	Creator  string       `json:"creator"`
 	Minter   string       `json:"Minter"`
-	LastTime string       `json:"LastTime"`
+	LastTime int64       `json:"LastTime"`
 	Total    string       `json:"Total"`
 }
 

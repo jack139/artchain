@@ -7,7 +7,7 @@ import (
 
 var _ sdk.Msg = &MsgCreateMining{}
 
-func NewMsgCreateMining(creator string, Minter string, LastTime string, Total string) *MsgCreateMining {
+func NewMsgCreateMining(creator string, Minter string, LastTime int64, Total string) *MsgCreateMining {
 	return &MsgCreateMining{
 		Creator:  creator,
 		Minter:   Minter,
@@ -47,7 +47,7 @@ func (msg *MsgCreateMining) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateMining{}
 
-func NewMsgUpdateMining(creator string, id uint64, Minter string, LastTime string, Total string) *MsgUpdateMining {
+func NewMsgUpdateMining(creator string, id uint64, Minter string, LastTime int64, Total string) *MsgUpdateMining {
 	return &MsgUpdateMining{
 		Id:       id,
 		Creator:  creator,
@@ -126,7 +126,7 @@ func (msg *MsgDeleteMining) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgMint{}
 
-func NewMsgMint(sender string, minter string, time uint64) *MsgMint {
+func NewMsgMint(sender string, minter string, time int64) *MsgMint {
 	return &MsgMint{
 		Sender:  sender,
 		Minter:  minter,
@@ -138,7 +138,7 @@ func (msg *MsgMint) Route() string {
 }
 
 func (msg *MsgMint) Type() string {
-	return "DeleteMining"
+	return "Mint"
 }
 
 func (msg *MsgMint) GetSigners() []sdk.AccAddress {

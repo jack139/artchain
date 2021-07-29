@@ -42,7 +42,7 @@ func (k Keeper) AppendMining(
 	ctx sdk.Context,
 	creator string,
 	Minter string,
-	LastTime string,
+	LastTime int64,
 	Total string,
 ) uint64 {
 	// Create the Mining
@@ -124,3 +124,39 @@ func GetMiningIDBytes(id uint64) []byte {
 func GetMiningIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
+
+/*
+// MintAndSend mint coins and send to minter.
+func (k Keeper) MintAndSend(ctx sdk.Context, minterStr string, mintTime int64) error {
+
+	k.Logger(ctx).Error("MintAndSend")
+
+	minter := sdk.AccAddressFromBech32(minterStr)
+
+	mining := k.getMining(ctx, minter)
+
+	// refuse mint in 24 hours
+	if k.isPresent(ctx, minter) &&
+		time.Unix(mining.LastTime, 0).Add(k.Limit).UTC().After(time.Unix(mintTime, 0)) {
+		return types.ErrWithdrawTooOften
+	}
+
+	denom := k.StakingKeeper.BondDenom(ctx)
+	newCoin := sdk.NewCoin(denom, sdk.NewInt(k.amount))
+	mining.Total = mining.Total.Add(newCoin)
+	mining.LastTime = mintTime
+	k.setMining(ctx, minter, mining)
+
+	k.Logger(ctx).Info("Mint coin: %s", newCoin)
+
+	err := k.SupplyKeeper.MintCoins(ctx, types.ModuleName, sdk.NewCoins(newCoin))
+	if err != nil {
+		return err
+	}
+	err = k.SupplyKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, minter, sdk.NewCoins(newCoin))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+*/
