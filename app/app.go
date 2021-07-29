@@ -104,7 +104,7 @@ import (
 	transkeeper "github.com/jack139/artchain/x/trans/keeper"
 	transtypes "github.com/jack139/artchain/x/trans/types"
 
-	"github.com/jack139/artchain/x/faucet"
+	//"github.com/jack139/artchain/x/faucet"
 
 	"github.com/irisnet/irismod/modules/nft"
 	nftkeeper "github.com/irisnet/irismod/modules/nft/keeper"
@@ -162,7 +162,7 @@ var (
 		inventory.AppModuleBasic{},
 		person.AppModuleBasic{},
 		nft.AppModuleBasic{},
-		faucet.AppModule{},
+		//faucet.AppModule{},
 	)
 
 	// module account permissions
@@ -174,7 +174,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		faucet.ModuleName:              {authtypes.Minter}, // add permissions for faucet
+		faucet2types.ModuleName:        {authtypes.Minter}, // add permissions for faucet
 	}
 )
 
@@ -243,7 +243,7 @@ type App struct {
 	personKeeper personkeeper.Keeper
 
 	NFTKeeper    nftkeeper.Keeper
-	faucetKeeper faucet.Keeper
+	//faucetKeeper faucet.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -281,7 +281,7 @@ func New(
 		inventorytypes.StoreKey,
 
 		nfttypes.StoreKey,
-		faucet.StoreKey,
+		//faucet.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -381,18 +381,22 @@ func New(
 		appCodec,
 		keys[faucet2types.StoreKey],
 		keys[faucet2types.MemStoreKey],
+		app.BankKeeper,
+		app.StakingKeeper,
+		1000*1000000, // amount for mint
+		24*time.Hour, // rate limit by time
 	)
 	faucet2Module := faucet2.NewAppModule(appCodec, app.faucet2Keeper)
 
 	app.NFTKeeper = nftkeeper.NewKeeper(appCodec, keys[nfttypes.StoreKey])
 
-	app.faucetKeeper = faucet.NewKeeper(
-		app.BankKeeper,
-		app.StakingKeeper,
-		1000*1000000, // amount for mint
-		24*time.Hour, // rate limit by time
-		keys[faucet.StoreKey],
-		cdc)
+	//app.faucetKeeper = faucet.NewKeeper(
+	//	app.BankKeeper,
+	//	app.StakingKeeper,
+	//	1000*1000000, // amount for mint
+	//	24*time.Hour, // rate limit by time
+	//	keys[faucet.StoreKey],
+	//	cdc)
 
 	app.transKeeper = *transkeeper.NewKeeper(
 		appCodec,
@@ -472,7 +476,7 @@ func New(
 		personModule,
 
 		nft.NewAppModule(appCodec, app.NFTKeeper, app.AccountKeeper, app.BankKeeper),
-		faucet.NewAppModule(app.faucetKeeper),
+		//faucet.NewAppModule(app.faucetKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
