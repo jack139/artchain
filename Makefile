@@ -10,7 +10,8 @@ all: install
 
 install: go.sum
 		@echo "--> Installing artchaind"
-		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/artchaind
+		#@go install -mod=readonly $(BUILD_FLAGS) ./cmd/artchaind
+		@go install $(BUILD_FLAGS) ./cmd/artchaind
 
 go.sum: go.mod
 		@echo "--> Ensure dependencies have not been modified"
