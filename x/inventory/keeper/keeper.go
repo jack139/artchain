@@ -8,16 +8,18 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/jack139/artchain/x/inventory/types"
+	store "github.com/cosmos/cosmos-sdk/store/types"
 	// this line is used by starport scaffolding # ibc/keeper/import
 	//"github.com/cosmos/modules/incubator/nft"
-	nft "github.com/irisnet/irismod/modules/nft/keeper"
+	//nft "github.com/irisnet/irismod/modules/nft/keeper"
+	nft "github.com/cosmos/cosmos-sdk/x/nft/keeper"
 )
 
 type (
 	Keeper struct {
 		cdc      codec.Codec
-		storeKey sdk.StoreKey
-		memKey   sdk.StoreKey
+		storeKey store.StoreKey
+		memKey   store.StoreKey
 		// this line is used by starport scaffolding # ibc/keeper/attribute
 		NFTKeeper nft.Keeper
 	}
@@ -26,7 +28,7 @@ type (
 func NewKeeper(
 	cdc codec.Codec,
 	storeKey,
-	memKey sdk.StoreKey,
+	memKey store.StoreKey,
 	// this line is used by starport scaffolding # ibc/keeper/parameter
 	nftKeeper nft.Keeper,
 ) *Keeper {

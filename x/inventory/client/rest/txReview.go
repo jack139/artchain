@@ -5,11 +5,12 @@ import (
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
+	//"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/rest"
+	//"github.com/cosmos/cosmos-sdk/testutil/rest"
 	"github.com/gorilla/mux"
 	"github.com/jack139/artchain/x/inventory/types"
+	"github.com/jack139/artchain/cmd/http/rest"
 )
 
 type createReviewRequest struct {
@@ -73,7 +74,7 @@ func createReviewHandler(clientCtx client.Context) http.HandlerFunc {
 			"",
 		)
 
-		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
+		rest.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
 	}
 }
 
@@ -141,7 +142,7 @@ func updateReviewHandler(clientCtx client.Context) http.HandlerFunc {
 			"",
 		)
 
-		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
+		rest.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
 	}
 }
 
@@ -179,6 +180,6 @@ func deleteReviewHandler(clientCtx client.Context) http.HandlerFunc {
 			id,
 		)
 
-		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
+		rest.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
 	}
 }

@@ -5,11 +5,12 @@ import (
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/tx"
+	//"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/rest"
+	//"github.com/cosmos/cosmos-sdk/testutil/rest"
 	"github.com/gorilla/mux"
 	"github.com/jack139/artchain/x/trans/types"
+	"github.com/jack139/artchain/cmd/http/rest"
 )
 
 type createTransactionRequest struct {
@@ -85,7 +86,7 @@ func createTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 			"",
 		)
 
-		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
+		rest.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
 	}
 }
 
@@ -168,7 +169,7 @@ func updateTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 			"",
 		)
 
-		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
+		rest.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
 	}
 }
 
@@ -206,6 +207,6 @@ func deleteTransactionHandler(clientCtx client.Context) http.HandlerFunc {
 			id,
 		)
 
-		tx.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
+		rest.WriteGeneratedTxResponse(clientCtx, w, req.BaseReq, msg)
 	}
 }

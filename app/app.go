@@ -26,7 +26,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-	authrest "github.com/cosmos/cosmos-sdk/x/auth/client/rest"
+	//authrest "github.com/cosmos/cosmos-sdk/x/auth/client/rest"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -102,9 +102,14 @@ import (
 
 	//"github.com/cosmos/modules/incubator/faucet"
 	//"github.com/cosmos/modules/incubator/nft"
-	"github.com/irisnet/irismod/modules/nft"
-	nftkeeper "github.com/irisnet/irismod/modules/nft/keeper"
-	nfttypes "github.com/irisnet/irismod/modules/nft/types"
+
+	//"github.com/irisnet/irismod/modules/nft"
+	//nftkeeper "github.com/irisnet/irismod/modules/nft/keeper"
+	//nfttypes "github.com/irisnet/irismod/modules/nft/types"
+
+	"github.com/cosmos/cosmos-sdk/x/nft"
+	nftkeeper "github.com/cosmos/cosmos-sdk/x/nft/keeper"
+	//nfttypes "github.com/cosmos/cosmos-sdk/x/nft/types"
 )
 
 const Name = "artchain"
@@ -275,7 +280,7 @@ func New(
 		auctiontypes.StoreKey,
 		inventorytypes.StoreKey,
 
-		nfttypes.StoreKey,
+		nftkeeper.StoreKey,
 		//faucet.StoreKey,
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -372,7 +377,7 @@ func New(
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-	app.NFTKeeper = nftkeeper.NewKeeper(appCodec, keys[nfttypes.StoreKey])
+	app.NFTKeeper = nftkeeper.NewKeeper(appCodec, keys[nftkeeper.StoreKey])
 
 	//app.faucetKeeper = faucet.NewKeeper(
 	//	app.supplyKeeper,
@@ -501,7 +506,7 @@ func New(
 		inventorytypes.ModuleName,
 		persontypes.ModuleName,
 
-		nfttypes.ModuleName,
+		nftkeeper.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -643,7 +648,7 @@ func (app *App) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig
 	clientCtx := apiSvr.ClientCtx
 	rpc.RegisterRoutes(clientCtx, apiSvr.Router)
 	// Register legacy tx routes.
-	authrest.RegisterTxRoutes(clientCtx, apiSvr.Router)
+	//authrest.RegisterTxRoutes(clientCtx, apiSvr.Router)
 	// Register new tx routes from grpc-gateway.
 	authtx.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 	// Register new tendermint queries routes from grpc-gateway.

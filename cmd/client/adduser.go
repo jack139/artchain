@@ -15,9 +15,18 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	bip39 "github.com/cosmos/go-bip39"
+	"github.com/cosmos/cosmos-sdk/codec"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 
 	"github.com/jack139/artchain/x/artchain/types"
 )
+
+func getCodec() codec.Codec {
+	registry := codectypes.NewInterfaceRegistry()
+	cryptocodec.RegisterInterfaces(registry)
+	return codec.NewProtoCodec(registry)
+}
 
 // 建新用户 user， 建key，建account
 // 返回： address, mnemonic
@@ -47,7 +56,7 @@ func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, str
 	if err != nil {
 		return "", "", err
 	}
-	kb, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.KeyringDir, buf)
+	kb, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.KeyringDir, buf, getCodec())
 
 	// 注册新的 key
 	keyringAlgos, _ := kb.SupportedAlgorithms()
@@ -82,7 +91,10 @@ func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, str
 	//log.Println(info)
 
 	// 新用户的 地址
-	toAddr := info.GetAddress()
+	toAddr, err := info.GetAddress()
+	if err != nil {
+		return "", "", err
+	}
 
 	// 转账 1credit， 会自动建立auth的账户
 	coins, err := sdk.ParseCoinsNormalized(reward)
@@ -126,7 +138,7 @@ func VerifyUserAccount(cmd *cobra.Command, userAddr string, mnemonic string) (bo
 	if err != nil {
 		return false, err
 	}
-	kb, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.KeyringDir, buf)
+	kb, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.KeyringDir, buf, getCodec())
 
 	// 注册新的 key
 	keyringAlgos, _ := kb.SupportedAlgorithms()
@@ -171,7 +183,7 @@ func GetAddrStr(cmd *cobra.Command, keyref string) (string, error) {
 
 	buf := bufio.NewReader(cmd.InOrStdin())
 	// keyringBackend 直接使用 test
-	kb, err = keyring.New(sdk.KeyringServiceName(), "test", clientCtx.KeyringDir, buf)
+	kb, err = keyring.New(sdk.KeyringServiceName(), "test", clientCtx.KeyringDir, buf, getCodec())
 
 	// 获取 地址
 	//keyref := "faucet"

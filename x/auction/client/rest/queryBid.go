@@ -5,9 +5,10 @@ import (
 	"net/http"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/types/rest"
+	//"github.com/cosmos/cosmos-sdk/testutil/rest"
 	"github.com/gorilla/mux"
 	"github.com/jack139/artchain/x/auction/types"
+	"github.com/jack139/artchain/cmd/http/rest"
 )
 
 func listBidHandler(clientCtx client.Context) http.HandlerFunc {
