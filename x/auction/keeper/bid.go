@@ -67,7 +67,7 @@ func (k Keeper) AppendBid(
 
 	// bid 的 key 按 auctionId 区分，方便按 auctionId 查询
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BidKey+auctionId))
-	value := k.cdc.MustMarshalBinaryBare(&bid)
+	value := k.cdc.MustMarshal(&bid)
 	store.Set(GetBidIDBytes(bid.Id), value)
 
 	// Update bid count
@@ -79,7 +79,7 @@ func (k Keeper) AppendBid(
 // SetBid set a specific bid in the store
 func (k Keeper) SetBid(ctx sdk.Context, bid types.Bid) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BidKey+bid.AuctionId))
-	b := k.cdc.MustMarshalBinaryBare(&bid)
+	b := k.cdc.MustMarshal(&bid)
 	store.Set(GetBidIDBytes(bid.Id), b)
 }
 
@@ -87,7 +87,7 @@ func (k Keeper) SetBid(ctx sdk.Context, bid types.Bid) {
 func (k Keeper) GetBid(ctx sdk.Context, id uint64, auctionId string) types.Bid {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BidKey+auctionId))
 	var bid types.Bid
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetBidIDBytes(id)), &bid)
+	k.cdc.MustUnmarshal(store.Get(GetBidIDBytes(id)), &bid)
 	return bid
 }
 
@@ -117,7 +117,7 @@ func (k Keeper) GetAllBid(ctx sdk.Context, auctionId string) (list []types.Bid) 
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Bid
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 

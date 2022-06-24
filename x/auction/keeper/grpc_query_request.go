@@ -26,7 +26,7 @@ func (k Keeper) RequestAll(c context.Context, req *types.QueryAllRequestRequest)
 
 	pageRes, err := query.Paginate(requestStore, req.Pagination, func(key []byte, value []byte) error {
 		var request types.Request
-		if err := k.cdc.UnmarshalBinaryBare(value, &request); err != nil {
+		if err := k.cdc.Unmarshal(value, &request); err != nil {
 			return err
 		}
 
@@ -54,7 +54,7 @@ func (k Keeper) Request(c context.Context, req *types.QueryGetRequestRequest) (*
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetRequestIDBytes(req.Id)), &request)
+	k.cdc.MustUnmarshal(store.Get(GetRequestIDBytes(req.Id)), &request)
 
 	return &types.QueryGetRequestResponse{Request: &request}, nil
 }
@@ -73,7 +73,7 @@ func (k Keeper) RequestByChainAddr(c context.Context, req *types.QueryGetRequest
 
 	pageRes, err := query.FilteredPaginate(requestStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var request types.Request
-		if err := k.cdc.UnmarshalBinaryBare(value, &request); err != nil {
+		if err := k.cdc.Unmarshal(value, &request); err != nil {
 			return false, err
 		}
 
@@ -109,7 +109,7 @@ func (k Keeper) RequestByStatus(c context.Context, req *types.QueryGetRequestByS
 
 	pageRes, err := query.FilteredPaginate(requestStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var request types.Request
-		if err := k.cdc.UnmarshalBinaryBare(value, &request); err != nil {
+		if err := k.cdc.Unmarshal(value, &request); err != nil {
 			return false, err
 		}
 

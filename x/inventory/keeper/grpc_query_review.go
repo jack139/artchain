@@ -26,7 +26,7 @@ func (k Keeper) ReviewAll(c context.Context, req *types.QueryAllReviewRequest) (
 
 	pageRes, err := query.FilteredPaginate(reviewStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var review types.Review
-		if err := k.cdc.UnmarshalBinaryBare(value, &review); err != nil {
+		if err := k.cdc.Unmarshal(value, &review); err != nil {
 			return false, err
 		}
 
@@ -61,7 +61,7 @@ func (k Keeper) Review(c context.Context, req *types.QueryGetReviewRequest) (*ty
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+req.ItemId))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetReviewIDBytes(req.Id)), &review)
+	k.cdc.MustUnmarshal(store.Get(GetReviewIDBytes(req.Id)), &review)
 
 	return &types.QueryGetReviewResponse{Review: &review}, nil
 }
@@ -81,7 +81,7 @@ func (k Keeper) ReviewByStatus(c context.Context, req *types.QueryGetReviewBySta
 
 	pageRes, err := query.FilteredPaginate(reviewStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var review types.Review
-		if err := k.cdc.UnmarshalBinaryBare(value, &review); err != nil {
+		if err := k.cdc.Unmarshal(value, &review); err != nil {
 			return false, err
 		}
 

@@ -70,7 +70,7 @@ func (k Keeper) AppendRequest(
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
-	value := k.cdc.MustMarshalBinaryBare(&request)
+	value := k.cdc.MustMarshal(&request)
 	store.Set(GetRequestIDBytes(request.Id), value)
 
 	// Update request count
@@ -82,7 +82,7 @@ func (k Keeper) AppendRequest(
 // SetRequest set a specific request in the store
 func (k Keeper) SetRequest(ctx sdk.Context, request types.Request) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
-	b := k.cdc.MustMarshalBinaryBare(&request)
+	b := k.cdc.MustMarshal(&request)
 	store.Set(GetRequestIDBytes(request.Id), b)
 }
 
@@ -90,7 +90,7 @@ func (k Keeper) SetRequest(ctx sdk.Context, request types.Request) {
 func (k Keeper) GetRequest(ctx sdk.Context, id uint64) types.Request {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RequestKey))
 	var request types.Request
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetRequestIDBytes(id)), &request)
+	k.cdc.MustUnmarshal(store.Get(GetRequestIDBytes(id)), &request)
 	return request
 }
 
@@ -120,7 +120,7 @@ func (k Keeper) GetAllRequest(ctx sdk.Context) (list []types.Request) {
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Request
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 

@@ -78,7 +78,7 @@ func (k Keeper) AppendItem(
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
-	value := k.cdc.MustMarshalBinaryBare(&item)
+	value := k.cdc.MustMarshal(&item)
 	store.Set(GetItemIDBytes(item.Id), value)
 
 	// 添加owner到id的索引
@@ -96,7 +96,7 @@ func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
 	oldCurrentOwner := k.GetItemCurrentOwnerId(ctx, item.Id)
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
-	b := k.cdc.MustMarshalBinaryBare(&item)
+	b := k.cdc.MustMarshal(&item)
 	store.Set(GetItemIDBytes(item.Id), b)
 
 	if item.CurrentOwnerId != oldCurrentOwner { // 变更所有人，需要变更索引
@@ -111,7 +111,7 @@ func (k Keeper) SetItem(ctx sdk.Context, item types.Item) {
 func (k Keeper) GetItem(ctx sdk.Context, id uint64) types.Item {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
 	var item types.Item
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetItemIDBytes(id)), &item)
+	k.cdc.MustUnmarshal(store.Get(GetItemIDBytes(id)), &item)
 	return item
 }
 
@@ -137,7 +137,7 @@ func (k Keeper) RemoveItem(ctx sdk.Context, id uint64) {
 
 	// 删除owner到id的索引
 	var item types.Item
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetItemIDBytes(id)), &item)
+	k.cdc.MustUnmarshal(store.Get(GetItemIDBytes(id)), &item)
 	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemOwnerKey+item.CurrentOwnerId))
 	store2.Delete(GetItemIDBytes(id))
 
@@ -154,7 +154,7 @@ func (k Keeper) GetAllItem(ctx sdk.Context) (list []types.Item) {
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Item
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 
@@ -183,7 +183,7 @@ func (k Keeper) GetItemByStatus(ctx sdk.Context, status string) (list []types.It
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Item
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		if val.Status==status {
 			list = append(list, val)
 		} 

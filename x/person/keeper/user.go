@@ -66,7 +66,7 @@ func (k Keeper) AppendUser(
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
-	value := k.cdc.MustMarshalBinaryBare(&user)
+	value := k.cdc.MustMarshal(&user)
 	store.Set(GetUserIDBytes(user.Id), value)
 
 	// 添加chainAddr到id的索引
@@ -82,7 +82,7 @@ func (k Keeper) AppendUser(
 // SetUser set a specific user in the store
 func (k Keeper) SetUser(ctx sdk.Context, user types.User) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
-	b := k.cdc.MustMarshalBinaryBare(&user)
+	b := k.cdc.MustMarshal(&user)
 	store.Set(GetUserIDBytes(user.Id), b)
 
 	// 添加chainAddr到id的索引
@@ -94,7 +94,7 @@ func (k Keeper) SetUser(ctx sdk.Context, user types.User) {
 func (k Keeper) GetUser(ctx sdk.Context, id uint64) types.User {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
 	var user types.User
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetUserIDBytes(id)), &user)
+	k.cdc.MustUnmarshal(store.Get(GetUserIDBytes(id)), &user)
 	return user
 }
 
@@ -115,7 +115,7 @@ func (k Keeper) RemoveUser(ctx sdk.Context, id uint64) {
 
 	// 删除chainAddr到id的索引
 	var user types.User
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetUserIDBytes(id)), &user)
+	k.cdc.MustUnmarshal(store.Get(GetUserIDBytes(id)), &user)
 	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AddrIndexKey))
 	store2.Delete([]byte(user.ChainAddr))
 
@@ -132,7 +132,7 @@ func (k Keeper) GetAllUser(ctx sdk.Context) (list []types.User) {
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.User
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 
@@ -158,6 +158,6 @@ func (k Keeper) GetUserByChainAddr(ctx sdk.Context, chainAddr string) types.User
 	store2 := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AddrIndexKey))
 	var user types.User
 	idBytes := store2.Get([]byte(chainAddr))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(idBytes), &user)
+	k.cdc.MustUnmarshal(store.Get(idBytes), &user)
 	return user
 }

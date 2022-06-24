@@ -26,7 +26,7 @@ func (k Keeper) TransactionAll(c context.Context, req *types.QueryAllTransaction
 
 	pageRes, err := query.Paginate(transactionStore, req.Pagination, func(key []byte, value []byte) error {
 		var transaction types.Transaction
-		if err := k.cdc.UnmarshalBinaryBare(value, &transaction); err != nil {
+		if err := k.cdc.Unmarshal(value, &transaction); err != nil {
 			return err
 		}
 
@@ -54,7 +54,7 @@ func (k Keeper) Transaction(c context.Context, req *types.QueryGetTransactionReq
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetTransactionIDBytes(req.Id)), &transaction)
+	k.cdc.MustUnmarshal(store.Get(GetTransactionIDBytes(req.Id)), &transaction)
 
 	return &types.QueryGetTransactionResponse{Transaction: &transaction}, nil
 }
@@ -74,7 +74,7 @@ func (k Keeper) TransactionSome(c context.Context, req *types.QuerySomeTransacti
 
 	pageRes, err := query.FilteredPaginate(transactionStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var transaction types.Transaction
-		if err := k.cdc.UnmarshalBinaryBare(value, &transaction); err != nil {
+		if err := k.cdc.Unmarshal(value, &transaction); err != nil {
 			return false, err
 		}
 

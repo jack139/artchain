@@ -28,7 +28,7 @@ func (k Keeper) BidAll(c context.Context, req *types.QueryAllBidRequest) (*types
 
 	pageRes, err := query.FilteredPaginate(bidStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var bid types.Bid
-		if err := k.cdc.UnmarshalBinaryBare(value, &bid); err != nil {
+		if err := k.cdc.Unmarshal(value, &bid); err != nil {
 			return false, err
 		}
 
@@ -63,7 +63,7 @@ func (k Keeper) Bid(c context.Context, req *types.QueryGetBidRequest) (*types.Qu
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BidKey+req.AuctionId))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetBidIDBytes(req.Id)), &bid)
+	k.cdc.MustUnmarshal(store.Get(GetBidIDBytes(req.Id)), &bid)
 
 	return &types.QueryGetBidResponse{Bid: &bid}, nil
 }
@@ -83,7 +83,7 @@ func (k Keeper) BidHigh(c context.Context, req *types.QueryGetHighBidRequest) (*
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Bid
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 
 		if bidHigh==nil {
 			bidHigh = &val

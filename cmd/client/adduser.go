@@ -96,7 +96,7 @@ func AddUserAccount(cmd *cobra.Command, name string, reward string) (string, str
 	}
 
 	// 参考cosmos-sdk/client/keys/show.go 中 getBechKeyOut()
-	ko_new, err := keyring.Bech32KeyOutput(info)
+	ko_new, err := keyring.MkAccKeyOutput(info)
 	if err != nil {
 		return "", "", err
 	}
@@ -182,7 +182,7 @@ func GetAddrStr(cmd *cobra.Command, keyref string) (string, error) {
 	//addr0 := info0.GetAddress() // AccAddress
 
 	// 参考cosmos-sdk/client/keys/show.go 中 getBechKeyOut()
-	ko, err := keyring.Bech32KeyOutput(info0)
+	ko, err := keyring.MkAccKeyOutput(info0)
 	if err != nil {
 		return "", err
 	}

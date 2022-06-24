@@ -26,7 +26,7 @@ func (k Keeper) UserAll(c context.Context, req *types.QueryAllUserRequest) (*typ
 
 	pageRes, err := query.Paginate(userStore, req.Pagination, func(key []byte, value []byte) error {
 		var user types.User
-		if err := k.cdc.UnmarshalBinaryBare(value, &user); err != nil {
+		if err := k.cdc.Unmarshal(value, &user); err != nil {
 			return err
 		}
 
@@ -54,7 +54,7 @@ func (k Keeper) User(c context.Context, req *types.QueryGetUserRequest) (*types.
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserKey))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetUserIDBytes(req.Id)), &user)
+	k.cdc.MustUnmarshal(store.Get(GetUserIDBytes(req.Id)), &user)
 
 	return &types.QueryGetUserResponse{User: &user}, nil
 }
@@ -87,7 +87,7 @@ func (k Keeper) UserByUserType(c context.Context, req *types.QueryGetUserByUserT
 
 	pageRes, err := query.FilteredPaginate(userStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var user types.User
-		if err := k.cdc.UnmarshalBinaryBare(value, &user); err != nil {
+		if err := k.cdc.Unmarshal(value, &user); err != nil {
 			return false, err
 		}
 
@@ -123,7 +123,7 @@ func (k Keeper) UserByStatus(c context.Context, req *types.QueryGetUserByStatusR
 
 	pageRes, err := query.FilteredPaginate(userStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var user types.User
-		if err := k.cdc.UnmarshalBinaryBare(value, &user); err != nil {
+		if err := k.cdc.Unmarshal(value, &user); err != nil {
 			return false, err
 		}
 

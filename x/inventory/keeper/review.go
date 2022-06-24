@@ -69,7 +69,7 @@ func (k Keeper) AppendReview(
 
 	// review 的 key 按 itemId 区分，方便按 itemId 查询
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+itemId))
-	value := k.cdc.MustMarshalBinaryBare(&review)
+	value := k.cdc.MustMarshal(&review)
 	store.Set(GetReviewIDBytes(review.Id), value)
 
 	// Update review count
@@ -81,7 +81,7 @@ func (k Keeper) AppendReview(
 // SetReview set a specific review in the store
 func (k Keeper) SetReview(ctx sdk.Context, review types.Review) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+review.ItemId))
-	b := k.cdc.MustMarshalBinaryBare(&review)
+	b := k.cdc.MustMarshal(&review)
 	store.Set(GetReviewIDBytes(review.Id), b)
 }
 
@@ -89,7 +89,7 @@ func (k Keeper) SetReview(ctx sdk.Context, review types.Review) {
 func (k Keeper) GetReview(ctx sdk.Context, id uint64, itemId string) types.Review {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReviewKey+itemId))
 	var review types.Review
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetReviewIDBytes(id)), &review)
+	k.cdc.MustUnmarshal(store.Get(GetReviewIDBytes(id)), &review)
 	return review
 }
 
@@ -119,7 +119,7 @@ func (k Keeper) GetAllReview(ctx sdk.Context, itemId string) (list []types.Revie
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Review
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 

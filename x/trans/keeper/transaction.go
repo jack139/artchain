@@ -74,7 +74,7 @@ func (k Keeper) AppendTransaction(
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
-	value := k.cdc.MustMarshalBinaryBare(&transaction)
+	value := k.cdc.MustMarshal(&transaction)
 	store.Set(GetTransactionIDBytes(transaction.Id), value)
 
 	// Update transaction count
@@ -86,7 +86,7 @@ func (k Keeper) AppendTransaction(
 // SetTransaction set a specific transaction in the store
 func (k Keeper) SetTransaction(ctx sdk.Context, transaction types.Transaction) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
-	b := k.cdc.MustMarshalBinaryBare(&transaction)
+	b := k.cdc.MustMarshal(&transaction)
 	store.Set(GetTransactionIDBytes(transaction.Id), b)
 }
 
@@ -94,7 +94,7 @@ func (k Keeper) SetTransaction(ctx sdk.Context, transaction types.Transaction) {
 func (k Keeper) GetTransaction(ctx sdk.Context, id uint64) types.Transaction {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TransactionKey))
 	var transaction types.Transaction
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetTransactionIDBytes(id)), &transaction)
+	k.cdc.MustUnmarshal(store.Get(GetTransactionIDBytes(id)), &transaction)
 	return transaction
 }
 
@@ -124,7 +124,7 @@ func (k Keeper) GetAllTransaction(ctx sdk.Context) (list []types.Transaction) {
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Transaction
-		k.cdc.MustUnmarshalBinaryBare(iterator.Value(), &val)
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
 

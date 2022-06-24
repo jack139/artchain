@@ -26,7 +26,7 @@ func (k Keeper) ItemAll(c context.Context, req *types.QueryAllItemRequest) (*typ
 
 	pageRes, err := query.Paginate(itemStore, req.Pagination, func(key []byte, value []byte) error {
 		var item types.Item
-		if err := k.cdc.UnmarshalBinaryBare(value, &item); err != nil {
+		if err := k.cdc.Unmarshal(value, &item); err != nil {
 			return err
 		}
 
@@ -54,7 +54,7 @@ func (k Keeper) Item(c context.Context, req *types.QueryGetItemRequest) (*types.
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetItemIDBytes(req.Id)), &item)
+	k.cdc.MustUnmarshal(store.Get(GetItemIDBytes(req.Id)), &item)
 
 	return &types.QueryGetItemResponse{Item: &item}, nil
 }
@@ -76,7 +76,7 @@ func (k Keeper) ItemAllByOwner(c context.Context, req *types.QueryAllItemByOwner
 	// 再从 ItemKey 中取实际数据
 	pageRes, err := query.Paginate(itemOwnerStore, req.Pagination, func(key []byte, value []byte) error {
 		var item types.Item
-		if err := k.cdc.UnmarshalBinaryBare(itemStore.Get(value), &item); err != nil {
+		if err := k.cdc.Unmarshal(itemStore.Get(value), &item); err != nil {
 			return err
 		}
 
@@ -125,7 +125,7 @@ func (k Keeper) ItemByStatus(c context.Context, req *types.QueryGetItemByStatusR
 
 	pageRes, err := query.FilteredPaginate(itemStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var item types.Item
-		if err := k.cdc.UnmarshalBinaryBare(value, &item); err != nil {
+		if err := k.cdc.Unmarshal(value, &item); err != nil {
 			return false, err
 		}
 
@@ -161,7 +161,7 @@ func (k Keeper) ItemCreator(c context.Context, req *types.QueryGetItemCreatorReq
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ItemKey))
-	k.cdc.MustUnmarshalBinaryBare(store.Get(GetItemIDBytes(req.Id)), &item)
+	k.cdc.MustUnmarshal(store.Get(GetItemIDBytes(req.Id)), &item)
 
 	return &types.QueryGetItemCreatorResponse{Creator: item.Creator}, nil
 }
